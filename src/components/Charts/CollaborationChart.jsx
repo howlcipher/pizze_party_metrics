@@ -36,7 +36,7 @@ const CollaborationChart = ({ data }) => {
 
   const chartData = aggregatedData.map(item => ({
     name: item.work_setup,
-    "Online Collaboration Score": Number((item.collaboration_score / item.count).toFixed(1)),
+    "Collaboration Score": Number((item.collaboration_score / item.count).toFixed(1)),
     "Review Turnaround (Hrs)": Number((item.turnaround_hours / item.count).toFixed(1))
   }));
 
@@ -46,12 +46,12 @@ const CollaborationChart = ({ data }) => {
         Async Collaboration Velocity
       </h3>
       <p className="text-sm text-gray-600 font-bold mb-4">
-        Online collaboration efficiency vs. time blocked waiting.
+        Collaboration efficiency vs. time blocked waiting.
       </p>
       
       <div className="flex-grow min-h-[300px]" role="img" aria-label="Bar chart comparing Collaboration Scores across work setups.">
         <div style={srOnlyStyle}>
-          This bar chart displays the breakdown of online collaboration scores versus review turnaround hours across different work setup categories.
+          This bar chart displays the breakdown of collaboration scores versus review turnaround hours across different work setup categories.
         </div>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -91,7 +91,7 @@ const CollaborationChart = ({ data }) => {
               }}
             />
             <Legend wrapperStyle={{ paddingTop: '10px', fontWeight: 'bold', color: '#333' }} />
-            <Bar yAxisId="left" dataKey="Online Collaboration Score" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar yAxisId="left" dataKey="Collaboration Score" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
             <Bar yAxisId="right" dataKey="Review Turnaround (Hrs)" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60} />
           </BarChart>
         </ResponsiveContainer>
