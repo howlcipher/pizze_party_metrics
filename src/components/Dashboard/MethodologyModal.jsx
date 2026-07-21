@@ -27,13 +27,13 @@ const MethodologyModal = ({ isOpen, onClose }) => {
             </h3>
             <div className="bg-white p-4 rounded-lg border-2 border-green-600 shadow-sm">
               <p className="mb-2 text-gray-800">
-                The <strong>Pizza Party Index</strong> quantifies the prevalence of "performative perks" versus actual productive time. It acts as an inverse indicator of productivity—a higher PPI suggests an environment bloated with performative activities.
+                The <strong>Pizza Party Index</strong> is a holistic score measuring actual productivity combined with async collaboration velocity. A higher PPI indicates a highly optimized environment where developers spend time focusing and collaborating online, rather than stuck in meetings.
               </p>
               <h4 className="font-extrabold text-green-800 mt-3 mb-1 uppercase tracking-wide text-xs">Calculation:</h4>
               <ul className="list-disc list-inside space-y-1 ml-2 text-gray-700 font-medium">
-                <li>Derived from self-reported survey data (e.g., SWAA) regarding the number of mandatory, non-working meetings (like "pizza parties") an employee attends per week.</li>
-                <li>Weighted by industry standards and company size.</li>
-                <li>Normalized to a scale of 0 to 100, where 100 indicates peak performative culture.</li>
+                <li><strong>Productivity:</strong> Calculated as base Focus Hours, adjusted by the industry's meeting overhead.</li>
+                <li><strong>Collaboration:</strong> Derived from real-world GitHub Code Review turnaround times (24.0 / Turnaround Hours). Faster turnarounds boost the score!</li>
+                <li><strong>The Formula:</strong> <code>Focus Hours + (Collaboration Score * 2.0)</code></li>
               </ul>
             </div>
           </section>
