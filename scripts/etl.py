@@ -604,6 +604,17 @@ def process_data(
         if col.startswith('full_onsite_') and not pd.isna(latest_row[col])
     ]
 
+    # 1. Enforce Ingestion-Layer Data Quality Checks
+    for ind in industries:
+        onsite_col = f'full_onsite_{ind}'
+        hybrid_col = f'hybrid_{ind}'
+        remote_col = f'full_remote_{ind}'
+        assert onsite_col in latest_row, f"Missing data column for {onsite_col}"
+        assert hybrid_col in latest_row, f"Missing data column for {hybrid_col}"
+        assert remote_col in latest_row, f"Missing data column for {remote_col}"
+        total_pct = float(latest_row.get(onsite_col, 0.0) or 0.0) + float(latest_row.get(hybrid_col, 0.0) or 0.0) + float(latest_row.get(remote_col, 0.0) or 0.0)
+        assert total_pct > 0.0, f"Percentages for {ind} sum to 0 or less"
+
     # Extend with additional tech and key industries
     additional_industries = [
         'it_infrastructure',
@@ -632,17 +643,6 @@ def process_data(
 
     categories    = list(FALLBACK_VELOCITIES.keys())
     base_focus_h  = 40.0
-    
-    # 1. Enforce Ingestion-Layer Data Quality Checks
-    for ind in industries:
-        onsite_col = f'full_onsite_{ind}'
-        hybrid_col = f'hybrid_{ind}'
-        remote_col = f'full_remote_{ind}'
-        assert onsite_col in latest_row, f"Missing data column for {onsite_col}"
-        assert hybrid_col in latest_row, f"Missing data column for {hybrid_col}"
-        assert remote_col in latest_row, f"Missing data column for {remote_col}"
-        total_pct = float(latest_row.get(onsite_col, 0.0) or 0.0) + float(latest_row.get(hybrid_col, 0.0) or 0.0) + float(latest_row.get(remote_col, 0.0) or 0.0)
-        assert total_pct > 0.0, f"Percentages for {ind} sum to 0 or less"
 
     # Reset seed for deterministic demographic generation across pipeline runs
     np.random.seed(42)
