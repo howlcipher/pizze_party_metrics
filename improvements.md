@@ -33,12 +33,15 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 8 | Theme Options: Light, Dark, and Color-blind Modes | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (high accessibility/UX value) * 1.0 / 4 (standard UI state management) = 1.75 |
 | 9 | [Agent Suggestion] DevOps: Isolate ETL Data Pipeline and Ensure Idempotency | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Decouples failure modes) * 1.0 / 4 (Artifact passing setup) = 1.75 |
 | 10 | [Agent Suggestion] Data Pipeline: Vectorize Pandas Operations | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Idiomatic & fast) * 1.0 / 4 (Logic rewrite) = 1.75 |
-| 11 | Live Data Ingestion API / Backend | Pending | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core requirement for live data) * 1.0 / 6 (Significant backend work) = 1.33 |
-| 12 | Stereotype Pizza Parlor Aesthetic Overhaul | Pending | 1.20 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (fun brand alignment) * 1.0 / 5 (significant CSS/UI redesign) = 1.20 |
-| 13 | [Agent Suggestion] Meeting vs. Maker Time Analysis | Pending | 0.88 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 0.5 (decay from Demographic Analytics) / 4 = 0.88 |
-| 14 | Interruption & Context Switch Impact Dashboard | Pending | 0.80 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High value for productivity insights) * 0.5 (decay) / 5 = 0.80 |
-| 15 | [Agent Suggestion] Predictive Burnout Modeling | Pending | 0.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Advanced ML feature) * 0.5 (decay) / 6 = 0.50 |
-| 16 | Demographic Analytics (Age, Industry, Gender) | Done (2026-07-21) | - | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | Shipped! |
+| 11 | [Agent Suggestion] Async Collaboration Velocity Metric | Pending | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Directly proves remote collab efficiency) * 1.0 / 5 (API data gathering) = 1.60 |
+| 12 | [Agent Suggestion] Documentation & Knowledge Transfer Health | Pending | 1.40 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Strong proxy for healthy collaboration) * 1.0 / 5 (Metric modeling) = 1.40 |
+| 13 | Live Data Ingestion API / Backend | Pending | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core requirement for live data) * 1.0 / 6 (Significant backend work) = 1.33 |
+| 14 | Stereotype Pizza Parlor Aesthetic Overhaul | Pending | 1.20 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (fun brand alignment) * 1.0 / 5 (significant CSS/UI redesign) = 1.20 |
+| 15 | [Agent Suggestion] Cross-Time-Zone Collaboration Index | Pending | 1.16 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Highlights unique remote advantage) * 1.0 / 6 (Complex time-series) = 1.16 |
+| 16 | [Agent Suggestion] Meeting vs. Maker Time Analysis | Pending | 0.88 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 0.5 (decay from Demographic Analytics) / 4 = 0.88 |
+| 17 | Interruption & Context Switch Impact Dashboard | Pending | 0.80 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High value for productivity insights) * 0.5 (decay) / 5 = 0.80 |
+| 18 | [Agent Suggestion] Predictive Burnout Modeling | Pending | 0.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Advanced ML feature) * 0.5 (decay) / 6 = 0.50 |
+| 19 | Demographic Analytics (Age, Industry, Gender) | Done (2026-07-21) | - | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | Shipped! |
 
 ## Details
 
@@ -82,27 +85,39 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 **Description:** Refactor the `process_data` function in `etl.py` to use vectorized pandas operations instead of iterating with `.iloc[0]`.
 **Context:** Adheres to `data_analyst` principles for optimal DataFrame performance and readability.
 
-### 11. Live Data Ingestion API / Backend
+### 11. [Agent Suggestion] Async Collaboration Velocity Metric
+**Description:** Measure and compare PR merge times and issue resolution times across different work setups (remote vs hybrid vs onsite). Use data from GitHub APIs or similar sources to prove that async, remote-first workflows actually lead to faster or higher-quality task completion, countering the claim that in-person collaboration is always faster.
+**Context:** Addresses the core product thesis by providing hard data that remote teams can outpace onsite teams when it comes to concrete deliverables.
+
+### 12. [Agent Suggestion] Documentation & Knowledge Transfer Health
+**Description:** Analyze the volume and quality of written documentation (wiki updates, PR descriptions, ADRs) to prove remote teams over-index on scalable knowledge transfer compared to the ephemeral, unrecorded watercooler chats of onsite teams.
+**Context:** Quantifies the often-ignored benefit of remote work: forcing teams to build a robust, searchable knowledge base.
+
+### 13. Live Data Ingestion API / Backend
 **Description:** Build a backend or integration layer (e.g., WebSockets or a polling API) to ingest real and live data for the dashboard, replacing any static or mocked data.
 **Context:** Required to fulfill the "real and live data" mandate.
 
-### 12. Stereotype Pizza Parlor Aesthetic Overhaul
+### 14. Stereotype Pizza Parlor Aesthetic Overhaul
 **Description:** Redesign the dashboard to lean heavily into a stereotypical pizza parlor theme. Think red and white checkered tablecloth patterns, Italian flag color accents (green/red/white), and rustic UI elements.
 **Context:** A fun branding exercise that gives the dashboard a unique identity compared to generic SaaS dashboards.
 
-### 13. [Agent Suggestion] Meeting vs. Maker Time Analysis
+### 15. [Agent Suggestion] Cross-Time-Zone Collaboration Index
+**Description:** Highlight the "follow the sun" advantage of remote teams by visualizing 24/7 continuous output metrics. This shows how distributed teams can keep projects moving around the clock without individual burnout.
+**Context:** Demonstrates a unique structural advantage of remote work that in-office environments fundamentally cannot replicate.
+
+### 16. [Agent Suggestion] Meeting vs. Maker Time Analysis
 **Description:** Analyze calendar data to show the ratio of uninterrupted "Maker Time" versus fragmented "Meeting Time."
 **Context:** A natural extension to the context-switching metrics that provides highly actionable insights for teams.
 
-### 14. Interruption & Context Switch Impact Dashboard
+### 17. Interruption & Context Switch Impact Dashboard
 **Description:** Visualize how interruptions destroy context switching. We need to track the frequency of interruptions (e.g., Slack messages, ad-hoc calls) and correlate them with task completion times or velocity drops.
 **Context:** This requires tracking the "cost" of a context switch. As defined by the product strategy (MVP), we should start with a simple time-loss calculation before moving to complex models.
 
-### 15. [Agent Suggestion] Predictive Burnout Modeling
+### 18. [Agent Suggestion] Predictive Burnout Modeling
 **Description:** Use the `data_analyst` skill principles (scikit-learn pipelines, fixed random seeds) to build a machine learning model that predicts burnout risk based on interruption frequency and sustained high-workload periods.
 **Context:** Adds predictive value rather than just historical reporting.
 
-### 16. Demographic Analytics (Age, Industry, Gender)
+### 19. Demographic Analytics (Age, Industry, Gender)
 **Description:** Add demographic breakdowns to the metrics. Understand how different age ranges, industries, and genders interact with the product or experience different levels of productivity.
 **Context:** Ensure data pipelines aggregate this securely and anonymized. 
 **Done note (2026-07-21):** Implemented new UI components using Recharts for Age and Gender breakdowns. Data structure updated to support these dimensions, and the dashboard aesthetic upgraded to dark mode.
