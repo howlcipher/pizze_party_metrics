@@ -1,7 +1,29 @@
 import React from 'react';
-import { Pizza } from 'lucide-react';
+import { Pizza, Download } from 'lucide-react';
+import rawData from '../../data/pizza_metrics.json';
 
 const Header = () => {
+  const exportData = () => {
+    const payload = {
+      metadata: {
+        random_seed: 42,
+        source: "Pizza Party Metrics Dashboard",
+        exported_at: new Date().toISOString()
+      },
+      dataset: rawData
+    };
+    
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'pizza_metrics_export.json';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return (
     <header className="bg-gray-900 border-b border-gray-800 p-6 flex items-center justify-between shadow-md">
       <div className="flex items-center gap-4">
@@ -17,12 +39,21 @@ const Header = () => {
           </p>
         </div>
       </div>
-      <div className="hidden md:flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-full border border-gray-700">
-        <span className="flex h-3 w-3 relative">
-          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-          <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
-        </span>
-        <span className="text-sm font-bold text-green-400">Live Telemetry</span>
+      <div className="flex items-center gap-3">
+        <button
+          onClick={exportData}
+          className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white px-4 py-2 rounded-lg border border-gray-700 transition-colors text-sm font-medium"
+        >
+          <Download size={16} />
+          <span>Download Raw Data</span>
+        </button>
+        <div className="hidden md:flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-full border border-gray-700">
+          <span className="flex h-3 w-3 relative">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+          </span>
+          <span className="text-sm font-bold text-green-400">Live Telemetry</span>
+        </div>
       </div>
     </header>
   );
