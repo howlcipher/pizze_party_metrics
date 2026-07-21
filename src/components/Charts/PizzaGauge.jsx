@@ -31,11 +31,25 @@ const PizzaGauge = ({ data }) => {
 
   const COLORS = ['#16a34a', '#f0e6d2']; // Green (good performance) and dough color
 
+  // Determine environment optimization based on score
+  let optimizationLabel = "⚖️ Hybrid-Balanced";
+  let optimizationColor = "text-yellow-600";
+  if (avgIndex >= 22) {
+    optimizationLabel = "🏠 Remote-Optimized (High Focus)";
+    optimizationColor = "text-green-600";
+  } else if (avgIndex < 18 && avgIndex > 0) {
+    optimizationLabel = "🏢 Office-Optimized (High Sync/Meetings)";
+    optimizationColor = "text-red-600";
+  }
+
   const renderCustomNeedle = () => {
     return (
-      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-16">
-        <span className="text-5xl font-extrabold text-green-700 drop-shadow-md">{avgIndex.toFixed(1)}</span>
-        <span className="text-sm font-extrabold text-gray-500 uppercase">Avg Index</span>
+      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-20">
+        <span className="text-5xl font-extrabold text-gray-800 drop-shadow-md">{avgIndex.toFixed(1)}</span>
+        <span className="text-sm font-extrabold text-gray-500 uppercase mt-1">Avg Index</span>
+        <span className={`text-xs font-bold mt-2 px-3 py-1 bg-white border border-gray-200 rounded-full shadow-sm ${optimizationColor}`}>
+          {optimizationLabel}
+        </span>
       </div>
     );
   };
@@ -46,7 +60,7 @@ const PizzaGauge = ({ data }) => {
         The Pizza Party Index Gauge
       </h3>
       <p className="text-sm text-gray-600 mb-4 font-bold">
-        Collaboration Speed + Actual Productivity (Focus Hours). Higher = Better Performance.
+        Collaboration Speed + Focus Hours. Higher scores = Better suited for Remote work. Lower scores = Better suited for Onsite/Meetings.
       </p>
       
       <div className="flex-grow relative min-h-[200px]" role="img" aria-label={`Pizza Party Index Gauge. Current average index is ${avgIndex.toFixed(1)} out of 40.`}>
