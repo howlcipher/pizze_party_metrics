@@ -9,7 +9,7 @@ Pending bugs carry a diminishing-returns score (Score = Value × Decay ÷ Effort
 | # | Bug | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | GitHub Pages deployment displays a white blank page | Done (2026-07-21) | 8.0 | claude-3-7-sonnet-20250219 | gemini-2.5-pro | 8 (broken core functionality) * 1.0 (no decay) / 1 (likely simple path or build error) = 8.0 |
-| 2 | Favicon remains the Vite default | Pending | 4.0 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 4 (visual polish bug) * 1.0 / 1 (likely path resolution or cache issue) = 4.0 |
+| 2 | Favicon remains the Vite default | Done (2026-07-21) | 4.0 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 4 (visual polish bug) * 1.0 / 1 (likely path resolution or cache issue) = 4.0 |
 
 ## Details
 
@@ -21,3 +21,4 @@ Pending bugs carry a diminishing-returns score (Score = Value × Decay ÷ Effort
 ### 2. Favicon remains the Vite default
 **Description:** Despite adding `favicon.svg` to the `public` directory, the browser still displays the default Vite logo.
 **Context:** Need to check if `index.html` properly references `/favicon.svg`, if it's cached, or if there's a conflicting default `vite.svg` or `favicon.ico` in the directory.
+**Done note (2026-07-21):** Added `?v=2` cache-busting query parameter to the `favicon.svg` link in `index.html`. Generated a `favicon.ico` fallback using ImageMagick and added an `<link rel="alternate icon">` to ensure all browsers display the new pizza slice icon instead of falling back to cached or default icons.
