@@ -146,7 +146,7 @@ FALLBACK_VELOCITIES: dict[str, float] = {
 
 # Demographic axes
 AGE_GROUPS = ['18-24', '25-34', '35-44', '45-54', '55+']
-GENDERS    = ['Male', 'Female', 'Non-binary', 'Other']
+GENDERS    = ['Male', 'Female']
 
 
 # ---------------------------------------------------------------------------
