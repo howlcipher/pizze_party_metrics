@@ -26,7 +26,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 46 | Direct User Feedback: Update Async Collab Labels | Done (2026-07-21) | 6.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (User req) * 1.0 / 1 = 6.00 |
 | 48 | Direct User Feedback: Disable Tooltips on Mobile | Done (2026-07-21) | 6.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (User req) * 1.0 / 1 = 6.00 |
 | 47 | Direct User Feedback: Improve Top Bar Mobile UI | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (User req) * 1.0 / 2 = 3.50 |
-| 35 | [Agent Suggestion] UI/UX: Fix Export Race Condition & Accessibility Contrast | Open | 1.75 | - | gemini-3.1-pro-high | 7 (Compliance/Bugs) * 0.5 (decay) / 2 = 1.75 |
+| 35 | [Agent Suggestion] UI/UX: Fix Export Race Condition & Accessibility Contrast | Done (2026-07-21) | 1.75 | - | gemini-3.1-pro-high | 7 (Compliance/Bugs) * 0.5 (decay) / 2 = 1.75 |
 | 44 | [Agent Suggestion] Frontend: Move Aggregations to ETL | Open | 1.16 | - | gemini-3.1-pro-high | 7 (Performance) * 0.5 (decay) / 3 = 1.16 |
 | 33 | [Agent Suggestion] DevOps: Enforce QA Guardrails & Trivy Security Checks | Open | 1.00 | - | gemini-3.1-pro-high | 8 (High risk) * 0.25 (decay) / 2 = 1.00 |
 | 40 | [Agent Suggestion] Accessibility: Use Native HTML5 Dialog | Open | 0.66 | - | gemini-3.1-pro-high | 4 (Native accessibility) * 0.5 (decay) / 3 = 0.66 |
@@ -261,7 +261,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 35. [Agent Suggestion] UI/UX: Fix Export Race Condition & Accessibility Contrast
 **Description:** Delay `URL.revokeObjectURL` in `Header.jsx`, fix the screen-reader `role="img"` conflict in charts, and ensure green UI elements pass WCAG contrast checks.
 **Context:** Based on the Multi-Agent Taskforce audit using `ui_ux` skills to resolve critical interaction and compliance bugs.
-**Status:** Open
+**Done note (2026-07-21):** Applied setTimeout to URL.revokeObjectURL, updated role="img" to role="figure" in charts, and darkened green hex codes to ensure WCAG AA contrast compliance.
 
 ### 36. [Agent Suggestion] Data Pipeline: Asynchronous API Execution
 **Description:** Rewrite `GitHubClient` using `asyncio` and `aiohttp` to ensure non-blocking network calls with robust pool limits.
