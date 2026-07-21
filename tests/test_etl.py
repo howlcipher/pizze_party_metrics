@@ -358,6 +358,7 @@ class TestProcessData(unittest.TestCase):
             'industry', 'work_setup_category', 'work_setup',
             'focus_hours', 'meeting_overhead', 'pizza_party_index',
             'review_turnaround_hours', 'age_group', 'gender',
+            'interruption_frequency', 'sustained_high_workload', 'burnout_risk_score',
         }
         self.assertTrue(required.issubset(set(df.columns)))
 
@@ -402,6 +403,12 @@ class TestProcessData(unittest.TestCase):
         df1 = self._run()
         df2 = self._run()
         pd.testing.assert_frame_equal(df1, df2)
+
+    def test_burnout_risk_score_range(self):
+        """Burnout risk score must be between 0 and 1."""
+        df = self._run()
+        self.assertTrue((df['burnout_risk_score'] >= 0.0).all())
+        self.assertTrue((df['burnout_risk_score'] <= 1.0).all())
 
 
 if __name__ == '__main__':

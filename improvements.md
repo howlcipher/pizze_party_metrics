@@ -43,7 +43,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 20 | Interruption & Context Switch Impact Dashboard | ⚠️ below floor | 0.20 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High value) * 0.125 (decay) / 5 = 0.20 |
 | 13 | [Agent Suggestion] Documentation & Knowledge Transfer Health | ⚠️ below floor | 0.18 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Strong proxy for collab) * 0.125 (decay) / 5 = 0.18 |
 | 15 | [Agent Suggestion] Cross-Time-Zone Collaboration Index | ⚠️ below floor | 0.15 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Remote advantage) * 0.125 (decay) / 6 = 0.15 |
-| 22 | [Agent Suggestion] Predictive Burnout Modeling | Pending | 1.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Advanced ML) * 1.0 (new capability) / 6 = 1.00 |
+| 22 | [Agent Suggestion] Predictive Burnout Modeling | Done (2026-07-21) | 1.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Advanced ML) * 1.0 (new capability) / 6 = 1.00 |
 | 32 | Deep Collaboration Metric: Cross-Team Issue Resolution | ⚠️ below floor | 0.20 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core thesis) * 0.125 (decay) / 5 = 0.20 |
 | 18 | [Agent Suggestion] DevOps: Isolate ETL Data Pipeline and Ensure Idempotency | ⚠️ below floor | 0.44 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Decouples failure) * 0.25 (decay) / 4 = 0.44 |
 | 24 | Data Pipeline: Add IT, Software, and Other Relevant Industries | ⚠️ below floor | 0.38 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Better representation) * 0.125 (decay) / 2 = 0.38 |
@@ -177,6 +177,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 22. [Agent Suggestion] Predictive Burnout Modeling
 **Description:** Use the `data_analyst` skill principles (scikit-learn pipelines, fixed random seeds) to build a machine learning model that predicts burnout risk based on interruption frequency and sustained high-workload periods.
 **Context:** Adds predictive value rather than just historical reporting.
+**Done note (2026-07-21):** Implemented a machine learning pipeline using `scikit-learn` in `etl.py` with `StandardScaler` and `LogisticRegression` (`random_state=42`), generating `burnout_risk_score` from simulated `interruption_frequency` and `sustained_high_workload`.
 
 ### 23. Demographic Analytics (Age, Industry, Gender)
 **Description:** Add demographic breakdowns to the metrics. Understand how different age ranges, industries, and genders interact with the product or experience different levels of productivity.

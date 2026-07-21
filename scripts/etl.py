@@ -58,6 +58,9 @@ import requests
 import pandas as pd
 from datetime import datetime, timezone
 import numpy as np
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler
+from sklearn.linear_model import LogisticRegression
 
 # ---------------------------------------------------------------------------
 # Logging
@@ -665,6 +668,9 @@ def process_data(
                 # Pizza Party Index: performative-perk density per focus hour
                 pizza_party_index = (perks_factor / max(focus_hours, 1.0)) * 100.0
 
+                interruption_frequency = (meeting_overhead / base_focus_h) * 10.0 + np.random.poisson(2)
+                sustained_high_workload = max(0.0, (focus_hours + meeting_overhead - base_focus_h) / 5.0) + np.random.exponential(1.0)
+
                 results.append({
                     'industry':            industry_title,
                     'work_setup_category': cat,
@@ -679,9 +685,40 @@ def process_data(
                     'review_turnaround_hours': round(float(cat_turn),     2),
                     'age_group':         age,
                     'gender':            gender,
+                    'interruption_frequency': round(float(interruption_frequency), 2),
+                    'sustained_high_workload': round(float(sustained_high_workload), 2),
                 })
 
-    return pd.DataFrame(results)
+    df_results = pd.DataFrame(results)
+
+    # Add Burnout Risk Modeling using scikit-learn Pipeline
+    if not df_results.empty:
+        # Synthetic target for burnout risk based on features
+        target = ((df_results['interruption_frequency'] * 0.5 + 
+                   df_results['sustained_high_workload'] * 2.0 + 
+                   np.random.normal(0, 1, len(df_results))) > 5.0).astype(int)
+        
+        pipeline = Pipeline([
+            ('scaler', StandardScaler()),
+            ('classifier', LogisticRegression(random_state=42))
+        ])
+        
+        features = df_results[['interruption_frequency', 'sustained_high_workload']]
+        pipeline.fit(features, target)
+        
+        # Ensure predict_proba outputs probabilities and take the class 1 (burnout)
+        if hasattr(pipeline, "predict_proba"):
+            burnout_probs = pipeline.predict_proba(features)
+            if burnout_probs.shape[1] > 1:
+                df_results['burnout_risk_score'] = np.round(burnout_probs[:, 1], 4)
+            else:
+                df_results['burnout_risk_score'] = 0.0
+        else:
+            df_results['burnout_risk_score'] = pipeline.predict(features)
+    else:
+        df_results['burnout_risk_score'] = []
+
+    return df_results
 
 
 # ---------------------------------------------------------------------------
