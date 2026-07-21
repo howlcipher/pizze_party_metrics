@@ -23,6 +23,30 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 
 | # | Improvement | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
+| 1 | Demographic Analytics (Age, Industry, Gender) | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Good segmentation value) * 1.0 / 4 (Standard UI/Data implementation) = 1.75 |
+| 2 | [Agent Suggestion] Meeting vs. Maker Time Analysis | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 1.0 / 4 (Can piggyback on interruption data) = 1.75 |
+| 3 | Interruption & Context Switch Impact Dashboard | Pending | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High value for productivity insights) * 1.0 / 5 (Complex live data correlation) = 1.6 |
+| 4 | Live Data Ingestion API / Backend | Pending | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core requirement for live data) * 1.0 / 6 (Significant backend work) = 1.33 |
+| 5 | [Agent Suggestion] Predictive Burnout Modeling | Pending | 1.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Advanced ML feature) * 1.0 / 6 (Requires data_analyst pipeline & scikit-learn) = 1.0 |
 
 ## Details
 
+### 1. Demographic Analytics (Age, Industry, Gender)
+**Description:** Add demographic breakdowns to the metrics. Understand how different age ranges, industries, and genders interact with the product or experience different levels of productivity.
+**Context:** Ensure data pipelines aggregate this securely and anonymized. 
+
+### 2. [Agent Suggestion] Meeting vs. Maker Time Analysis
+**Description:** Analyze calendar data to show the ratio of uninterrupted "Maker Time" versus fragmented "Meeting Time."
+**Context:** A natural extension to the context-switching metrics that provides highly actionable insights for teams.
+
+### 3. Interruption & Context Switch Impact Dashboard
+**Description:** Visualize how interruptions destroy context switching. We need to track the frequency of interruptions (e.g., Slack messages, ad-hoc calls) and correlate them with task completion times or velocity drops.
+**Context:** This requires tracking the "cost" of a context switch. As defined by the product strategy (MVP), we should start with a simple time-loss calculation before moving to complex models.
+
+### 4. Live Data Ingestion API / Backend
+**Description:** Build a backend or integration layer (e.g., WebSockets or a polling API) to ingest real and live data for the dashboard, replacing any static or mocked data.
+**Context:** Required to fulfill the "real and live data" mandate.
+
+### 5. [Agent Suggestion] Predictive Burnout Modeling
+**Description:** Use the `data_analyst` skill principles (scikit-learn pipelines, fixed random seeds) to build a machine learning model that predicts burnout risk based on interruption frequency and sustained high-workload periods.
+**Context:** Adds predictive value rather than just historical reporting.
