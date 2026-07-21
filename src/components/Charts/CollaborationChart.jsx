@@ -67,32 +67,32 @@ const CollaborationChart = ({ data }) => {
             />
             <YAxis 
               yAxisId="left"
-              tick={{ fill: '#3b82f6', fontWeight: 600 }}
+              tick={{ fill: '#22c55e', fontWeight: 600 }}
               axisLine={{ stroke: '#d1d5db' }}
               tickLine={false}
-              label={{ value: 'Collab Score', angle: -90, position: 'insideLeft', fill: '#3b82f6', fontWeight: 'bold' }}
+              label={{ value: 'Collab Score', angle: -90, position: 'insideLeft', fill: '#22c55e', fontWeight: 'bold' }}
             />
             <YAxis 
               yAxisId="right"
               orientation="right"
-              tick={{ fill: '#f59e0b', fontWeight: 600 }}
+              tick={{ fill: '#ef4444', fontWeight: 600 }}
               axisLine={{ stroke: '#d1d5db' }}
               tickLine={false}
-              label={{ value: 'Wait Hours', angle: 90, position: 'insideRight', fill: '#f59e0b', fontWeight: 'bold' }}
+              label={{ value: 'Wait Hours', angle: 90, position: 'insideRight', fill: '#ef4444', fontWeight: 'bold' }}
             />
             <Tooltip 
               cursor={{ fill: '#e5e7eb', opacity: 0.3 }}
               contentStyle={{ 
                 backgroundColor: '#fff', 
-                border: '2px solid #3b82f6',
+                border: '2px solid #22c55e',
                 borderRadius: '8px',
                 color: '#333',
                 fontWeight: 'bold'
               }}
             />
             <Legend wrapperStyle={{ paddingTop: '10px', fontWeight: 'bold', color: '#333' }} />
-            <Bar yAxisId="left" dataKey="Online Collaboration Score" fill="#3b82f6" radius={[4, 4, 0, 0]} maxBarSize={60} />
-            <Bar yAxisId="right" dataKey="Review Turnaround (Hrs)" fill="#f59e0b" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar yAxisId="left" dataKey="Online Collaboration Score" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar yAxisId="right" dataKey="Review Turnaround (Hrs)" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60} />
           </BarChart>
         </ResponsiveContainer>
       </div>

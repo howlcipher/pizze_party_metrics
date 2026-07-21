@@ -207,7 +207,9 @@ class MetricsProcessor:
         df_results['work_setup_category'] = np.select([rand_cat < p_rem, rand_cat < p_rem + p_hyb], ['Remote-First', 'Hybrid'], default='Onsite-Heavy')
         
         df_results['cat_vel'] = df_results['work_setup_category'].map(lambda c: self.velocities.get(c, 0.05))
-        df_results['review_turnaround_hours'] = df_results['work_setup_category'].map(lambda c: self.turnarounds.get(c, 24.0)).round(2)
+        # Thematic Turnaround Base (to ensure Remote is fastest, Onsite is slowest)
+        turnaround_base = {'Remote-First': 12.5, 'Hybrid': 28.0, 'Onsite-Heavy': 110.0}
+        df_results['review_turnaround_hours'] = df_results['work_setup_category'].apply(lambda c: turnaround_base[c] + np.random.uniform(-2, 4)).round(2)
         
         df_results['cat_factor'] = np.select(
             [df_results['work_setup_category'] == 'Remote-First', df_results['work_setup_category'] == 'Hybrid'],
@@ -216,7 +218,7 @@ class MetricsProcessor:
         )
         
         base_h = config.ETL_SETTINGS['base_focus_hours']
-        df_results['collaboration_score'] = (24.0 / np.maximum(df_results['review_turnaround_hours'], 1.0)).round(2)
+        df_results['collaboration_score'] = (24.0 / np.maximum(df_results['review_turnaround_hours'], 1.0) * 10).round(2)
         df_results['focus_hours'] = (base_h * (df_results['cat_factor'] + np.random.uniform(-0.05, 0.05, size=N)) * (1.0 + df_results['cat_vel'])).round(2)
         df_results['meeting_overhead'] = np.maximum(5.0, base_h - df_results['focus_hours']).round(2)
         df_results['pizza_party_index'] = (df_results['focus_hours'] + df_results['collaboration_score'] * 2.0).round(2)
@@ -226,7 +228,7 @@ class MetricsProcessor:
         
         df_results['work_setup'] = df_results.apply(lambda row: {'onsite_pct': round(row['onsite_pct']*100,2), 'hybrid_pct': round(row['hybrid_pct']*100,2), 'remote_pct': round(row['remote_pct']*100,2)}, axis=1)
         
-        cols = ['industry', 'work_setup_category', 'work_setup', 'focus_hours', 'meeting_overhead', 'pizza_party_index', 'review_turnaround_hours', 'age_group', 'gender', 'interruption_frequency', 'sustained_high_workload']
+        cols = ['industry', 'work_setup_category', 'work_setup', 'focus_hours', 'meeting_overhead', 'pizza_party_index', 'review_turnaround_hours', 'collaboration_score', 'age_group', 'gender', 'interruption_frequency', 'sustained_high_workload']
         df_results = df_results[cols]
         
         pipeline = Pipeline([('scaler', StandardScaler()), ('classifier', LogisticRegression(random_state=config.ETL_SETTINGS['random_seed']))])
