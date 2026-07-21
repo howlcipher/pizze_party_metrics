@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Filter } from 'lucide-react';
 
 const PizzaBoxFilter = ({ filters, setFilters, data }) => {
-  const industries = [...new Set(data.map(d => d.industry))].sort();
-  const ageGroups = [...new Set(data.map(d => d.age_group))].sort();
-  const workSetups = [...new Set(data.map(d => d.work_setup_category))].sort();
+  const { industries, ageGroups, workSetups } = useMemo(() => ({
+    industries: [...new Set(data.map(d => d.industry))].sort(),
+    ageGroups: [...new Set(data.map(d => d.age_group))].sort(),
+    workSetups: [...new Set(data.map(d => d.work_setup_category))].sort(),
+  }), [data]);
 
   const handleFilterChange = (key, value) => {
     setFilters(prev => ({ ...prev, [key]: value }));

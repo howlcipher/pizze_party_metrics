@@ -23,7 +23,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 
 | # | Improvement | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| 1 | [Agent Suggestion] Frontend: Rendering Efficiency (useMemo) | Pending | 4.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Major performance fix) * 1.0 / 2 (Simple hook) = 4.0 |
+| 1 | [Agent Suggestion] Frontend: Rendering Efficiency (useMemo) | Done (2026-07-21) | 4.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Major performance fix) * 1.0 / 2 (Simple hook) = 4.0 |
 | 2 | [Agent Suggestion] DevOps: Enforce Strict Dependency Versioning and Enable Caching | Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Fixes flakey builds) * 1.0 / 2 (1-line action fix) = 3.5 |
 | 3 | [Agent Suggestion] UI/UX: Reset Filters CTA | Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Saves users from dead ends) * 1.0 / 2 (Simple button) = 3.5 |
 | 4 | [Agent Suggestion] Data Transparency: Raw Data Export & Reproducibility | Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Ensures reproducibility) * 1.0 / 2 (Simple CSV download link) = 3.50 |
@@ -52,6 +52,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 1. [Agent Suggestion] Frontend: Rendering Efficiency (useMemo)
 **Description:** Extract the unique options lists (industries, ageGroups, workSetups) into a `useMemo` hook in `PizzaBoxFilter.jsx` to prevent calculating a 100KB dataset on every re-render.
 **Context:** Based on the `frontend_engineering` skill. Currently recalculates `[...new Set(...)]` on every re-render, creating severe UI lag.
+**Done note (2026-07-21):** Extracted `industries`, `ageGroups`, and `workSetups` computations into a single `useMemo` hook dependent on `data` to prevent recalculation on every re-render.
 
 ### 2. [Agent Suggestion] DevOps: Enforce Strict Dependency Versioning and Enable Caching
 **Description:** Update `deploy.yml` to use `npm ci` exclusively and enable caching for both `setup-python` (`cache: 'pip'`) and `setup-node` (`cache: 'npm'`).
