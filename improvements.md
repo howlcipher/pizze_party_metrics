@@ -48,6 +48,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 10 | [Agent Suggestion] Data Pipeline: Vectorize Pandas Operations | ⚠️ below floor | 0.44 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Idiomatic & fast) * 0.25 (decay) / 4 = 0.44 |
 | 17 | Theme Options: Light, Dark, and Color-blind Modes | ⚠️ below floor | 0.44 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (high UX value) * 0.25 (decay) / 4 = 0.44 |
 | 21 | Stereotype Pizza Parlor Aesthetic Overhaul | ⚠️ below floor | 0.30 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Fun branding) * 0.25 (decay) / 5 = 0.30 |
+| 26 | UI/UX: Metric Tooltips & Explanations | Pending | 0.58 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Clearer metrics) * 0.25 (decay) / 3 = 0.58 |
+| 27 | UI/UX: Mobile Responsiveness | Pending | 0.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Usability) * 0.25 (decay) / 4 = 0.50 |
 
 ## Details
 
@@ -167,3 +169,10 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 **Context:** Further enriches the generated demographic segments.
 **Status:** Closed (2026-07-21: Merged into #24)
 
+### 26. UI/UX: Metric Tooltips & Explanations
+**Description:** Explain the metrics better to the user by adding tooltips or an explanatory modal/section. Users should understand exactly what each chart represents without needing to guess.
+**Context:** Improves the overall user experience and ensures the data transparency goals are actually understood by end users.
+
+### 27. UI/UX: Mobile Responsiveness
+**Description:** Make sure the dashboard looks good and functions well on mobile devices. Ensure charts resize correctly, navigation is accessible, and the layout doesn't break on smaller screens.
+**Context:** A core requirement for modern web applications. Currently, the dashboard may only be optimized for desktop displays.
