@@ -27,7 +27,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 2 | [Agent Suggestion] DevOps: Enforce Strict Dependency Versioning and Enable Caching | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Fixes flakey builds) * 1.0 / 2 = 3.50 |
 | 4 | [Agent Suggestion] Data Transparency: Raw Data Export & Reproducibility | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Ensures reproducibility) * 1.0 / 2 = 3.50 |
 | 23 | Demographic Analytics (Age, Industry, Gender) | Done (2026-07-21) | - | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | Shipped! |
-| 3 | [Agent Suggestion] UI/UX: Reset Filters CTA | Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Saves users from dead ends) * 1.0 / 2 = 3.50 |
+| 3 | [Agent Suggestion] UI/UX: Reset Filters CTA | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Saves users from dead ends) * 1.0 / 2 = 3.50 |
 | 5 | [Agent Suggestion] Data Pipeline: Add Module-Level Documentation & Decouple Configuration | Pending | 3.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Good code hygiene) * 1.0 / 2 = 3.00 |
 | 6 | [Agent Suggestion] Accessibility: Form Control Association & ARIA charts | Pending | 2.66 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Compliance issue) * 1.0 / 3 = 2.66 |
 | 7 | [Agent Suggestion] Data Pipeline: Defensive Network Requests & Error Handling | Pending | 2.66 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Prevents crashes) * 1.0 / 3 = 2.66 |
@@ -62,6 +62,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 3. [Agent Suggestion] UI/UX: Reset Filters CTA
 **Description:** Add a "Reset Filters" CTA button when a combination of filters yields no results ("No slices left!").
 **Context:** Based on the `ui_ux` skill to reduce friction and cognitive load for the user trying to exit a dead-end state.
+**Done note (2026-07-21):** Implemented a "Reset Filters" CTA that appears on empty states and instantly clears all filter selections when clicked.
 
 ### 4. [Agent Suggestion] Data Transparency: Raw Data Export & Reproducibility
 **Description:** Allow users to export the exact immutable datasets used by the dashboard (CSV/JSON format), alongside the random seed configurations, to ensure full reproducibility of all claims.

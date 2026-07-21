@@ -53,7 +53,13 @@ const Dashboard = () => {
 
         {filteredData.length === 0 && (
           <div className="bg-red-900/30 border-2 border-red-500/50 p-6 rounded-xl text-center shadow-sm">
-            <p className="text-red-400 font-bold text-lg">No slices left! Try adjusting your filters.</p>
+            <p className="text-red-400 font-bold text-lg mb-4">No slices left! Try adjusting your filters.</p>
+            <button 
+              onClick={() => setFilters({ industry: '', age_group: '', work_setup: '' })}
+              className="px-6 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold transition-colors cursor-pointer"
+            >
+              Reset Filters
+            </button>
           </div>
         )}
       </main>
