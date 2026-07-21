@@ -27,7 +27,7 @@ const Header = ({ rawData = [] }) => {
   };
 
   return (
-    <header className="bg-white border-b-8 border-red-600 p-6 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.15)] relative overflow-hidden">
+    <header className="bg-white border-b-8 border-red-600 p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] relative overflow-hidden">
       {/* Decorative green top border */}
       <div className="absolute top-0 left-0 w-full h-2 bg-green-600"></div>
       
@@ -35,16 +35,16 @@ const Header = ({ rawData = [] }) => {
         <div className="bg-green-600 p-3 rounded-full text-white shadow-lg border-2 border-white transform -rotate-12">
           <Pizza size={36} fill="#ffcc00" />
         </div>
-        <div>
-          <h1 className="text-4xl font-extrabold text-red-700 tracking-tight font-serif drop-shadow-sm">
+        <div className="text-center md:text-left">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-red-700 tracking-tight font-serif drop-shadow-sm">
             Luigi's Pizza Party Metrics
           </h1>
-          <p className="text-green-800 font-bold mt-1 text-sm uppercase tracking-wider">
+          <p className="text-green-800 font-bold mt-1 text-xs md:text-sm uppercase tracking-wider">
             Authentic Telemetry, Fresh Outta The Oven! 🤌
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-3 relative z-10">
+      <div className="flex flex-wrap justify-center md:justify-end items-center gap-3 relative z-10">
         <button
           onClick={() => setIsModalOpen(true)}
           className="flex items-center gap-2 bg-white hover:bg-gray-100 text-red-700 hover:text-red-800 px-4 py-2 rounded-full border-2 border-red-200 transition-colors text-sm font-bold shadow-sm"
