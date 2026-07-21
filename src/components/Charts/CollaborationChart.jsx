@@ -46,7 +46,7 @@ const CollaborationChart = ({ data }) => {
         Async Collaboration Velocity
       </h3>
       <p className="text-sm text-gray-600 font-bold mb-4">
-        Online collaboration efficiency (PR merges, code reviews) vs. time blocked waiting.
+        Online collaboration efficiency vs. time blocked waiting.
       </p>
       
       <div className="flex-grow min-h-[300px]" role="img" aria-label="Bar chart comparing Collaboration Scores across work setups.">

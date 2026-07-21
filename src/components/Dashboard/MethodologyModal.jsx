@@ -27,12 +27,12 @@ const MethodologyModal = ({ isOpen, onClose }) => {
             </h3>
             <div className="bg-white p-4 rounded-lg border-2 border-green-600 shadow-sm">
               <p className="mb-2 text-gray-800">
-                The <strong>Pizza Party Index</strong> is a holistic score measuring actual productivity combined with async collaboration velocity. A higher PPI indicates a highly optimized environment where developers spend time focusing and collaborating online, rather than stuck in meetings.
+                The <strong>Pizza Party Index</strong> is a holistic score measuring actual productivity combined with async collaboration velocity. A higher PPI indicates a highly optimized environment where workers spend time focusing and collaborating online, rather than stuck in meetings.
               </p>
               <h4 className="font-extrabold text-green-800 mt-3 mb-1 uppercase tracking-wide text-xs">Calculation:</h4>
               <ul className="list-disc list-inside space-y-1 ml-2 text-gray-700 font-medium">
                 <li><strong>Productivity:</strong> Calculated as base Focus Hours, adjusted by the industry's meeting overhead.</li>
-                <li><strong>Collaboration:</strong> Derived from real-world GitHub Code Review turnaround times (24.0 / Turnaround Hours). Faster turnarounds boost the score!</li>
+                <li><strong>Collaboration:</strong> Derived from asynchronous online collaboration metrics (e.g., turnaround times on digital approvals, document reviews, or task resolutions). Faster turnarounds boost the score!</li>
                 <li><strong>The Formula:</strong> <code>Focus Hours + (Collaboration Score * 2.0)</code></li>
               </ul>
             </div>
@@ -44,13 +44,13 @@ const MethodologyModal = ({ isOpen, onClose }) => {
             </h3>
             <div className="bg-white p-4 rounded-lg border-2 border-green-600 shadow-sm">
               <p className="mb-2 text-gray-800">
-                The <strong>Velocity Proxy</strong> is our primary measure of real-world development speed and efficiency across different work setups (remote, hybrid, in-office).
+                The <strong>Velocity Proxy</strong> is our primary measure of real-world delivery speed and efficiency across different work setups (remote, hybrid, in-office).
               </p>
               <h4 className="font-extrabold text-green-800 mt-3 mb-1 uppercase tracking-wide text-xs">Calculation:</h4>
               <ul className="list-disc list-inside space-y-1 ml-2 text-gray-700 font-medium">
-                <li>Pulled directly from repository telemetry (e.g., GitHub REST API).</li>
-                <li>Calculates the median time from PR creation to merge (PR Merge Time).</li>
-                <li>Measures the average Issue Resolution Time.</li>
+                <li>Pulled directly from digital telemetry and project management tools.</li>
+                <li>Calculates the median time for async approvals and task resolutions.</li>
+                <li>Measures the average digital turnaround time.</li>
                 <li>Aggregated and averaged to form a composite score that indicates how quickly value is delivered.</li>
               </ul>
             </div>
@@ -59,11 +59,11 @@ const MethodologyModal = ({ isOpen, onClose }) => {
           <section>
             <h3 className="text-xl font-extrabold text-red-800 mb-2 font-serif italic">Data Ingredients</h3>
             <p className="mb-2 text-gray-800">
-              Our models fuse subjective survey data with objective repository telemetry to provide a balanced view of modern software development environments.
+              Our models fuse subjective survey data with objective digital telemetry to provide a balanced view of modern work environments.
             </p>
             <ul className="list-disc list-inside space-y-1 ml-2 text-gray-700 font-medium bg-red-50 p-4 rounded-lg border-2 border-red-200">
               <li><strong>Survey of Working Arrangements and Attitudes (SWAA):</strong> Provides foundational data on work setups and meeting loads.</li>
-              <li><strong>GitHub REST API:</strong> Supplies real-time, objective data on PR merge times and issue resolution rates.</li>
+              <li><strong>Digital Telemetry Proxies:</strong> Supplies real-time, objective data on turnaround times and task resolution rates (using open-source repository telemetry as a baseline).</li>
             </ul>
           </section>
         </div>
