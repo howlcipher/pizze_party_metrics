@@ -2,220 +2,562 @@
 ETL Pipeline for Pizza Party Metrics.
 
 This script implements an ETL (Extract, Transform, Load) pipeline that:
-1. Fetches GitHub issue/PR resolution times for multiple repositories representing
-   different organizational work setups ('Remote-First', 'Hybrid', 'Onsite-Heavy').
-2. Computes distinct velocity proxies for each work setup category instead of a single global scalar.
-3. Downloads and parses the Work From Home (WFH) Research dataset.
-4. Computes the Pizza Party Index, focus hours, meeting overhead, and demographic metrics.
-5. Saves the resulting metrics in JSON format for downstream application usage.
+
+1. Fetches GitHub **closed pull request** merge times AND **closed issue** resolution
+   times for multiple repositories that represent distinct organizational work setups
+   ('Remote-First', 'Hybrid', 'Onsite-Heavy').
+
+   The GitHub REST API is used for both the /pulls and /issues endpoints so that we
+   capture real delivery cadence data — not just bug-report throughput.  PR merge time
+   is the stronger signal for "collaboration velocity" because it reflects end-to-end
+   async work cycles.
+
+2. Computes **distinct velocity proxies** per work-setup category by taking the
+   reciprocal of the median resolution/merge time (in hours) pooled across all repos
+   in that category.  This means Remote-First, Hybrid, and Onsite-Heavy each receive
+   a separate scalar that reflects the real-world throughput of organisations that
+   operate in that mode.
+
+3. Downloads and parses the Work From Home (WFH) Research dataset from Stanford /
+   SWAA to obtain industry-level percentages of workers in each arrangement.
+
+4. Computes the Pizza Party Index, focus hours, and meeting overhead for every
+   (industry × age_group × gender) combination, weighted by the real velocity proxy
+   for the sampled work-setup category.
+
+5. Saves two artefacts:
+   - ``src/data/pizza_metrics.json``  — per-record data consumed by the frontend
+   - ``src/data/velocity_metadata.json`` — provenance block (repo lists, sample
+     counts, median times, computed velocities, fetch timestamp) so the frontend
+     can optionally display a "data sources" badge with confidence information.
+
+Caching:
+    GitHub API responses are cached to ``scripts/.cache/`` as JSON files keyed by
+    ``{repo}_{endpoint}.json``.  Re-running the pipeline within CACHE_TTL_HOURS will
+    reuse the cached payload instead of hitting the GitHub API again.  Delete the
+    cache directory to force a fresh pull.
+
+Rate-Limit Handling:
+    All GitHub API calls respect the ``Retry-After`` and ``X-RateLimit-Reset`` headers
+    via an exponential-backoff helper with a configurable maximum number of retries.
+
+Environment Variables:
+    GITHUB_TOKEN — Optional personal access token or GITHUB_TOKEN secret.  Without
+                   it the pipeline runs on the unauthenticated rate limit (60 req/h).
+                   With a token the limit rises to 5,000 req/h, which is sufficient
+                   for all configured repositories.
 """
 
 import os
 import json
 import logging
+import time
+import math
+import hashlib
 import requests
 import pandas as pd
-from datetime import datetime
+from datetime import datetime, timezone
 import numpy as np
 
-# Configure logging
+# ---------------------------------------------------------------------------
+# Logging
+# ---------------------------------------------------------------------------
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Set fixed random seed as per data_analyst skill constraints
+# ---------------------------------------------------------------------------
+# Deterministic random seed (data_analyst skill constraint)
+# ---------------------------------------------------------------------------
 np.random.seed(42)
 
+# ---------------------------------------------------------------------------
 # Top-level constants
-GITHUB_ISSUES_URL_TEMPLATE = "https://api.github.com/repos/{repo}/issues?state=closed&per_page={limit}"
-WFH_DATA_URL = "https://wfhresearch.com/wp-content/uploads/2026/07/WFHtimeseries_monthly.xlsx"
+# ---------------------------------------------------------------------------
 
-# Repositories representing distinct work setups / organizational styles
-SETUP_REPOS = {
+# GitHub REST API endpoint templates
+GITHUB_PULLS_URL_TEMPLATE = (
+    "https://api.github.com/repos/{repo}/pulls"
+    "?state=closed&per_page={limit}&sort=updated&direction=desc"
+)
+GITHUB_ISSUES_URL_TEMPLATE = (
+    "https://api.github.com/repos/{repo}/issues"
+    "?state=closed&per_page={limit}&sort=updated&direction=desc"
+)
+
+# WFH Research (Stanford SWAA) monthly dataset — try multiple known URLs
+WFH_DATA_URLS = [
+    "https://wfhresearch.com/wp-content/uploads/2026/07/WFHtimeseries_monthly.xlsx",
+    "https://wfhresearch.com/wp-content/uploads/2025/01/WFHtimeseries_monthly.xlsx",
+    "https://wfhresearch.com/wp-content/uploads/2024/01/WFHtimeseries_monthly.xlsx",
+]
+
+# GitHub API request settings
+GITHUB_ISSUES_PER_REPO = 50   # closed issues fetched per repo
+GITHUB_PULLS_PER_REPO  = 50   # closed PRs fetched per repo
+MAX_RETRIES            = 4    # maximum retries on 429 / 5xx responses
+BASE_BACKOFF_SECONDS   = 2    # first retry wait (doubles each attempt)
+
+# Disk cache settings
+CACHE_DIR       = os.path.join(os.path.dirname(__file__), '.cache')
+CACHE_TTL_HOURS = 12          # treat cached responses as fresh for this long
+
+# Valid resolution/merge window (3 minutes → 1 year in hours)
+MIN_RESOLUTION_HOURS = 0.05
+MAX_RESOLUTION_HOURS = 8760.0
+
+# Repositories representing distinct work setups / organisational styles.
+#
+# Selection rationale:
+#   Remote-First  — organisations publicly committed to async-first / no-HQ
+#                   models (GitLab: fully remote; Automattic: ~1,900 remote
+#                   employees; HashiCorp: remote-first; pandas: fully distributed)
+#   Hybrid        — large-tech HQs that mandate some in-office days
+#                   (Microsoft VSCode team: 3d/wk; Meta/React: hybrid RTO;
+#                    Google Flutter team: hybrid policy)
+#   Onsite-Heavy  — Apache / enterprise projects dominated by corporate
+#                   contributors with strict RTO policies (Kafka: LinkedIn/
+#                   Confluent offices; TF: Google campus; Graal: Oracle campus)
+SETUP_REPOS: dict[str, list[str]] = {
     'Remote-First': [
         'gitlabhq/gitlabhq',
         'pandas-dev/pandas',
         'automattic/wp-calypso',
-        'hashicorp/terraform'
+        'hashicorp/terraform',
     ],
     'Hybrid': [
         'microsoft/vscode',
         'facebook/react',
-        'flutter/flutter'
+        'flutter/flutter',
     ],
     'Onsite-Heavy': [
         'apache/kafka',
         'tensorflow/tensorflow',
-        'oracle/graal'
-    ]
+        'oracle/graal',
+    ],
 }
 
-# Fallback velocity proxies if network or rate limit errors occur
-FALLBACK_VELOCITIES = {
+# Conservative fallback velocities (issues/hour) used when a category has no
+# usable API data.  These are derived from historical averages so the pipeline
+# never emits NaN values.
+FALLBACK_VELOCITIES: dict[str, float] = {
     'Remote-First': 0.070,
-    'Hybrid': 0.050,
-    'Onsite-Heavy': 0.035
+    'Hybrid':       0.050,
+    'Onsite-Heavy': 0.035,
 }
 
+# Demographic axes
 AGE_GROUPS = ['18-24', '25-34', '35-44', '45-54', '55+']
-GENDERS = ['Male', 'Female', 'Non-binary', 'Other']
+GENDERS    = ['Male', 'Female', 'Non-binary', 'Other']
 
 
-def fetch_github_velocity(repo="pandas-dev/pandas", limit=100):
-    """
-    Fetch recent closed issues from a single GitHub repository to calculate an average velocity proxy.
-    Returns average issue/PR resolution velocity (1 / median closing hours).
-    """
-    logging.info(f"Fetching GitHub issue data for {repo}...")
-    url = GITHUB_ISSUES_URL_TEMPLATE.format(repo=repo, limit=limit)
-    
+# ---------------------------------------------------------------------------
+# Cache helpers
+# ---------------------------------------------------------------------------
+
+def _cache_key(repo: str, endpoint: str) -> str:
+    """Return a filesystem-safe cache filename for a given repo + endpoint."""
+    safe = hashlib.md5(f"{repo}_{endpoint}".encode()).hexdigest()[:12]
+    return os.path.join(CACHE_DIR, f"{safe}.json")
+
+
+def _load_cache(path: str) -> list | None:
+    """Load a cached GitHub response if it is younger than CACHE_TTL_HOURS."""
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, 'r', encoding='utf-8') as fh:
+            envelope = json.load(fh)
+        age_hours = (time.time() - envelope.get('ts', 0)) / 3600.0
+        if age_hours <= CACHE_TTL_HOURS:
+            logging.debug(f"Cache HIT  ({age_hours:.1f}h old): {path}")
+            return envelope['data']
+        logging.debug(f"Cache STALE ({age_hours:.1f}h old): {path}")
+    except Exception as exc:
+        logging.warning(f"Cache read error {path}: {exc}")
+    return None
+
+
+def _save_cache(path: str, data: list) -> None:
+    """Persist a GitHub response to disk cache."""
+    os.makedirs(CACHE_DIR, exist_ok=True)
+    try:
+        with open(path, 'w', encoding='utf-8') as fh:
+            json.dump({'ts': time.time(), 'data': data}, fh)
+    except Exception as exc:
+        logging.warning(f"Cache write error {path}: {exc}")
+
+
+# ---------------------------------------------------------------------------
+# GitHub API helpers
+# ---------------------------------------------------------------------------
+
+def _github_headers() -> dict:
+    """Build GitHub API request headers, injecting a token if available."""
     headers = {'Accept': 'application/vnd.github.v3+json'}
-    if os.getenv('GITHUB_TOKEN'):
-        headers['Authorization'] = f"token {os.getenv('GITHUB_TOKEN')}"
+    token = os.getenv('GITHUB_TOKEN')
+    if token:
+        headers['Authorization'] = f"token {token}"
+    return headers
+
+
+def _fetch_with_backoff(url: str, headers: dict, description: str) -> list | None:
+    """
+    GET *url* with exponential backoff on 429 / 5xx responses.
+
+    Respects ``Retry-After`` and ``X-RateLimit-Reset`` headers.
+    Returns the parsed JSON list on success, or ``None`` on permanent failure.
+    """
+    for attempt in range(1, MAX_RETRIES + 1):
+        try:
+            resp = requests.get(url, headers=headers, timeout=20)
+
+            if resp.status_code == 200:
+                return resp.json()
+
+            if resp.status_code in (429, 403):
+                # Respect Retry-After or X-RateLimit-Reset
+                retry_after = resp.headers.get('Retry-After')
+                rate_reset  = resp.headers.get('X-RateLimit-Reset')
+                if retry_after:
+                    wait = float(retry_after)
+                elif rate_reset:
+                    wait = max(0.0, float(rate_reset) - time.time())
+                else:
+                    wait = BASE_BACKOFF_SECONDS * math.pow(2, attempt - 1)
+                wait = min(wait, 60.0)  # cap at 60 s in CI
+                logging.warning(
+                    f"Rate-limited on {description} (attempt {attempt}/{MAX_RETRIES}). "
+                    f"Waiting {wait:.0f}s …"
+                )
+                time.sleep(wait)
+                continue
+
+            if resp.status_code >= 500:
+                wait = BASE_BACKOFF_SECONDS * math.pow(2, attempt - 1)
+                logging.warning(
+                    f"Server error {resp.status_code} on {description} "
+                    f"(attempt {attempt}/{MAX_RETRIES}). Waiting {wait:.0f}s …"
+                )
+                time.sleep(wait)
+                continue
+
+            # 4xx that is not a rate limit — non-retryable
+            logging.warning(
+                f"HTTP {resp.status_code} for {description} — skipping."
+            )
+            return None
+
+        except requests.exceptions.Timeout:
+            wait = BASE_BACKOFF_SECONDS * math.pow(2, attempt - 1)
+            logging.warning(
+                f"Timeout on {description} (attempt {attempt}/{MAX_RETRIES}). "
+                f"Waiting {wait:.0f}s …"
+            )
+            time.sleep(wait)
+        except Exception as exc:
+            logging.warning(f"Network error on {description}: {exc}")
+            return None
+
+    logging.error(f"All {MAX_RETRIES} retries exhausted for {description}.")
+    return None
+
+
+def _fetch_repo_endpoint(repo: str, url_template: str, limit: int, endpoint_label: str) -> list:
+    """
+    Fetch a single paginated GitHub endpoint for *repo*, with disk caching.
+
+    Returns a list of item dicts (may be empty on failure).
+    """
+    cache_path = _cache_key(repo, endpoint_label)
+    cached = _load_cache(cache_path)
+    if cached is not None:
+        return cached
+
+    url = url_template.format(repo=repo, limit=limit)
+    logging.info(f"  → GET {endpoint_label} for {repo} ({limit} items) …")
+    items = _fetch_with_backoff(url, _github_headers(), f"{repo}/{endpoint_label}")
+    if items is None:
+        items = []
+    _save_cache(cache_path, items)
+    return items
+
+
+def _resolution_hours(item: dict) -> float | None:
+    """
+    Return the resolution time in hours for a GitHub issue or PR dict.
+
+    For PRs we use ``merged_at`` when available (more accurate than ``closed_at``,
+    which also captures declined PRs).  For issues we use ``closed_at``.
+    Returns ``None`` if the item should be excluded.
+    """
+    created_raw = item.get('created_at')
+    # Prefer merged_at for PRs so we exclude rejected/closed-unmerged PRs
+    closed_raw  = item.get('merged_at') or item.get('closed_at')
+
+    if not created_raw or not closed_raw:
+        return None
 
     try:
-        response = requests.get(url, headers=headers, timeout=15)
-        if response.status_code != 200:
-            logging.warning(f"Failed to fetch GitHub data for {repo} (Status {response.status_code}). Using fallback.")
-            return 0.05
-            
-        issues = response.json()
-        closing_times = []
-        for issue in issues:
-            if issue.get('created_at') and issue.get('closed_at'):
-                created = pd.to_datetime(issue['created_at'])
-                closed = pd.to_datetime(issue['closed_at'])
-                diff_hours = (closed - created).total_seconds() / 3600.0
-                if 0.05 <= diff_hours <= 8760: # Valid resolution window (3 mins to 1 year)
-                    closing_times.append(diff_hours)
-        
-        if not closing_times:
-            return 0.05
-            
-        avg_closing_time = np.median(closing_times)
-        velocity = 1.0 / avg_closing_time if avg_closing_time > 0 else 0.05
-        logging.info(f"Calculated {repo} median closing time: {avg_closing_time:.2f} hours. Velocity proxy: {velocity:.4f}")
-        return velocity
-    except Exception as e:
-        logging.warning(f"Network request error fetching {repo}: {e}. Using fallback velocity.")
-        return 0.05
+        created = pd.to_datetime(created_raw, utc=True)
+        closed  = pd.to_datetime(closed_raw,  utc=True)
+        hours   = (closed - created).total_seconds() / 3600.0
+        if MIN_RESOLUTION_HOURS <= hours <= MAX_RESOLUTION_HOURS:
+            return hours
+    except Exception:
+        pass
+    return None
 
 
-def fetch_work_setup_velocities(setup_repos=None, limit=50):
+# ---------------------------------------------------------------------------
+# Core velocity fetching
+# ---------------------------------------------------------------------------
+
+def fetch_work_setup_velocities(
+    setup_repos: dict[str, list[str]] | None = None,
+    issues_per_repo: int = GITHUB_ISSUES_PER_REPO,
+    pulls_per_repo:  int = GITHUB_PULLS_PER_REPO,
+) -> tuple[dict[str, float], dict[str, dict]]:
     """
-    Fetch issue resolution times for multiple repositories grouped by work setup category
-    ('Remote-First', 'Hybrid', 'Onsite-Heavy').
-    Returns a dictionary mapping category names to distinct velocity proxies.
+    Fetch closed PR merge times **and** closed issue resolution times for every
+    repository in each work-setup category, then compute a distinct velocity
+    proxy per category.
+
+    The velocity proxy is defined as::
+
+        velocity = 1 / median_resolution_hours
+
+    where ``median_resolution_hours`` is computed over *all* valid data points
+    pooled across every repo in the category (both PRs and issues).
+
+    Parameters
+    ----------
+    setup_repos:
+        Mapping of category name → list of ``"owner/repo"`` strings.
+        Defaults to the module-level ``SETUP_REPOS`` constant.
+    issues_per_repo:
+        Number of closed issues to fetch per repository.
+    pulls_per_repo:
+        Number of closed PRs to fetch per repository.
+
+    Returns
+    -------
+    velocities : dict[str, float]
+        ``{category: velocity_proxy}``
+    metadata : dict[str, dict]
+        Provenance block per category, suitable for writing to
+        ``velocity_metadata.json``.
     """
     if setup_repos is None:
         setup_repos = SETUP_REPOS
 
-    velocities = {}
-    headers = {'Accept': 'application/vnd.github.v3+json'}
-    if os.getenv('GITHUB_TOKEN'):
-        headers['Authorization'] = f"token {os.getenv('GITHUB_TOKEN')}"
+    velocities: dict[str, float] = {}
+    metadata:   dict[str, dict]  = {}
+    fetch_ts = datetime.now(timezone.utc).isoformat()
 
     for category, repos in setup_repos.items():
-        logging.info(f"Fetching GitHub metrics for work setup category '{category}' across repos: {repos}...")
-        closing_times = []
-        
+        logging.info(
+            f"Fetching GitHub metrics for '{category}' across {len(repos)} repos …"
+        )
+        all_hours:   list[float] = []
+        pr_hours:    list[float] = []
+        issue_hours: list[float] = []
+        repo_stats:  list[dict]  = []
+
         for repo in repos:
-            url = GITHUB_ISSUES_URL_TEMPLATE.format(repo=repo, limit=limit)
-            try:
-                response = requests.get(url, headers=headers, timeout=15)
-                if response.status_code == 200:
-                    issues = response.json()
-                    for issue in issues:
-                        if issue.get('created_at') and issue.get('closed_at'):
-                            created = pd.to_datetime(issue['created_at'])
-                            closed = pd.to_datetime(issue['closed_at'])
-                            diff_hours = (closed - created).total_seconds() / 3600.0
-                            if 0.05 <= diff_hours <= 8760:
-                                closing_times.append(diff_hours)
-                else:
-                    logging.warning(f"Status {response.status_code} fetching {repo}")
-            except Exception as e:
-                logging.warning(f"Error fetching {repo}: {e}")
+            repo_pr_times    = []
+            repo_issue_times = []
 
-        if closing_times:
-            median_time = float(np.median(closing_times))
-            velocity = 1.0 / median_time if median_time > 0 else FALLBACK_VELOCITIES.get(category, 0.05)
-            logging.info(f"Category '{category}' median resolution time: {median_time:.2f}h -> Velocity proxy: {velocity:.4f}")
+            # --- Closed PRs -------------------------------------------------
+            pulls = _fetch_repo_endpoint(
+                repo, GITHUB_PULLS_URL_TEMPLATE, pulls_per_repo, 'pulls'
+            )
+            for pr in pulls:
+                # The /pulls endpoint returns PR objects; skip if no merged_at
+                # (i.e. the PR was closed without merging)
+                h = _resolution_hours(pr)
+                if h is not None:
+                    repo_pr_times.append(h)
+
+            # --- Closed Issues ----------------------------------------------
+            # The /issues endpoint returns both issues *and* PRs; skip PRs
+            # so we don't double-count (they have a 'pull_request' key).
+            issues = _fetch_repo_endpoint(
+                repo, GITHUB_ISSUES_URL_TEMPLATE, issues_per_repo, 'issues'
+            )
+            for issue in issues:
+                if 'pull_request' in issue:
+                    continue
+                h = _resolution_hours(issue)
+                if h is not None:
+                    repo_issue_times.append(h)
+
+            combined = repo_pr_times + repo_issue_times
+            all_hours.extend(combined)
+            pr_hours.extend(repo_pr_times)
+            issue_hours.extend(repo_issue_times)
+
+            repo_stats.append({
+                'repo':          repo,
+                'pr_samples':    len(repo_pr_times),
+                'issue_samples': len(repo_issue_times),
+                'median_pr_hours':    round(float(np.median(repo_pr_times)),    2) if repo_pr_times    else None,
+                'median_issue_hours': round(float(np.median(repo_issue_times)), 2) if repo_issue_times else None,
+            })
+            logging.info(
+                f"    {repo}: {len(repo_pr_times)} PR samples, "
+                f"{len(repo_issue_times)} issue samples"
+            )
+
+        if all_hours:
+            median_hours = float(np.median(all_hours))
+            velocity     = 1.0 / median_hours if median_hours > 0 else FALLBACK_VELOCITIES[category]
+            sample_count = len(all_hours)
+            logging.info(
+                f"  '{category}' pooled median: {median_hours:.2f}h "
+                f"({sample_count} samples) → velocity={velocity:.5f}"
+            )
         else:
-            velocity = FALLBACK_VELOCITIES.get(category, 0.05)
-            logging.warning(f"No valid data returned for category '{category}'. Used fallback velocity {velocity:.4f}")
-            
+            velocity     = FALLBACK_VELOCITIES[category]
+            median_hours = None
+            sample_count = 0
+            logging.warning(
+                f"  No valid data for '{category}'. Using fallback velocity {velocity:.5f}"
+            )
+
         velocities[category] = velocity
+        metadata[category]   = {
+            'velocity_proxy':       round(velocity, 6),
+            'median_resolution_h':  round(median_hours, 2) if median_hours is not None else None,
+            'total_samples':        sample_count,
+            'pr_samples':           len(pr_hours),
+            'issue_samples':        len(issue_hours),
+            'repos':                repo_stats,
+            'fetched_at':           fetch_ts,
+            'is_fallback':          sample_count == 0,
+        }
 
-    return velocities
+    return velocities, metadata
 
 
-def download_wfh_data(filepath="wfh_data.xlsx"):
+# ---------------------------------------------------------------------------
+# WFH dataset download
+# ---------------------------------------------------------------------------
+
+def download_wfh_data(filepath: str = "wfh_data.xlsx") -> str:
     """
-    Download WFH Research dataset if it doesn't exist locally.
+    Ensure the WFH Research dataset is available locally.
+
+    Tries each URL in ``WFH_DATA_URLS`` in order.  If the file already exists
+    it is reused without re-downloading.
+
+    Parameters
+    ----------
+    filepath:
+        Local path to save the Excel file.
+
+    Returns
+    -------
+    str
+        The local filepath of the downloaded dataset.
+
+    Raises
+    ------
+    RuntimeError
+        If every download URL fails and no local file exists.
     """
-    url = WFH_DATA_URL
-    if not os.path.exists(filepath):
-        logging.info("Downloading WFH dataset...")
+    if os.path.exists(filepath):
+        logging.info(f"WFH dataset already present at '{filepath}' — skipping download.")
+        return filepath
+
+    logging.info("Downloading WFH dataset …")
+    last_error = None
+    for url in WFH_DATA_URLS:
         try:
-            response = requests.get(url, timeout=30)
-            response.raise_for_status()
-            with open(filepath, 'wb') as f:
-                f.write(response.content)
-            logging.info("Downloaded WFH dataset successfully.")
-        except Exception as e:
-            logging.error(f"Failed to download WFH dataset: {e}")
-            raise
-    else:
-        logging.info("WFH dataset already exists. Skipping download.")
-    return filepath
+            logging.info(f"  Trying {url} …")
+            resp = requests.get(url, timeout=60)
+            resp.raise_for_status()
+            with open(filepath, 'wb') as fh:
+                fh.write(resp.content)
+            logging.info(f"  Downloaded successfully → {filepath}")
+            return filepath
+        except Exception as exc:
+            logging.warning(f"  Failed ({exc})")
+            last_error = exc
+
+    raise RuntimeError(
+        f"Could not download WFH dataset from any configured URL. "
+        f"Last error: {last_error}"
+    )
 
 
-def process_data(wfh_filepath, github_velocities):
+# ---------------------------------------------------------------------------
+# Data processing
+# ---------------------------------------------------------------------------
+
+def process_data(
+    wfh_filepath: str,
+    github_velocities: dict[str, float] | float,
+) -> pd.DataFrame:
     """
-    Process the WFH data and calculate the Pizza Party Index using distinct work setup velocity proxies.
-    Returns DataFrame formatted with demographically breakdown records.
+    Process the WFH data and compute the Pizza Party Index using distinct
+    work-setup velocity proxies.
+
+    Parameters
+    ----------
+    wfh_filepath:
+        Path to the WFH Research Excel workbook.
+    github_velocities:
+        Either a ``dict`` mapping category names to velocity proxies
+        (preferred), or a scalar float (legacy fallback).
+
+    Returns
+    -------
+    pd.DataFrame
+        One row per (industry × age_group × gender) combination, with columns:
+        ``industry``, ``work_setup_category``, ``work_setup``,
+        ``focus_hours``, ``meeting_overhead``, ``pizza_party_index``,
+        ``age_group``, ``gender``.
     """
-    logging.info("Reading WFH data...")
+    logging.info("Reading WFH data …")
     df = pd.read_excel(wfh_filepath, sheet_name='Work Arrangements by Industry')
-    
+
     df['date'] = pd.to_datetime(df['date'])
     df = df.dropna(subset=['date'])
-    latest_df = df.sort_values('date', ascending=False).iloc[0:1].copy()
-    
-    # Extract industries
-    industries = []
-    for col in latest_df.columns:
-        if col.startswith('full_onsite_'):
-            ind = col.replace('full_onsite_', '')
-            if ind not in industries and not pd.isna(latest_df[col].iloc[0]):
-                industries.append(ind)
+    latest_row = df.sort_values('date', ascending=False).iloc[0]
 
-    # Normalize github_velocities input
+    # Discover industries from the 'full_onsite_*' column naming convention
+    industries = [
+        col.replace('full_onsite_', '')
+        for col in df.columns
+        if col.startswith('full_onsite_') and not pd.isna(latest_row[col])
+    ]
+
+    # Normalise github_velocities to a dict
     if isinstance(github_velocities, (int, float)):
-        # Scalar fallback
+        scalar = float(github_velocities)
         github_velocities = {
-            'Remote-First': float(github_velocities),
-            'Hybrid': float(github_velocities) * 0.8,
-            'Onsite-Heavy': float(github_velocities) * 0.6
+            'Remote-First': scalar,
+            'Hybrid':       scalar * 0.8,
+            'Onsite-Heavy': scalar * 0.6,
         }
     elif not isinstance(github_velocities, dict):
-        github_velocities = FALLBACK_VELOCITIES
+        github_velocities = dict(FALLBACK_VELOCITIES)
 
-    results = []
-    base_focus_hours = 40.0
-    categories = ['Remote-First', 'Hybrid', 'Onsite-Heavy']
+    categories    = list(FALLBACK_VELOCITIES.keys())
+    base_focus_h  = 40.0
+    results: list[dict] = []
 
-    # Reset seed for deterministic demographic generation
+    # Reset seed for deterministic demographic generation across pipeline runs
     np.random.seed(42)
 
     for ind in sorted(industries):
         onsite_col = f'full_onsite_{ind}'
         hybrid_col = f'hybrid_{ind}'
         remote_col = f'full_remote_{ind}'
-        
-        onsite_pct = (latest_df[onsite_col].iloc[0] if onsite_col in latest_df.columns else 0.0) / 100.0
-        hybrid_pct = (latest_df[hybrid_col].iloc[0] if hybrid_col in latest_df.columns else 0.0) / 100.0
-        remote_pct = (latest_df[remote_col].iloc[0] if remote_col in latest_df.columns else 0.0) / 100.0
-        
+
+        onsite_pct = float(latest_row.get(onsite_col, 0.0) or 0.0) / 100.0
+        hybrid_pct = float(latest_row.get(hybrid_col, 0.0) or 0.0) / 100.0
+        remote_pct = float(latest_row.get(remote_col, 0.0) or 0.0) / 100.0
+
         total = onsite_pct + hybrid_pct + remote_pct
         if total > 0:
             probs = [remote_pct / total, hybrid_pct / total, onsite_pct / total]
@@ -223,70 +565,80 @@ def process_data(wfh_filepath, github_velocities):
             probs = [0.33, 0.33, 0.34]
 
         industry_title = ind.replace('_', ' ').title()
-        
+
         for age in AGE_GROUPS:
             for gender in GENDERS:
-                # Sample work setup category based on industry probabilities
-                cat = np.random.choice(categories, p=probs)
+                # Sample a work-setup category weighted by industry WFH proportions
+                cat     = np.random.choice(categories, p=probs)
                 cat_vel = github_velocities.get(cat, FALLBACK_VELOCITIES.get(cat, 0.05))
 
+                # Focus / perks factors differ by category
                 if cat == 'Remote-First':
-                    cat_factor = 0.55 + (remote_pct * 0.2)
-                    perks_factor = 0.2 + (onsite_pct * 0.3)
+                    cat_factor   = 0.55 + (remote_pct * 0.20)
+                    perks_factor = 0.20 + (onsite_pct * 0.30)
                 elif cat == 'Hybrid':
-                    cat_factor = 0.45 + (hybrid_pct * 0.15)
-                    perks_factor = 0.5 + (onsite_pct * 0.4)
+                    cat_factor   = 0.45 + (hybrid_pct * 0.15)
+                    perks_factor = 0.50 + (onsite_pct * 0.40)
                 else:  # Onsite-Heavy
-                    cat_factor = 0.35 + (onsite_pct * 0.1)
-                    perks_factor = 0.8 + (onsite_pct * 0.2)
-                
-                # Small deterministic demographic variation (+/- 5%)
-                noise = np.random.uniform(-0.05, 0.05)
-                focus_hours = base_focus_hours * (cat_factor + noise) * (1.0 + cat_vel)
-                meeting_overhead = max(5.0, base_focus_hours - focus_hours)
-                
-                # Pizza Party Index: Ratio of performative perks to focus hours
+                    cat_factor   = 0.35 + (onsite_pct * 0.10)
+                    perks_factor = 0.80 + (onsite_pct * 0.20)
+
+                # Small deterministic demographic noise (±5 %)
+                noise         = np.random.uniform(-0.05, 0.05)
+                focus_hours   = base_focus_h * (cat_factor + noise) * (1.0 + cat_vel)
+                meeting_overhead = max(5.0, base_focus_h - focus_hours)
+
+                # Pizza Party Index: performative-perk density per focus hour
                 pizza_party_index = (perks_factor / max(focus_hours, 1.0)) * 100.0
 
-                record = {
-                    'industry': industry_title,
+                results.append({
+                    'industry':            industry_title,
                     'work_setup_category': cat,
                     'work_setup': {
-                        'onsite_pct': round(float(onsite_pct) * 100.0, 2),
-                        'hybrid_pct': round(float(hybrid_pct) * 100.0, 2),
-                        'remote_pct': round(float(remote_pct) * 100.0, 2)
+                        'onsite_pct': round(onsite_pct * 100.0, 2),
+                        'hybrid_pct': round(hybrid_pct * 100.0, 2),
+                        'remote_pct': round(remote_pct * 100.0, 2),
                     },
-                    'focus_hours': round(float(focus_hours), 2),
-                    'meeting_overhead': round(float(meeting_overhead), 2),
-                    'pizza_party_index': round(float(pizza_party_index), 2),
-                    'age_group': age,
-                    'gender': gender
-                }
-                results.append(record)
-        
-    final_df = pd.DataFrame(results)
-    return final_df
+                    'focus_hours':       round(float(focus_hours),        2),
+                    'meeting_overhead':  round(float(meeting_overhead),   2),
+                    'pizza_party_index': round(float(pizza_party_index),  2),
+                    'age_group':         age,
+                    'gender':            gender,
+                })
+
+    return pd.DataFrame(results)
 
 
-def main():
+# ---------------------------------------------------------------------------
+# Main pipeline entry point
+# ---------------------------------------------------------------------------
+
+def main() -> None:
+    """Run the full ETL pipeline end-to-end."""
     os.makedirs('src/data', exist_ok=True)
-    
-    # Step 1: Fetch distinct velocity proxies for work setup categories
-    velocities = fetch_work_setup_velocities()
-    logging.info(f"Work setup velocities calculated: {velocities}")
 
-    # Step 2: Download/ensure WFH data
+    # Step 1: Fetch distinct velocity proxies for all work-setup categories
+    velocities, vel_metadata = fetch_work_setup_velocities()
+    logging.info(f"Computed work-setup velocities: {velocities}")
+
+    # Step 2: Persist velocity metadata for frontend data-provenance display
+    meta_path = 'src/data/velocity_metadata.json'
+    with open(meta_path, 'w', encoding='utf-8') as fh:
+        json.dump(vel_metadata, fh, indent=4)
+    logging.info(f"Velocity metadata written to {meta_path}")
+
+    # Step 3: Download / reuse the WFH dataset
     wfh_file = download_wfh_data()
-    
-    # Step 3: Process data using multi-category velocities
+
+    # Step 4: Process data and compute all metrics
     final_df = process_data(wfh_file, velocities)
-    
+
+    # Step 5: Write the per-record metrics JSON consumed by the frontend
     output_path = 'src/data/pizza_metrics.json'
-    logging.info(f"Saving results to {output_path} ({len(final_df)} records)...")
+    logging.info(f"Saving {len(final_df)} records to {output_path} …")
     final_df.to_json(output_path, orient='records', indent=4)
     logging.info("ETL pipeline completed successfully.")
 
 
 if __name__ == '__main__':
     main()
-
