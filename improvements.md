@@ -24,7 +24,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | # | Improvement | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | [Agent Suggestion] Frontend: Rendering Efficiency (useMemo) | Done (2026-07-21) | 4.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Major performance fix) * 1.0 / 2 (Simple hook) = 4.0 |
-| 2 | [Agent Suggestion] DevOps: Enforce Strict Dependency Versioning and Enable Caching | Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Fixes flakey builds) * 1.0 / 2 (1-line action fix) = 3.5 |
+| 2 | [Agent Suggestion] DevOps: Enforce Strict Dependency Versioning and Enable Caching | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Fixes flakey builds) * 1.0 / 2 (1-line action fix) = 3.5 |
 | 3 | [Agent Suggestion] UI/UX: Reset Filters CTA | Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Saves users from dead ends) * 1.0 / 2 (Simple button) = 3.5 |
 | 4 | [Agent Suggestion] Data Transparency: Raw Data Export & Reproducibility | Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Ensures reproducibility) * 1.0 / 2 (Simple CSV download link) = 3.50 |
 | 5 | [Agent Suggestion] Data Pipeline: Add Module-Level Documentation & Decouple Configuration | Pending | 3.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Good code hygiene) * 1.0 / 2 (Simple variable moves) = 3.0 |
@@ -57,6 +57,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 2. [Agent Suggestion] DevOps: Enforce Strict Dependency Versioning and Enable Caching
 **Description:** Update `deploy.yml` to use `npm ci` exclusively and enable caching for both `setup-python` (`cache: 'pip'`) and `setup-node` (`cache: 'npm'`).
 **Context:** Based on the `devops` skill. Prevents unverified versions from breaking builds and improves speed.
+**Done note (2026-07-21):** Added caching for pip and npm and changed the frontend install step to strictly use npm ci.
 
 ### 3. [Agent Suggestion] UI/UX: Reset Filters CTA
 **Description:** Add a "Reset Filters" CTA button when a combination of filters yields no results ("No slices left!").
