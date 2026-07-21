@@ -23,19 +23,19 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 
 | # | Improvement | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| 41 | [Agent Suggestion] Data Pipeline: Remove Hardcoded Bias | Open | 2.67 | - | gemini-3.1-pro-high | 8 (Data integrity) * 1.0 / 3 = 2.67 |
-| 42 | [Agent Suggestion] Data Pipeline: Fix ML Data Leakage | Open | 2.00 | - | gemini-3.1-pro-high | 6 (Statistical validity) * 1.0 / 3 = 2.00 |
-| 43 | [Agent Suggestion] Data Pipeline: Use Pandas .assign() | Open | 1.50 | - | gemini-3.1-pro-high | 3 (Code hygiene) * 1.0 / 2 = 1.50 |
-| 44 | [Agent Suggestion] Frontend: Move Aggregations to ETL | Open | 2.33 | - | gemini-3.1-pro-high | 7 (Performance) * 1.0 / 3 = 2.33 |
-| 45 | [Agent Suggestion] Data Pipeline: Sync Local JSON Data | Open | 4.00 | - | gemini-3.1-pro-high | 8 (Data corruption) * 1.0 / 2 = 4.00 |
-| 33 | [Agent Suggestion] DevOps: Enforce QA Guardrails & Trivy Security Checks | Open | 4.00 | - | gemini-3.1-pro-high | 8 (High risk) * 1.0 / 2 = 4.00 |
-| 34 | [Agent Suggestion] Data Pipeline: Remove Silent Exceptions in ETL | Open | 4.00 | - | gemini-3.1-pro-high | 8 (Fixes silent failures) * 1.0 / 2 = 4.00 |
-| 35 | [Agent Suggestion] UI/UX: Fix Export Race Condition & Accessibility Contrast | Open | 3.50 | - | gemini-3.1-pro-high | 7 (Compliance/Bugs) * 1.0 / 2 = 3.50 |
-| 36 | [Agent Suggestion] Data Pipeline: Asynchronous API Execution | Open | 2.67 | - | gemini-3.1-pro-high | 8 (Resiliency) * 1.0 / 3 = 2.67 |
-| 37 | [Agent Suggestion] Data Pipeline: Decouple ETL Monolith | Open | 2.00 | - | gemini-3.1-pro-high | 8 (Maintainability) * 1.0 / 4 = 2.00 |
-| 38 | [Agent Suggestion] Frontend: Lazy Load Chart Components | Open | 2.33 | - | gemini-3.1-pro-high | 7 (Performance) * 1.0 / 3 = 2.33 |
-| 39 | [Agent Suggestion] Frontend: Migrate Codebase to TypeScript | Open | 1.33 | - | gemini-3.1-pro-high | 8 (Strict typing) * 1.0 / 6 = 1.33 |
-| 40 | [Agent Suggestion] Accessibility: Use Native HTML5 Dialog | Open | 1.33 | - | gemini-3.1-pro-high | 4 (Native accessibility) * 1.0 / 3 = 1.33 |
+| 35 | [Agent Suggestion] UI/UX: Fix Export Race Condition & Accessibility Contrast | Open | 1.75 | - | gemini-3.1-pro-high | 7 (Compliance/Bugs) * 0.5 (decay) / 2 = 1.75 |
+| 44 | [Agent Suggestion] Frontend: Move Aggregations to ETL | Open | 1.16 | - | gemini-3.1-pro-high | 7 (Performance) * 0.5 (decay) / 3 = 1.16 |
+| 33 | [Agent Suggestion] DevOps: Enforce QA Guardrails & Trivy Security Checks | Open | 1.00 | - | gemini-3.1-pro-high | 8 (High risk) * 0.25 (decay) / 2 = 1.00 |
+| 40 | [Agent Suggestion] Accessibility: Use Native HTML5 Dialog | Open | 0.66 | - | gemini-3.1-pro-high | 4 (Native accessibility) * 0.5 (decay) / 3 = 0.66 |
+| 38 | [Agent Suggestion] Frontend: Lazy Load Chart Components | Open | 0.58 | - | gemini-3.1-pro-high | 7 (Performance) * 0.25 (decay) / 3 = 0.58 |
+| 45 | [Agent Suggestion] Data Pipeline: Sync Local JSON Data | ⚠️ below floor | 0.25 | - | gemini-3.1-pro-high | 8 (Data corruption) * 0.0625 (decay) / 2 = 0.25 |
+| 34 | [Agent Suggestion] Data Pipeline: Remove Silent Exceptions in ETL | ⚠️ below floor | 0.25 | - | gemini-3.1-pro-high | 8 (Fixes silent failures) * 0.0625 (decay) / 2 = 0.25 |
+| 41 | [Agent Suggestion] Data Pipeline: Remove Hardcoded Bias | ⚠️ below floor | 0.16 | - | gemini-3.1-pro-high | 8 (Data integrity) * 0.0625 (decay) / 3 = 0.16 |
+| 36 | [Agent Suggestion] Data Pipeline: Asynchronous API Execution | ⚠️ below floor | 0.16 | - | gemini-3.1-pro-high | 8 (Resiliency) * 0.0625 (decay) / 3 = 0.16 |
+| 39 | [Agent Suggestion] Frontend: Migrate Codebase to TypeScript | ⚠️ below floor | 0.16 | - | gemini-3.1-pro-high | 8 (Strict typing) * 0.125 (decay) / 6 = 0.16 |
+| 37 | [Agent Suggestion] Data Pipeline: Decouple ETL Monolith | ⚠️ below floor | 0.12 | - | gemini-3.1-pro-high | 8 (Maintainability) * 0.0625 (decay) / 4 = 0.12 |
+| 42 | [Agent Suggestion] Data Pipeline: Fix ML Data Leakage | ⚠️ below floor | 0.12 | - | gemini-3.1-pro-high | 6 (Statistical validity) * 0.0625 (decay) / 3 = 0.12 |
+| 43 | [Agent Suggestion] Data Pipeline: Use Pandas .assign() | ⚠️ below floor | 0.09 | - | gemini-3.1-pro-high | 3 (Code hygiene) * 0.0625 (decay) / 2 = 0.09 |
 | 1 | [Agent Suggestion] Frontend: Rendering Efficiency (useMemo) | Done (2026-07-21) | 4.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Major performance fix) * 1.0 / 2 = 4.00 |
 | 2 | [Agent Suggestion] DevOps: Enforce Strict Dependency Versioning and Enable Caching | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Fixes flakey builds) * 1.0 / 2 = 3.50 |
 | 4 | [Agent Suggestion] Data Transparency: Raw Data Export & Reproducibility | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Ensures reproducibility) * 1.0 / 2 = 3.50 |
