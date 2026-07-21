@@ -53,7 +53,7 @@ const PizzaGauge = ({ data }) => {
   let optimizationLabel = `Best: ${bestSetup}`;
   let optimizationColor = "text-yellow-600";
   if (bestScore >= 22) {
-    optimizationColor = "text-green-600";
+    optimizationColor = "text-green-700";
   } else if (bestScore < 18 && bestScore > 0) {
     optimizationColor = "text-red-600";
   }
@@ -79,7 +79,7 @@ const PizzaGauge = ({ data }) => {
         Displays the highest-scoring Work Setup for your filters. Higher scores = Better performance.
       </p>
       
-      <div className="flex-grow relative min-h-[200px]" role="img" aria-label={`Pizza Party Index Gauge. Top score is ${bestScore.toFixed(1)} out of 40.`}>
+      <div className="flex-grow relative min-h-[200px]" role="figure" aria-label={`Pizza Party Index Gauge. Top score is ${bestScore.toFixed(1)} out of 40.`}>
         <div style={srOnlyStyle}>
           This gauge displays the highest Pizza Party Index among work setups. The top score is {bestScore.toFixed(1)} out of 40 for {bestSetup}.
         </div>

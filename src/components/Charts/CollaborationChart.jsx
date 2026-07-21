@@ -49,7 +49,7 @@ const CollaborationChart = ({ data }) => {
         Collaboration efficiency vs. time blocked waiting.
       </p>
       
-      <div className="flex-grow min-h-[300px]" role="img" aria-label="Bar chart comparing Collaboration Scores across work setups.">
+      <div className="flex-grow min-h-[300px]" role="figure" aria-label="Bar chart comparing Collaboration Scores across work setups.">
         <div style={srOnlyStyle}>
           This bar chart displays the breakdown of collaboration scores versus review turnaround hours across different work setup categories.
         </div>
@@ -67,10 +67,10 @@ const CollaborationChart = ({ data }) => {
             />
             <YAxis 
               yAxisId="left"
-              tick={{ fill: '#22c55e', fontWeight: 600 }}
+              tick={{ fill: '#16a34a', fontWeight: 600 }}
               axisLine={{ stroke: '#d1d5db' }}
               tickLine={false}
-              label={{ value: 'Collab Score', angle: -90, position: 'insideLeft', fill: '#22c55e', fontWeight: 'bold' }}
+              label={{ value: 'Collab Score', angle: -90, position: 'insideLeft', fill: '#16a34a', fontWeight: 'bold' }}
             />
             <YAxis 
               yAxisId="right"
@@ -84,14 +84,14 @@ const CollaborationChart = ({ data }) => {
               cursor={{ fill: '#e5e7eb', opacity: 0.3 }}
               contentStyle={{ 
                 backgroundColor: '#fff', 
-                border: '2px solid #22c55e',
+                border: '2px solid #16a34a',
                 borderRadius: '8px',
                 color: '#333',
                 fontWeight: 'bold'
               }}
             />
             <Legend wrapperStyle={{ paddingTop: '10px', fontWeight: 'bold', color: '#333' }} />
-            <Bar yAxisId="left" dataKey="Collaboration Score" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar yAxisId="left" dataKey="Collaboration Score" fill="#16a34a" radius={[4, 4, 0, 0]} maxBarSize={60} />
             <Bar yAxisId="right" dataKey="Review Turnaround (Hrs)" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60} />
           </BarChart>
         </ResponsiveContainer>

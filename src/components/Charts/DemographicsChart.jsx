@@ -52,7 +52,7 @@ const DemographicsChart = ({ data }) => {
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
         {/* Age Bar Chart */}
-        <div className="flex flex-col min-h-[250px]" role="img" aria-label="Bar chart showing age distribution of respondents.">
+        <div className="flex flex-col min-h-[250px]" role="figure" aria-label="Bar chart showing age distribution of respondents.">
           <p className="text-sm text-gray-600 mb-2 text-center font-bold">Age Ranges</p>
           <div style={srOnlyStyle}>
             This bar chart displays the number of respondents for each age range.
@@ -72,7 +72,7 @@ const DemographicsChart = ({ data }) => {
         </div>
 
         {/* Gender Pie Chart */}
-        <div className="flex flex-col min-h-[250px]" role="img" aria-label="Pie chart showing gender breakdown of respondents.">
+        <div className="flex flex-col min-h-[250px]" role="figure" aria-label="Pie chart showing gender breakdown of respondents.">
           <p className="text-sm text-gray-600 mb-2 text-center font-bold">Gender Breakdown</p>
           <div style={srOnlyStyle}>
             This pie chart displays the gender breakdown of the survey respondents.

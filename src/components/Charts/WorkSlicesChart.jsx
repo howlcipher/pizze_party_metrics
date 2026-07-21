@@ -50,7 +50,7 @@ const WorkSlicesChart = ({ data }) => {
         Weekly Focus Hours vs. Meeting Overhead across different mandates.
       </p>
       
-      <div className="flex-grow min-h-[300px]" role="img" aria-label="Bar chart comparing Focus Hours versus Meeting Overhead by work setup category.">
+      <div className="flex-grow min-h-[300px]" role="figure" aria-label="Bar chart comparing Focus Hours versus Meeting Overhead by work setup category.">
         <div style={srOnlyStyle}>
           This bar chart displays the breakdown of weekly focus hours versus meeting overhead in hours across different work setup categories, such as In-Office, Hybrid, and Remote.
         </div>
@@ -76,14 +76,14 @@ const WorkSlicesChart = ({ data }) => {
               cursor={{ fill: '#fcd34d', opacity: 0.3 }}
               contentStyle={{ 
                 backgroundColor: '#fff', 
-                border: '2px solid #22c55e',
+                border: '2px solid #16a34a',
                 borderRadius: '8px',
                 color: '#333',
                 fontWeight: 'bold'
               }}
             />
             <Legend wrapperStyle={{ paddingTop: '10px', fontWeight: 'bold', color: '#333' }} />
-            <Bar dataKey="Focus Hours" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar dataKey="Focus Hours" fill="#16a34a" radius={[4, 4, 0, 0]} maxBarSize={60} />
             <Bar dataKey="Meeting Overhead" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60} />
           </BarChart>
         </ResponsiveContainer>

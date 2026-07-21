@@ -23,7 +23,9 @@ const Header = ({ rawData = [] }) => {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    setTimeout(() => {
+      URL.revokeObjectURL(url);
+    }, 100);
   };
 
   return (
@@ -59,9 +61,9 @@ const Header = ({ rawData = [] }) => {
           <Download size={18} />
           <span>Box Up Data</span>
         </button>
-        <div className="hidden md:flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full border-2 border-green-500 shadow-sm">
+        <div className="hidden md:flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full border-2 border-green-600 shadow-sm">
           <span className="flex h-3 w-3 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-600 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
           </span>
           <span className="text-sm font-extrabold text-green-800 uppercase">Oven is Hot</span>
