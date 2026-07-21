@@ -4,6 +4,14 @@
 
 This project is a multi-agent orchestrated data pipeline and high-contrast web dashboard that calculates the "Pizza Party Index"—the ratio of performative office perks to actual uninterrupted focus hours.
 
+## 📈 Summary Metrics
+<!-- METRICS_START -->
+**Total Records Analyzed**: 140<br>
+**Average Pizza Party Index**: 4.36<br>
+**Average Focus Hours**: 18.89<br>
+**Average Meeting Overhead**: 21.11
+<!-- METRICS_END -->
+
 ## 📊 Live Data Sources (Transparency)
 
 This project strictly utilizes real, publicly available data. There is no mocked data. 

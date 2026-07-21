@@ -1,0 +1,4 @@
+#!/bin/sh
+# Update README before commit if metrics changed
+python3 scripts/update_readme.py
+git add README.md

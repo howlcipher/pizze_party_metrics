@@ -35,7 +35,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 14 | Live Data Ingestion API / Backend | Done (2026-07-21) | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core requirement) * 1.0 (new capability) / 6 = 1.33 |
 | 16 | [Agent Suggestion] DevOps: Implement Multi-Stage Job Separation with Quality & Security Gates | Done (2026-07-21) | 1.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Security) * 0.5 (decay) / 4 = 1.00 |
 | 25 | Data Pipeline: Add Other Relevant Industries | Closed | - | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | Merged into #24 |
-| 29 | Automated README Update Hook | Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Keeps docs fresh) * 1.0 (new capability) / 3 = 2.00 |
+| 29 | Automated README Update Hook | Done (2026-07-21) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Keeps docs fresh) * 1.0 (new capability) / 3 = 2.00 |
 | 19 | [Agent Suggestion] Meeting vs. Maker Time Analysis | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 1.0 (decay) / 4 = 1.75 |
 | 11 | [Agent Suggestion] Async Collaboration Velocity Metric | Pending | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Proves thesis) * 1.0 (decay) / 5 = 1.60 |
 | 20 | Interruption & Context Switch Impact Dashboard | Pending | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High value) * 1.0 (decay) / 5 = 1.60 |
@@ -202,3 +202,4 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 29. Automated README Update Hook
 **Description:** Implement a hook (e.g., git pre-commit or GitHub Actions step) that automatically updates the `README.md` file whenever relevant project files or data metrics change.
 **Context:** Ensures documentation stays fresh without requiring manual intervention.
+**Done note (2026-07-21):** Implemented a Python script to parse metrics and update README.md automatically, integrated it into the GitHub Actions deploy workflow, and added a local git pre-commit hook.
