@@ -104,6 +104,7 @@ const PizzaGauge = ({ data }) => {
             <Tooltip 
               formatter={(value, name) => [value.toFixed(2), name]}
               contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', border: '2px solid #e3342f', color: '#333', fontWeight: 'bold' }}
+              wrapperClassName="hidden md:block"
             />
           </PieChart>
         </ResponsiveContainer>
