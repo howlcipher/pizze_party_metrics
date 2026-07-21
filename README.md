@@ -22,6 +22,8 @@ We strictly use 100% organic, real-world data to calculate our metrics:
    - *Hybrid*: `microsoft/vscode`, `facebook/react`
    - *Onsite-Heavy*: `apache/kafka`, `oracle/graal`
 
+**Note on Data Synthesis (Monte Carlo):** To protect privacy, the Stanford WFH dataset provides *macro-aggregated percentages* rather than individual respondent micro-data. To generate our interactive 5,000-respondent dashboard, our ETL pipeline acts as a statistical synthesizer. It uses a Monte Carlo approach to sample exactly 5,000 virtual respondents, perfectly weighted against the true empirical distributions of the underlying raw data (e.g., industry, age, and gender percentages). This ensures the dashboard's simulated dataset is statistically accurate to the real-world macro data!
+
 ## 👨‍🍳 The Kitchen Architecture
 
 - **Data Engineering (Python)**: Our vectorized ETL pipeline (`scripts/etl.py`) pulls data, applies dynamic ingestion assertions, normalizes it, and calculates demographic probabilities. It caches GitHub API responses locally and gracefully handles API rate limits using exponential backoff. 
