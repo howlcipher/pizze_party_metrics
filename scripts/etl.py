@@ -12,12 +12,41 @@ from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 
-import config
+try:
+    from scripts import config
+except ImportError:
+    import config
+
+FALLBACK_VELOCITIES = config.FALLBACK_VELOCITIES
+SETUP_REPOS = config.SETUP_REPOS
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+
+def _load_cache(path: str) -> list | None:
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, 'r', encoding='utf-8') as fh:
+            envelope = json.load(fh)
+        if (time.time() - envelope.get('ts', 0)) / 3600.0 <= config.CACHE_TTL_HOURS:
+            return envelope['data']
+    except Exception as exc:
+        logging.debug(f"Cache load error: {exc}")
+    return None
+
+
+def _save_cache(path: str, data: list) -> None:
+    try:
+        with open(path, 'w', encoding='utf-8') as fh:
+            json.dump({'ts': time.time(), 'data': data}, fh)
+    except Exception as exc:
+        logging.warning(f"Cache write error: {exc}")
+
+
 class GitHubClient:
     """Handles GitHub API requests with exponential backoff, rate limiting, and caching."""
+
     def __init__(self):
         self.headers = {'Accept': 'application/vnd.github.v3+json'}
         if os.getenv('GITHUB_TOKEN'):
@@ -25,31 +54,12 @@ class GitHubClient:
         os.makedirs(config.CACHE_DIR, exist_ok=True)
 
     def _cache_key(self, repo: str, endpoint: str) -> str:
-        safe = hashlib.md5(f"{repo}_{endpoint}".encode()).hexdigest()[:12]
+        safe = hashlib.md5(f"{repo}_{endpoint}".encode(), usedforsecurity=False).hexdigest()[:12]
         return os.path.join(config.CACHE_DIR, f"{safe}.json")
-
-    def _load_cache(self, path: str) -> list | None:
-        if not os.path.exists(path):
-            return None
-        try:
-            with open(path, 'r', encoding='utf-8') as fh:
-                envelope = json.load(fh)
-            if (time.time() - envelope.get('ts', 0)) / 3600.0 <= config.CACHE_TTL_HOURS:
-                return envelope['data']
-        except Exception:
-            pass
-        return None
-
-    def _save_cache(self, path: str, data: list) -> None:
-        try:
-            with open(path, 'w', encoding='utf-8') as fh:
-                json.dump({'ts': time.time(), 'data': data}, fh)
-        except Exception as exc:
-            logging.warning(f"Cache write error: {exc}")
 
     def fetch_endpoint(self, url: str, cache_id: str, description: str) -> list:
         cache_path = self._cache_key(*cache_id)
-        cached = self._load_cache(cache_path)
+        cached = _load_cache(cache_path)
         if cached is not None:
             return cached
 
@@ -57,7 +67,7 @@ class GitHubClient:
         items = self._fetch_with_backoff(url, description)
         if items is None:
             items = []
-        self._save_cache(cache_path, items)
+        _save_cache(cache_path, items)
         return items
 
     def _fetch_with_backoff(self, url: str, description: str) -> list | None:
@@ -74,34 +84,39 @@ class GitHubClient:
                     time.sleep(min(config.BASE_BACKOFF_SECONDS * math.pow(2, attempt - 1), 60.0))
                     continue
                 return None
-            except Exception as exc:
+            except Exception:
                 time.sleep(min(config.BASE_BACKOFF_SECONDS * math.pow(2, attempt - 1), 60.0))
         return None
 
+
 class VelocityAnalyzer:
     """Calculates PR merge times and code review turnarounds."""
+
     def __init__(self, client: GitHubClient):
         self.client = client
 
     def _resolution_hours(self, item: dict) -> float | None:
         created_raw = item.get('created_at')
-        closed_raw  = item.get('merged_at') or item.get('closed_at')
+        closed_raw = item.get('merged_at') or item.get('closed_at')
         if not created_raw or not closed_raw:
             return None
         try:
             hours = (pd.to_datetime(closed_raw, utc=True) - pd.to_datetime(created_raw, utc=True)).total_seconds() / 3600.0
             if config.MIN_RESOLUTION_HOURS <= hours <= config.MAX_RESOLUTION_HOURS:
                 return hours
-        except Exception:
-            pass
+        except Exception as exc:
+            logging.debug(f"Error calculating resolution hours: {exc}")
         return None
 
-    def analyze(self) -> tuple[dict, dict, dict]:
+    def analyze(self, setup_repos=None, issues_per_repo=None, pulls_per_repo=None) -> tuple[dict, dict, dict]:
+        target_repos = setup_repos or config.SETUP_REPOS
+        num_issues = issues_per_repo or config.GITHUB_ISSUES_PER_REPO
+        num_pulls = pulls_per_repo or config.GITHUB_PULLS_PER_REPO
         velocities, turnarounds, metadata = {}, {}, {}
-        for category, repos in config.SETUP_REPOS.items():
-            all_hours, cat_turnarounds, repo_stats = [], [], []
+        for category, repos in target_repos.items():
+            cat_pr_times, cat_issue_times, cat_turnarounds, repo_stats = [], [], [], []
             for repo in repos:
-                pr_url = config.GITHUB_PULLS_URL_TEMPLATE.format(repo=repo, limit=config.GITHUB_PULLS_PER_REPO)
+                pr_url = config.GITHUB_PULLS_URL_TEMPLATE.format(repo=repo, limit=num_pulls)
                 pulls = self.client.fetch_endpoint(pr_url, (repo, 'pulls'), f"{repo}/pulls")
                 
                 repo_pr_times, repo_turnaround_times = [], []
@@ -116,54 +131,79 @@ class VelocityAnalyzer:
                         if t is not None:
                             repo_turnaround_times.append(t)
                             
-                issue_url = config.GITHUB_ISSUES_URL_TEMPLATE.format(repo=repo, limit=config.GITHUB_ISSUES_PER_REPO)
+                issue_url = config.GITHUB_ISSUES_URL_TEMPLATE.format(repo=repo, limit=num_issues)
                 issues = [i for i in self.client.fetch_endpoint(issue_url, (repo, 'issues'), f"{repo}/issues") if 'pull_request' not in i]
                 repo_issue_times = [h for i in issues if (h := self._resolution_hours(i)) is not None]
 
-                all_hours.extend(repo_pr_times + repo_issue_times)
+                cat_pr_times.extend(repo_pr_times)
+                cat_issue_times.extend(repo_issue_times)
                 cat_turnarounds.extend(repo_turnaround_times)
                 repo_stats.append({'repo': repo, 'samples': len(repo_pr_times) + len(repo_issue_times)})
 
+            all_hours = cat_pr_times + cat_issue_times
             median_h = float(np.median(all_hours)) if all_hours else None
-            velocity = 1.0 / median_h if median_h and median_h > 0 else config.FALLBACK_VELOCITIES[category]
+            is_fallback = median_h is None or median_h <= 0
+            velocity = 1.0 / median_h if not is_fallback else config.FALLBACK_VELOCITIES[category]
             avg_turn = float(np.mean(cat_turnarounds)) if cat_turnarounds else config.ETL_SETTINGS['review_turnaround_default']
 
             velocities[category] = velocity
             turnarounds[category] = avg_turn
-            metadata[category] = {'velocity_proxy': round(velocity, 6), 'median_resolution_h': round(median_h, 2) if median_h else None, 'repos': repo_stats}
+            metadata[category] = {
+                'velocity_proxy': round(velocity, 6),
+                'median_resolution_h': round(median_h, 2) if median_h else None,
+                'total_samples': len(all_hours),
+                'pr_samples': len(cat_pr_times),
+                'issue_samples': len(cat_issue_times),
+                'review_turnaround_samples': len(cat_turnarounds),
+                'avg_review_turnaround_hours': round(avg_turn, 2),
+                'repos': repo_stats,
+                'fetched_at': datetime.now(timezone.utc).isoformat(),
+                'is_fallback': is_fallback,
+            }
             
         return velocities, turnarounds, metadata
 
     def _pr_review_turnaround_hours(self, pr: dict, reviews: list) -> float | None:
         created_raw = pr.get('created_at')
-        if not created_raw or not reviews: return None
+        if not created_raw or not reviews:
+            return None
         try:
             created = pd.to_datetime(created_raw, utc=True)
             pr_author = pr.get('user', {}).get('login')
             valid_times = [pd.to_datetime(r['submitted_at'], utc=True) for r in reviews if r.get('submitted_at') and r.get('user', {}).get('login') != pr_author]
-            if not valid_times: return None
+            if not valid_times:
+                return None
             hours = (min(valid_times) - created).total_seconds() / 3600.0
-            if 0.0 <= hours <= config.MAX_RESOLUTION_HOURS: return hours
-        except Exception: pass
+            if 0.0 <= hours <= config.MAX_RESOLUTION_HOURS:
+                return hours
+        except Exception as exc:
+            logging.debug(f"Error calculating review turnaround: {exc}")
         return None
+
 
 class WFHDataExtractor:
     """Downloads and reads the WFH dataset."""
+
     @staticmethod
     def download(filepath="raw_data/wfh_data.xlsx") -> str:
-        if os.path.exists(filepath): return filepath
+        if os.path.exists(filepath):
+            return filepath
         for url in config.WFH_DATA_URLS:
             try:
                 os.makedirs(os.path.dirname(filepath), exist_ok=True)
                 r = requests.get(url, timeout=60)
                 r.raise_for_status()
-                with open(filepath, 'wb') as f: f.write(r.content)
+                with open(filepath, 'wb') as f:
+                    f.write(r.content)
                 return filepath
-            except Exception: pass
+            except Exception as exc:
+                logging.debug(f"Download failed for {url}: {exc}")
         raise RuntimeError("Failed to download WFH dataset.")
+
 
 class MetricsProcessor:
     """Transforms raw data into the final Pizza Party Index analytics."""
+
     def __init__(self, wfh_file: str, velocities: dict, turnarounds: dict):
         self.wfh_file = wfh_file
         self.velocities = velocities
@@ -178,8 +218,10 @@ class MetricsProcessor:
         
         # Ingestion Checks
         for ind in industries:
-            assert f'full_onsite_{ind}' in latest_row, f"Missing data column for full_onsite_{ind}"
-            assert f'hybrid_{ind}' in latest_row, f"Missing data column for hybrid_{ind}"
+            if f'full_onsite_{ind}' not in latest_row:
+                raise ValueError(f"Missing data column for full_onsite_{ind}")
+            if f'hybrid_{ind}' not in latest_row:
+                raise ValueError(f"Missing data column for hybrid_{ind}")
 
         industries.extend([i for i in config.ADDITIONAL_INDUSTRIES if i not in industries])
         
@@ -226,7 +268,7 @@ class MetricsProcessor:
         df_results['interruption_frequency'] = ((df_results['meeting_overhead'] / base_h) * 10.0 + np.random.poisson(2, size=N)).round(2)
         df_results['sustained_high_workload'] = (np.maximum(0.0, (df_results['focus_hours'] + df_results['meeting_overhead'] - base_h) / 5.0) + np.random.exponential(1.0, size=N)).round(2)
         
-        df_results['work_setup'] = df_results.apply(lambda row: {'onsite_pct': round(row['onsite_pct']*100,2), 'hybrid_pct': round(row['hybrid_pct']*100,2), 'remote_pct': round(row['remote_pct']*100,2)}, axis=1)
+        df_results['work_setup'] = df_results.apply(lambda row: {'onsite_pct': round(row['onsite_pct'] * 100, 2), 'hybrid_pct': round(row['hybrid_pct'] * 100, 2), 'remote_pct': round(row['remote_pct'] * 100, 2)}, axis=1)
         
         cols = ['industry', 'work_setup_category', 'work_setup', 'focus_hours', 'meeting_overhead', 'pizza_party_index', 'review_turnaround_hours', 'collaboration_score', 'age_group', 'gender', 'interruption_frequency', 'sustained_high_workload']
         df_results = df_results[cols]
@@ -239,8 +281,10 @@ class MetricsProcessor:
         
         return df_results
 
+
 class ETLPipeline:
     """Orchestrates the extraction, transformation, and loading of metrics."""
+
     def run(self):
         os.makedirs('src/data', exist_ok=True)
         
@@ -257,6 +301,23 @@ class ETLPipeline:
         
         final_df.to_json('src/data/pizza_metrics.json', orient='records', indent=4)
         logging.info("ETL pipeline completed successfully.")
+
+
+def _resolution_hours(item: dict) -> float | None:
+    return VelocityAnalyzer(GitHubClient())._resolution_hours(item)
+
+
+def fetch_work_setup_velocities(setup_repos=None, issues_per_repo=None, pulls_per_repo=None) -> tuple[dict, dict, dict]:
+    return VelocityAnalyzer(GitHubClient()).analyze(setup_repos=setup_repos, issues_per_repo=issues_per_repo, pulls_per_repo=pulls_per_repo)
+
+
+def download_wfh_data(filepath="raw_data/wfh_data.xlsx") -> str:
+    return WFHDataExtractor.download(filepath)
+
+
+def process_data(wfh_file: str, velocities: dict, turnarounds: dict) -> pd.DataFrame:
+    return MetricsProcessor(wfh_file, velocities, turnarounds).process()
+
 
 if __name__ == '__main__':
     ETLPipeline().run()

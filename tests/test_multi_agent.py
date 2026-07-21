@@ -1,8 +1,8 @@
 import os
 import json
 import tempfile
-import pandas as pd
 from scripts.multi_agent_analysis import analyze_metrics
+
 
 def test_analyze_metrics():
     # Create sample data
@@ -36,15 +36,20 @@ def test_analyze_metrics():
             
         analyze_metrics(input_path, output_path)
         
-        assert os.path.exists(output_path)
+        if not os.path.exists(output_path):
+            raise AssertionError("Output file does not exist")
         
         with open(output_path, 'r') as f:
             insights = json.load(f)
             
-        assert "industry_profile" in insights
-        assert "correlations" in insights
-        assert "best_setup_by_age" in insights
+        if "industry_profile" not in insights:
+            raise AssertionError("industry_profile missing")
+        if "correlations" not in insights:
+            raise AssertionError("correlations missing")
+        if "best_setup_by_age" not in insights:
+            raise AssertionError("best_setup_by_age missing")
         
         # Verify industry profile
         tech_profile = next(item for item in insights["industry_profile"] if item["industry"] == "Tech")
-        assert tech_profile["avg_focus_hours"] == 30.0
+        if tech_profile["avg_focus_hours"] != 30.0:
+            raise AssertionError(f"Expected 30.0, got {tech_profile['avg_focus_hours']}")

@@ -7,7 +7,7 @@ from fastapi.middleware.cors import CORSMiddleware
 # Add the project root to sys.path to import scripts.etl
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from scripts.etl import fetch_work_setup_velocities, download_wfh_data, process_data
+from scripts.etl import fetch_work_setup_velocities, download_wfh_data, process_data  # noqa: E402
 
 app = FastAPI(title="Pizza Party Metrics API")
 
@@ -24,6 +24,7 @@ CACHE = {
     "timestamp": 0
 }
 CACHE_TTL = 3600 * 12  # 12 hours
+
 
 @app.get("/api/metrics")
 def get_metrics():

@@ -15,6 +15,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
+
 def analyze_metrics(input_path: str, output_path: str) -> None:
     """Read the metrics data, process with pandas, and write insights."""
     np.random.seed(42)  # For reproducibility per data_analyst skill
@@ -99,6 +100,7 @@ def analyze_metrics(input_path: str, output_path: str) -> None:
         json.dump(insights, f, indent=4)
         
     logging.info(f"Advanced insights saved to {output_path}")
+
 
 if __name__ == "__main__":
     analyze_metrics("src/data/pizza_metrics.json", "src/data/advanced_collaboration_insights.json")

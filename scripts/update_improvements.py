@@ -57,7 +57,7 @@ content += f"\n{new_detail}"
 for item in [18, 24, 7, 28, 9, 10, 26, 27, 17, 21]:
     if f"### {item}. " in content:
         # replace Status: Pending with Status: ⚠️ below floor
-        content = re.sub(rf"(### {item}\. .*?\n.*?Context:.*?\n)(?:.*?)(?=\n### |\Z)", rf"\1**Status:** ⚠️ below floor\n**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.\n", content, flags=re.DOTALL)
+        content = re.sub(rf"(### {item}\. .*?\n.*?Context:.*?\n)(?:.*?)(?=\n### |\Z)", r"\1**Status:** ⚠️ below floor\n**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.\n", content, flags=re.DOTALL)
 
 with open('documentation/improvements.md', 'w') as f:
     f.write(content)

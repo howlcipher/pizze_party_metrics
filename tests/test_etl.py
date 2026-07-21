@@ -13,14 +13,12 @@ import json
 import os
 import time
 import unittest
-from unittest.mock import MagicMock, patch, call
+from unittest.mock import MagicMock, patch
 
-import numpy as np
 import pandas as pd
 
 from scripts.etl import (
     FALLBACK_VELOCITIES,
-    SETUP_REPOS,
     _load_cache,
     _resolution_hours,
     _save_cache,
