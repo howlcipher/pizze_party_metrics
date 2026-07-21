@@ -42,38 +42,38 @@ const DemographicsChart = ({ data }) => {
     return acc;
   }, []);
 
-  const PIE_COLORS = ['#8b5cf6', '#ec4899', '#14b8a6', '#f59e0b'];
+  const PIE_COLORS = ['#16a34a', '#e3342f', '#fcd34d', '#3b82f6']; // Italian green, red, cheese yellow, blue
 
   return (
-    <div className="bg-gray-800 border-2 border-gray-700 rounded-xl p-5 shadow-lg h-full flex flex-col gap-6">
-      <h3 className="text-lg font-bold text-purple-400 mb-2 border-b border-gray-700 pb-2">
-        Demographic Distribution
+    <div className="bg-white/95 border border-gray-200 rounded p-5 shadow-sm h-full flex flex-col gap-6">
+      <h3 className="text-xl font-bold text-[#3E2723] mb-2 border-b border-gray-200 pb-2">
+        Demographic Distribution (Who's Eating The Pizza?)
       </h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
         {/* Age Bar Chart */}
         <div className="flex flex-col min-h-[250px]" role="img" aria-label="Bar chart showing age distribution of respondents.">
-          <p className="text-sm text-gray-400 mb-2 text-center font-semibold">Age Ranges</p>
+          <p className="text-sm text-gray-600 mb-2 text-center font-bold">Age Ranges</p>
           <div style={srOnlyStyle}>
             This bar chart displays the number of respondents for each age range.
           </div>
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={ageData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
-              <XAxis dataKey="age" tick={{ fill: '#9ca3af', fontSize: 12 }} axisLine={{ stroke: '#4b5563' }} tickLine={false} />
-              <YAxis tick={{ fill: '#9ca3af', fontSize: 12 }} axisLine={{ stroke: '#4b5563' }} tickLine={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+              <XAxis dataKey="age" tick={{ fill: '#4b5563', fontSize: 12, fontWeight: 'bold' }} axisLine={{ stroke: '#d1d5db' }} tickLine={false} />
+              <YAxis tick={{ fill: '#4b5563', fontSize: 12, fontWeight: 'bold' }} axisLine={{ stroke: '#d1d5db' }} tickLine={false} />
               <Tooltip 
-                cursor={{ fill: '#374151', opacity: 0.4 }}
-                contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563', borderRadius: '8px', color: '#e5e7eb' }}
+                cursor={{ fill: '#fcd34d', opacity: 0.3 }}
+                contentStyle={{ backgroundColor: '#fff', border: '2px solid #e3342f', borderRadius: '8px', color: '#333', fontWeight: 'bold' }}
               />
-              <Bar dataKey="count" fill="#8b5cf6" radius={[4, 4, 0, 0]} name="Respondents" />
+              <Bar dataKey="count" fill="#e3342f" radius={[4, 4, 0, 0]} name="Respondents" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
         {/* Gender Pie Chart */}
         <div className="flex flex-col min-h-[250px]" role="img" aria-label="Pie chart showing gender breakdown of respondents.">
-          <p className="text-sm text-gray-400 mb-2 text-center font-semibold">Gender Breakdown</p>
+          <p className="text-sm text-gray-600 mb-2 text-center font-bold">Gender Breakdown</p>
           <div style={srOnlyStyle}>
             This pie chart displays the gender breakdown of the survey respondents.
           </div>
@@ -95,9 +95,9 @@ const DemographicsChart = ({ data }) => {
               </Pie>
               <Tooltip 
                 formatter={(value, name) => [value, name]}
-                contentStyle={{ backgroundColor: '#1f2937', border: '1px solid #4b5563', borderRadius: '8px', color: '#e5e7eb' }}
+                contentStyle={{ backgroundColor: '#fff', border: '2px solid #16a34a', borderRadius: '8px', color: '#333', fontWeight: 'bold' }}
               />
-              <Legend wrapperStyle={{ fontSize: '12px', color: '#9ca3af' }} />
+              <Legend wrapperStyle={{ fontSize: '12px', color: '#333', fontWeight: 'bold' }} />
             </PieChart>
           </ResponsiveContainer>
         </div>

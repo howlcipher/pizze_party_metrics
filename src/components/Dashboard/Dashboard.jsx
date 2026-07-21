@@ -4,6 +4,7 @@ import PizzaBoxFilter from '../Filters/PizzaBoxFilter';
 import PizzaGauge from '../Charts/PizzaGauge';
 import WorkSlicesChart from '../Charts/WorkSlicesChart';
 import DemographicsChart from '../Charts/DemographicsChart';
+import pizzaMetricsData from '../../data/pizza_metrics.json';
 
 const Dashboard = () => {
   const [rawData, setRawData] = useState([]);
@@ -25,29 +26,13 @@ const Dashboard = () => {
   }, [filters, rawData]);
 
   useEffect(() => {
-    fetch('/api/metrics')
-      .then(res => res.json())
-      .then(data => {
-        setRawData(data.metrics || []);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.error("Failed to fetch metrics", err);
-        setLoading(false);
-      });
+    // Load local JSON data instead of fetching from API for GitHub Pages compatibility
+    setRawData(pizzaMetricsData);
+    setLoading(false);
   }, []);
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center text-gray-100 font-sans">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-500 mb-4"></div>
-        <p className="text-xl font-bold text-gray-300">Fetching Live Telemetry...</p>
-      </div>
-    );
-  }
-
   return (
-    <div className="min-h-screen bg-gray-950 text-gray-100 font-sans">
+    <div className="min-h-screen text-gray-900 font-sans">
       <Header rawData={rawData} />
       
       <main className="max-w-7xl mx-auto p-6 space-y-6">
@@ -56,30 +41,35 @@ const Dashboard = () => {
           <PizzaBoxFilter filters={filters} setFilters={setFilters} data={rawData} />
         </section>
 
-        {/* Charts Section */}
-        <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Gauge takes 1 column on large screens */}
-          <div className="lg:col-span-1">
-            <PizzaGauge data={filteredData} />
-          </div>
+        {/* Charts Section - The Pizza Box */}
+        <section className="bg-[#f2dfbe] border-4 border-[#d4ab71] rounded-sm p-6 lg:p-8 shadow-2xl relative">
+          <div className="absolute top-0 left-0 w-32 h-32 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
+          <div className="absolute bottom-0 right-0 w-48 h-48 bg-orange-600/5 rounded-full blur-3xl pointer-events-none"></div>
           
-          {/* Bar Chart takes 2 columns on large screens */}
-          <div className="lg:col-span-2">
-            <WorkSlicesChart data={filteredData} />
-          </div>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative z-10">
+            {/* Gauge takes 1 column on large screens */}
+            <div className="lg:col-span-1">
+              <PizzaGauge data={filteredData} />
+            </div>
+            
+            {/* Bar Chart takes 2 columns on large screens */}
+            <div className="lg:col-span-2">
+              <WorkSlicesChart data={filteredData} />
+            </div>
 
-          {/* Demographics Chart takes full width (3 cols) */}
-          <div className="lg:col-span-3">
-            <DemographicsChart data={filteredData} />
+            {/* Demographics Chart takes full width (3 cols) */}
+            <div className="lg:col-span-3">
+              <DemographicsChart data={filteredData} />
+            </div>
           </div>
         </section>
 
         {filteredData.length === 0 && (
-          <div className="bg-red-900/30 border-2 border-red-500/50 p-6 rounded-xl text-center shadow-sm">
-            <p className="text-red-400 font-bold text-lg mb-4">No slices left! Try adjusting your filters.</p>
+          <div className="bg-red-100 border-4 border-red-600 p-6 rounded-xl text-center shadow-md">
+            <p className="text-red-800 font-extrabold text-2xl mb-4 font-serif italic">Mamma mia! No slices left! Try adjusting your filters.</p>
             <button 
               onClick={() => setFilters({ industry: '', age_group: '', work_setup: '' })}
-              className="px-6 py-2 bg-red-600 hover:bg-red-500 text-white rounded-lg font-bold transition-colors cursor-pointer"
+              className="px-8 py-3 bg-green-600 hover:bg-green-500 text-white rounded-full font-bold text-lg transition-colors cursor-pointer shadow-lg border-2 border-green-800"
             >
               Reset Filters
             </button>
@@ -87,10 +77,10 @@ const Dashboard = () => {
         )}
       </main>
       
-      <footer className="text-center py-6 text-gray-500 text-sm font-semibold mt-auto space-y-2">
-        <p>Telemetry generated with 🧀 & 🍅</p>
+      <footer className="text-center py-8 text-gray-800 text-sm font-bold mt-auto space-y-2 bg-white/80 border-t-4 border-green-600 backdrop-blur-sm">
+        <p className="text-lg">Telemetry generated with 🧀 & 🍅</p>
         <p className="text-xs font-normal">
-          <strong>Live Data Sources:</strong> <a href="https://wfhresearch.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-400">WFH Research (SWAA)</a> &amp; <a href="https://docs.github.com/en/rest" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-400">GitHub REST API</a>
+          <strong>Live Data Sources:</strong> <a href="https://wfhresearch.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-700">WFH Research (SWAA)</a> &amp; <a href="https://docs.github.com/en/rest" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-700">GitHub REST API</a>
         </p>
       </footer>
     </div>

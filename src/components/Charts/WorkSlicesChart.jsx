@@ -42,11 +42,11 @@ const WorkSlicesChart = ({ data }) => {
   }));
 
   return (
-    <div className="bg-gray-800 border-2 border-gray-700 rounded-xl p-5 shadow-lg h-full flex flex-col">
-      <h3 className="text-lg font-bold text-red-400 mb-2 border-b border-gray-700 pb-2">
+    <div className="bg-white/95 border border-gray-200 rounded p-5 shadow-sm h-full flex flex-col">
+      <h3 className="text-xl font-bold text-[#3E2723] mb-2 border-b border-gray-200 pb-2">
         Slices of Work: Focus vs Meetings
       </h3>
-      <p className="text-xs text-gray-400 mb-4">
+      <p className="text-sm text-gray-600 font-bold mb-4">
         Weekly Focus Hours vs. Meeting Overhead across different mandates.
       </p>
       
@@ -59,30 +59,30 @@ const WorkSlicesChart = ({ data }) => {
             data={chartData}
             margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#374151" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
             <XAxis 
               dataKey="name" 
-              tick={{ fill: '#9ca3af', fontWeight: 600 }} 
-              axisLine={{ stroke: '#4b5563' }}
+              tick={{ fill: '#4b5563', fontWeight: 700 }} 
+              axisLine={{ stroke: '#d1d5db' }}
               tickLine={false}
             />
             <YAxis 
-              tick={{ fill: '#9ca3af' }}
-              axisLine={{ stroke: '#4b5563' }}
+              tick={{ fill: '#4b5563', fontWeight: 600 }}
+              axisLine={{ stroke: '#d1d5db' }}
               tickLine={false}
-              label={{ value: 'Hours', angle: -90, position: 'insideLeft', fill: '#9ca3af' }}
+              label={{ value: 'Hours', angle: -90, position: 'insideLeft', fill: '#4b5563', fontWeight: 'bold' }}
             />
             <Tooltip 
-              cursor={{ fill: '#374151', opacity: 0.4 }}
+              cursor={{ fill: '#fcd34d', opacity: 0.3 }}
               contentStyle={{ 
-                backgroundColor: '#1f2937', 
-                border: '1px solid #4b5563',
+                backgroundColor: '#fff', 
+                border: '2px solid #22c55e',
                 borderRadius: '8px',
-                color: '#e5e7eb',
+                color: '#333',
                 fontWeight: 'bold'
               }}
             />
-            <Legend wrapperStyle={{ paddingTop: '10px' }} />
+            <Legend wrapperStyle={{ paddingTop: '10px', fontWeight: 'bold', color: '#333' }} />
             <Bar dataKey="Focus Hours" fill="#22c55e" radius={[4, 4, 0, 0]} maxBarSize={60} />
             <Bar dataKey="Meeting Overhead" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60} />
           </BarChart>

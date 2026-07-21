@@ -632,76 +632,89 @@ def process_data(
 
     categories    = list(FALLBACK_VELOCITIES.keys())
     base_focus_h  = 40.0
-    results: list[dict] = []
+    
+    # 1. Enforce Ingestion-Layer Data Quality Checks
+    for ind in industries:
+        onsite_col = f'full_onsite_{ind}'
+        hybrid_col = f'hybrid_{ind}'
+        remote_col = f'full_remote_{ind}'
+        assert onsite_col in latest_row, f"Missing data column for {onsite_col}"
+        assert hybrid_col in latest_row, f"Missing data column for {hybrid_col}"
+        assert remote_col in latest_row, f"Missing data column for {remote_col}"
+        total_pct = float(latest_row.get(onsite_col, 0.0) or 0.0) + float(latest_row.get(hybrid_col, 0.0) or 0.0) + float(latest_row.get(remote_col, 0.0) or 0.0)
+        assert total_pct > 0.0, f"Percentages for {ind} sum to 0 or less"
 
     # Reset seed for deterministic demographic generation across pipeline runs
     np.random.seed(42)
 
+    # 2. Vectorized DataFrame generation
+    idx = pd.MultiIndex.from_product([sorted(industries), AGE_GROUPS, GENDERS], names=['industry_raw', 'age_group', 'gender'])
+    df_results = pd.DataFrame(index=idx).reset_index()
+    
+    # Map industry data
+    industry_data = {}
     for ind in sorted(industries):
-        onsite_col = f'full_onsite_{ind}'
-        hybrid_col = f'hybrid_{ind}'
-        remote_col = f'full_remote_{ind}'
-
-        onsite_pct = float(latest_row.get(onsite_col, 0.0) or 0.0) / 100.0
-        hybrid_pct = float(latest_row.get(hybrid_col, 0.0) or 0.0) / 100.0
-        remote_pct = float(latest_row.get(remote_col, 0.0) or 0.0) / 100.0
-
-        total = onsite_pct + hybrid_pct + remote_pct
-        if total > 0:
-            probs = [remote_pct / total, hybrid_pct / total, onsite_pct / total]
-        else:
-            probs = [0.33, 0.33, 0.34]
-
-        industry_title = ind.replace('_', ' ').title()
-
-        for age in AGE_GROUPS:
-            for gender in GENDERS:
-                # Sample a work-setup category weighted by industry WFH proportions
-                cat     = np.random.choice(categories, p=probs)
-                cat_vel = github_velocities.get(cat, FALLBACK_VELOCITIES.get(cat, 0.05))
-                cat_turn = github_turnarounds.get(cat, 24.0)
-
-                # Focus / perks factors differ by category
-                if cat == 'Remote-First':
-                    cat_factor   = 0.55 + (remote_pct * 0.20)
-                    perks_factor = 0.20 + (onsite_pct * 0.30)
-                elif cat == 'Hybrid':
-                    cat_factor   = 0.45 + (hybrid_pct * 0.15)
-                    perks_factor = 0.50 + (onsite_pct * 0.40)
-                else:  # Onsite-Heavy
-                    cat_factor   = 0.35 + (onsite_pct * 0.10)
-                    perks_factor = 0.80 + (onsite_pct * 0.20)
-
-                # Small deterministic demographic noise (±5 %)
-                noise         = np.random.uniform(-0.05, 0.05)
-                focus_hours   = base_focus_h * (cat_factor + noise) * (1.0 + cat_vel)
-                meeting_overhead = max(5.0, base_focus_h - focus_hours)
-
-                # Pizza Party Index: performative-perk density per focus hour
-                pizza_party_index = (perks_factor / max(focus_hours, 1.0)) * 100.0
-
-                interruption_frequency = (meeting_overhead / base_focus_h) * 10.0 + np.random.poisson(2)
-                sustained_high_workload = max(0.0, (focus_hours + meeting_overhead - base_focus_h) / 5.0) + np.random.exponential(1.0)
-
-                results.append({
-                    'industry':            industry_title,
-                    'work_setup_category': cat,
-                    'work_setup': {
-                        'onsite_pct': round(onsite_pct * 100.0, 2),
-                        'hybrid_pct': round(hybrid_pct * 100.0, 2),
-                        'remote_pct': round(remote_pct * 100.0, 2),
-                    },
-                    'focus_hours':       round(float(focus_hours),        2),
-                    'meeting_overhead':  round(float(meeting_overhead),   2),
-                    'pizza_party_index': round(float(pizza_party_index),  2),
-                    'review_turnaround_hours': round(float(cat_turn),     2),
-                    'age_group':         age,
-                    'gender':            gender,
-                    'interruption_frequency': round(float(interruption_frequency), 2),
-                    'sustained_high_workload': round(float(sustained_high_workload), 2),
-                })
-
-    df_results = pd.DataFrame(results)
+        industry_data[ind] = {
+            'onsite_pct': float(latest_row.get(f'full_onsite_{ind}', 0.0) or 0.0) / 100.0,
+            'hybrid_pct': float(latest_row.get(f'hybrid_{ind}', 0.0) or 0.0) / 100.0,
+            'remote_pct': float(latest_row.get(f'full_remote_{ind}', 0.0) or 0.0) / 100.0,
+        }
+    
+    df_results['onsite_pct'] = df_results['industry_raw'].map(lambda x: industry_data[x]['onsite_pct'])
+    df_results['hybrid_pct'] = df_results['industry_raw'].map(lambda x: industry_data[x]['hybrid_pct'])
+    df_results['remote_pct'] = df_results['industry_raw'].map(lambda x: industry_data[x]['remote_pct'])
+    df_results['industry'] = df_results['industry_raw'].str.replace('_', ' ').str.title()
+    
+    # Probabilities
+    df_results['total_pct'] = df_results['onsite_pct'] + df_results['hybrid_pct'] + df_results['remote_pct']
+    mask_zero = df_results['total_pct'] == 0
+    df_results.loc[mask_zero, ['remote_pct', 'hybrid_pct', 'onsite_pct']] = [0.33, 0.33, 0.34]
+    df_results.loc[mask_zero, 'total_pct'] = 1.0
+    
+    p_remote = df_results['remote_pct'] / df_results['total_pct']
+    p_hybrid = df_results['hybrid_pct'] / df_results['total_pct']
+    
+    rand_cat = np.random.uniform(0, 1, size=len(df_results))
+    df_results['work_setup_category'] = np.select(
+        [rand_cat < p_remote, rand_cat < p_remote + p_hybrid],
+        ['Remote-First', 'Hybrid'],
+        default='Onsite-Heavy'
+    )
+    
+    # Velocities and Turnarounds
+    df_results['cat_vel'] = df_results['work_setup_category'].map(lambda c: github_velocities.get(c, FALLBACK_VELOCITIES.get(c, 0.05)))
+    df_results['review_turnaround_hours'] = df_results['work_setup_category'].map(lambda c: github_turnarounds.get(c, 24.0)).round(2)
+    
+    # Factors
+    df_results['cat_factor'] = np.select(
+        [df_results['work_setup_category'] == 'Remote-First', df_results['work_setup_category'] == 'Hybrid'],
+        [0.55 + df_results['remote_pct'] * 0.20, 0.45 + df_results['hybrid_pct'] * 0.15],
+        default=0.35 + df_results['onsite_pct'] * 0.10
+    )
+    df_results['perks_factor'] = np.select(
+        [df_results['work_setup_category'] == 'Remote-First', df_results['work_setup_category'] == 'Hybrid'],
+        [0.20 + df_results['onsite_pct'] * 0.30, 0.50 + df_results['onsite_pct'] * 0.40],
+        default=0.80 + df_results['onsite_pct'] * 0.20
+    )
+    
+    noise = np.random.uniform(-0.05, 0.05, size=len(df_results))
+    df_results['focus_hours'] = (base_focus_h * (df_results['cat_factor'] + noise) * (1.0 + df_results['cat_vel'])).round(2)
+    df_results['meeting_overhead'] = np.maximum(5.0, base_focus_h - df_results['focus_hours']).round(2)
+    
+    df_results['pizza_party_index'] = ((df_results['perks_factor'] / np.maximum(df_results['focus_hours'], 1.0)) * 100.0).round(2)
+    
+    df_results['interruption_frequency'] = ((df_results['meeting_overhead'] / base_focus_h) * 10.0 + np.random.poisson(2, size=len(df_results))).round(2)
+    df_results['sustained_high_workload'] = (np.maximum(0.0, (df_results['focus_hours'] + df_results['meeting_overhead'] - base_focus_h) / 5.0) + np.random.exponential(1.0, size=len(df_results))).round(2)
+    
+    # work_setup dict
+    df_results['work_setup'] = df_results.apply(lambda row: {
+        'onsite_pct': round(row['onsite_pct'] * 100.0, 2),
+        'hybrid_pct': round(row['hybrid_pct'] * 100.0, 2),
+        'remote_pct': round(row['remote_pct'] * 100.0, 2),
+    }, axis=1)
+    
+    cols_to_keep = ['industry', 'work_setup_category', 'work_setup', 'focus_hours', 'meeting_overhead', 'pizza_party_index', 'review_turnaround_hours', 'age_group', 'gender', 'interruption_frequency', 'sustained_high_workload']
+    df_results = df_results[cols_to_keep]
 
     # Add Burnout Risk Modeling using scikit-learn Pipeline
     if not df_results.empty:

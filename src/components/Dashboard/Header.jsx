@@ -27,41 +27,44 @@ const Header = ({ rawData = [] }) => {
   };
 
   return (
-    <header className="bg-gray-900 border-b border-gray-800 p-6 flex items-center justify-between shadow-md">
-      <div className="flex items-center gap-4">
-        <div className="bg-gradient-to-br from-red-500 to-orange-600 p-3 rounded-full text-white shadow-[0_0_15px_rgba(239,68,68,0.5)]">
-          <Pizza size={32} />
+    <header className="bg-white border-b-8 border-red-600 p-6 flex items-center justify-between shadow-[0_4px_20px_rgba(0,0,0,0.15)] relative overflow-hidden">
+      {/* Decorative green top border */}
+      <div className="absolute top-0 left-0 w-full h-2 bg-green-600"></div>
+      
+      <div className="flex items-center gap-4 relative z-10">
+        <div className="bg-green-600 p-3 rounded-full text-white shadow-lg border-2 border-white transform -rotate-12">
+          <Pizza size={36} fill="#ffcc00" />
         </div>
         <div>
-          <h1 className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-red-400 to-orange-500 tracking-tight">
-            Pizza Party Metrics
+          <h1 className="text-4xl font-extrabold text-red-700 tracking-tight font-serif drop-shadow-sm">
+            Luigi's Pizza Party Metrics
           </h1>
-          <p className="text-gray-400 font-medium mt-1">
-            Replacing Performative Perks with Real Productivity Telemetry
+          <p className="text-green-800 font-bold mt-1 text-sm uppercase tracking-wider">
+            Authentic Telemetry, Fresh Outta The Oven! 🤌
           </p>
         </div>
       </div>
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 relative z-10">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-blue-400 hover:text-blue-300 px-4 py-2 rounded-lg border border-gray-700 transition-colors text-sm font-medium"
+          className="flex items-center gap-2 bg-white hover:bg-gray-100 text-red-700 hover:text-red-800 px-4 py-2 rounded-full border-2 border-red-200 transition-colors text-sm font-bold shadow-sm"
         >
-          <Info size={16} />
-          <span>Methodology</span>
+          <Info size={18} />
+          <span>The Recipe (Methodology)</span>
         </button>
         <button
           onClick={exportData}
-          className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white px-4 py-2 rounded-lg border border-gray-700 transition-colors text-sm font-medium"
+          className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-full border-2 border-red-800 transition-colors text-sm font-bold shadow-md"
         >
-          <Download size={16} />
-          <span>Download Raw Data</span>
+          <Download size={18} />
+          <span>Box Up Data</span>
         </button>
-        <div className="hidden md:flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-full border border-gray-700">
+        <div className="hidden md:flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full border-2 border-green-500 shadow-sm">
           <span className="flex h-3 w-3 relative">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-500"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
           </span>
-          <span className="text-sm font-bold text-green-400">Live Telemetry</span>
+          <span className="text-sm font-extrabold text-green-800 uppercase">Oven is Hot</span>
         </div>
       </div>
       <MethodologyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
