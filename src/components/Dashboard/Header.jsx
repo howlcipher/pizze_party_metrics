@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import { Pizza, Download, Info } from 'lucide-react';
-import rawData from '../../data/pizza_metrics.json';
 import MethodologyModal from './MethodologyModal';
 
-const Header = () => {
+const Header = ({ rawData = [] }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const exportData = () => {

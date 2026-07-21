@@ -32,7 +32,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 6 | [Agent Suggestion] Accessibility: Form Control Association & ARIA charts | Done (2026-07-21) | 2.67 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Compliance issue) * 1.0 (decay) / 3 = 2.67 |
 | 12 | [Agent Suggestion] Data Pipeline: Real GitHub Collaboration Data Integration | Done (2026-07-21) | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.6-flash | 8 (Mandate for real data) * 1.0 (new capability) / 5 = 1.60 |
 | 8 | [Agent Suggestion] Data Transparency: Analytics Methodology Page | Done (2026-07-21) | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Addresses data trust) * 0.5 (decay) / 3 = 1.33 |
-| 14 | Live Data Ingestion API / Backend | Pending | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core requirement) * 1.0 (new capability) / 6 = 1.33 |
+| 14 | Live Data Ingestion API / Backend | Done (2026-07-21) | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core requirement) * 1.0 (new capability) / 6 = 1.33 |
 | 16 | [Agent Suggestion] DevOps: Implement Multi-Stage Job Separation with Quality & Security Gates | Pending | 1.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Security) * 0.5 (decay) / 4 = 1.00 |
 | 22 | [Agent Suggestion] Predictive Burnout Modeling | Pending | 1.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Advanced ML) * 1.0 (new capability) / 6 = 1.00 |
 | 19 | [Agent Suggestion] Meeting vs. Maker Time Analysis | Pending | 0.88 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 0.5 (decay) / 4 = 0.88 |
@@ -118,6 +118,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 14. Live Data Ingestion API / Backend
 **Description:** Build a backend or integration layer (e.g., WebSockets or a polling API) to ingest real and live data for the dashboard, replacing any static or mocked data.
 **Context:** Required to fulfill the "real and live data" mandate.
+**Done note (2026-07-21):** Implemented a FastAPI backend caching ETL results and proxying Vite to dynamically fetch live GitHub data.
 
 ### 15. [Agent Suggestion] Cross-Time-Zone Collaboration Index
 **Description:** Highlight the "follow the sun" advantage of remote teams by visualizing 24/7 continuous output metrics. This shows how distributed teams can keep projects moving around the clock without individual burnout.

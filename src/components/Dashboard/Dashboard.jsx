@@ -1,12 +1,13 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Header from './Header';
 import PizzaBoxFilter from '../Filters/PizzaBoxFilter';
 import PizzaGauge from '../Charts/PizzaGauge';
 import WorkSlicesChart from '../Charts/WorkSlicesChart';
 import DemographicsChart from '../Charts/DemographicsChart';
-import rawData from '../../data/pizza_metrics.json';
 
 const Dashboard = () => {
+  const [rawData, setRawData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     industry: '',
     age_group: '',
@@ -21,11 +22,33 @@ const Dashboard = () => {
         (!filters.work_setup || item.work_setup_category === filters.work_setup)
       );
     });
-  }, [filters]);
+  }, [filters, rawData]);
+
+  useEffect(() => {
+    fetch('/api/metrics')
+      .then(res => res.json())
+      .then(data => {
+        setRawData(data.metrics || []);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to fetch metrics", err);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center text-gray-100 font-sans">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-red-500 mb-4"></div>
+        <p className="text-xl font-bold text-gray-300">Fetching Live Telemetry...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100 font-sans">
-      <Header />
+      <Header rawData={rawData} />
       
       <main className="max-w-7xl mx-auto p-6 space-y-6">
         {/* Filters Section */}
