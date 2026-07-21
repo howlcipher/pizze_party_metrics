@@ -1,8 +1,11 @@
-import React from 'react';
-import { Pizza, Download } from 'lucide-react';
+import React, { useState } from 'react';
+import { Pizza, Download, Info } from 'lucide-react';
 import rawData from '../../data/pizza_metrics.json';
+import MethodologyModal from './MethodologyModal';
 
 const Header = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const exportData = () => {
     const payload = {
       metadata: {
@@ -41,6 +44,13 @@ const Header = () => {
       </div>
       <div className="flex items-center gap-3">
         <button
+          onClick={() => setIsModalOpen(true)}
+          className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-blue-400 hover:text-blue-300 px-4 py-2 rounded-lg border border-gray-700 transition-colors text-sm font-medium"
+        >
+          <Info size={16} />
+          <span>Methodology</span>
+        </button>
+        <button
           onClick={exportData}
           className="flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-gray-200 hover:text-white px-4 py-2 rounded-lg border border-gray-700 transition-colors text-sm font-medium"
         >
@@ -55,6 +65,7 @@ const Header = () => {
           <span className="text-sm font-bold text-green-400">Live Telemetry</span>
         </div>
       </div>
+      <MethodologyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </header>
   );
 };
