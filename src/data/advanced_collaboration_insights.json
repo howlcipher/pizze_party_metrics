@@ -1,0 +1,132 @@
+{
+    "industry_profile": [
+        {
+            "industry": "Arts Entertain",
+            "avg_focus_hours": 20.86,
+            "avg_meeting_overhead": 19.14,
+            "avg_pizza_party_index": 3.2
+        },
+        {
+            "industry": "Education",
+            "avg_focus_hours": 18.19,
+            "avg_meeting_overhead": 21.81,
+            "avg_pizza_party_index": 4.78
+        },
+        {
+            "industry": "Finance Insurance",
+            "avg_focus_hours": 21.62,
+            "avg_meeting_overhead": 18.38,
+            "avg_pizza_party_index": 2.76
+        },
+        {
+            "industry": "Government",
+            "avg_focus_hours": 18.81,
+            "avg_meeting_overhead": 21.19,
+            "avg_pizza_party_index": 4.51
+        },
+        {
+            "industry": "Healthcare",
+            "avg_focus_hours": 18.46,
+            "avg_meeting_overhead": 21.54,
+            "avg_pizza_party_index": 4.42
+        },
+        {
+            "industry": "Hospitaility Food",
+            "avg_focus_hours": 17.79,
+            "avg_meeting_overhead": 22.21,
+            "avg_pizza_party_index": 5.23
+        },
+        {
+            "industry": "Information",
+            "avg_focus_hours": 20.43,
+            "avg_meeting_overhead": 19.57,
+            "avg_pizza_party_index": 3.27
+        },
+        {
+            "industry": "Manufacturing",
+            "avg_focus_hours": 17.53,
+            "avg_meeting_overhead": 22.47,
+            "avg_pizza_party_index": 5.23
+        },
+        {
+            "industry": "Prof Bus Services",
+            "avg_focus_hours": 18.51,
+            "avg_meeting_overhead": 21.49,
+            "avg_pizza_party_index": 4.25
+        },
+        {
+            "industry": "Realestate",
+            "avg_focus_hours": 19.28,
+            "avg_meeting_overhead": 20.72,
+            "avg_pizza_party_index": 4.02
+        },
+        {
+            "industry": "Retail",
+            "avg_focus_hours": 18.1,
+            "avg_meeting_overhead": 21.9,
+            "avg_pizza_party_index": 4.94
+        },
+        {
+            "industry": "Transp Warehousing",
+            "avg_focus_hours": 18.12,
+            "avg_meeting_overhead": 21.88,
+            "avg_pizza_party_index": 4.77
+        },
+        {
+            "industry": "Utilities",
+            "avg_focus_hours": 18.52,
+            "avg_meeting_overhead": 21.48,
+            "avg_pizza_party_index": 4.7
+        },
+        {
+            "industry": "Wholesale",
+            "avg_focus_hours": 18.24,
+            "avg_meeting_overhead": 21.76,
+            "avg_pizza_party_index": 4.92
+        }
+    ],
+    "correlations": {
+        "focus_hours": {
+            "focus_hours": 1.0,
+            "meeting_overhead": -1.0,
+            "pizza_party_index": -0.968
+        },
+        "meeting_overhead": {
+            "focus_hours": -1.0,
+            "meeting_overhead": 1.0,
+            "pizza_party_index": 0.968
+        },
+        "pizza_party_index": {
+            "focus_hours": -0.968,
+            "meeting_overhead": 0.968,
+            "pizza_party_index": 1.0
+        }
+    },
+    "best_setup_by_age": [
+        {
+            "age_group": "25-34",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.62
+        },
+        {
+            "age_group": "35-44",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.55
+        },
+        {
+            "age_group": "18-24",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.5
+        },
+        {
+            "age_group": "45-54",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.48
+        },
+        {
+            "age_group": "55+",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.32
+        }
+    ]
+}
