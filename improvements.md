@@ -50,6 +50,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 21 | Stereotype Pizza Parlor Aesthetic Overhaul | ⚠️ below floor | 0.30 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Fun branding) * 0.25 (decay) / 5 = 0.30 |
 | 26 | UI/UX: Metric Tooltips & Explanations | Pending | 0.58 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Clearer metrics) * 0.25 (decay) / 3 = 0.58 |
 | 27 | UI/UX: Mobile Responsiveness | Pending | 0.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Usability) * 0.25 (decay) / 4 = 0.50 |
+| 28 | Data Pipeline: Ingest Additional Relevant Datasets for Higher Accuracy | Pending | 0.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Improves core metric accuracy) * 0.25 (decay) / 4 = 0.50 |
 
 ## Details
 
@@ -178,3 +179,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 27. UI/UX: Mobile Responsiveness
 **Description:** Make sure the dashboard looks good and functions well on mobile devices. Ensure charts resize correctly, navigation is accessible, and the layout doesn't break on smaller screens.
 **Context:** A core requirement for modern web applications. Currently, the dashboard may only be optimized for desktop displays.
+
+### 28. Data Pipeline: Ingest Additional Relevant Datasets for Higher Accuracy
+**Description:** Expand the data ingestion pipeline to include more diverse and relevant datasets (e.g., from additional repositories, surveys, or productivity APIs) to increase the accuracy and reliability of our collaboration and velocity metrics.
+**Context:** Ensures the insights generated are statistically significant and representative across different team structures and industries.
