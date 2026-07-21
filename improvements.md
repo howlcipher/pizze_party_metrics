@@ -30,13 +30,15 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 5 | [Agent Suggestion] Accessibility: Form Control Association & ARIA charts | Pending | 2.66 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Compliance issue) * 1.0 / 3 (Template updates) = 2.66 |
 | 6 | [Agent Suggestion] Data Pipeline: Defensive Network Requests & Error Handling | Pending | 2.66 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Prevents crashes) * 1.0 / 3 (Try-except & timeouts) = 2.66 |
 | 7 | [Agent Suggestion] DevOps: Implement Multi-Stage Job Separation with Quality & Security Gates | Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Security & CI integrity) * 1.0 / 4 (Workflow refactor) = 2.0 |
-| 8 | Demographic Analytics (Age, Industry, Gender) | Done (2026-07-21) | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Good segmentation value) * 1.0 / 4 (Standard UI/Data implementation) = 1.75 |
-| 9 | [Agent Suggestion] Meeting vs. Maker Time Analysis | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 1.0 / 4 (Can piggyback on interruption data) = 1.75 |
-| 10 | [Agent Suggestion] DevOps: Isolate ETL Data Pipeline and Ensure Idempotency | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Decouples failure modes) * 1.0 / 4 (Artifact passing setup) = 1.75 |
-| 11 | [Agent Suggestion] Data Pipeline: Vectorize Pandas Operations | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Idiomatic & fast) * 1.0 / 4 (Logic rewrite) = 1.75 |
-| 12 | Interruption & Context Switch Impact Dashboard | Pending | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High value for productivity insights) * 1.0 / 5 (Complex live data correlation) = 1.6 |
-| 13 | Live Data Ingestion API / Backend | Pending | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core requirement for live data) * 1.0 / 6 (Significant backend work) = 1.33 |
-| 14 | [Agent Suggestion] Predictive Burnout Modeling | Pending | 1.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Advanced ML feature) * 1.0 / 6 (Requires data_analyst pipeline & scikit-learn) = 1.0 |
+| 8 | Theme Options: Light, Dark, and Color-blind Modes | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (high accessibility/UX value) * 1.0 / 4 (standard UI state management) = 1.75 |
+| 9 | [Agent Suggestion] DevOps: Isolate ETL Data Pipeline and Ensure Idempotency | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Decouples failure modes) * 1.0 / 4 (Artifact passing setup) = 1.75 |
+| 10 | [Agent Suggestion] Data Pipeline: Vectorize Pandas Operations | Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Idiomatic & fast) * 1.0 / 4 (Logic rewrite) = 1.75 |
+| 11 | Live Data Ingestion API / Backend | Pending | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core requirement for live data) * 1.0 / 6 (Significant backend work) = 1.33 |
+| 12 | Stereotype Pizza Parlor Aesthetic Overhaul | Pending | 1.20 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (fun brand alignment) * 1.0 / 5 (significant CSS/UI redesign) = 1.20 |
+| 13 | [Agent Suggestion] Meeting vs. Maker Time Analysis | Pending | 0.88 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 0.5 (decay from Demographic Analytics) / 4 = 0.88 |
+| 14 | Interruption & Context Switch Impact Dashboard | Pending | 0.80 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High value for productivity insights) * 0.5 (decay) / 5 = 0.80 |
+| 15 | [Agent Suggestion] Predictive Burnout Modeling | Pending | 0.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Advanced ML feature) * 0.5 (decay) / 6 = 0.50 |
+| 16 | Demographic Analytics (Age, Industry, Gender) | Done (2026-07-21) | - | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | Shipped! |
 
 ## Details
 
@@ -68,31 +70,39 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 **Description:** Split the monolithic `build-and-deploy` job in `deploy.yml` into `validate`, `build`, and `deploy` jobs with security scanning (Trivy/npm audit).
 **Context:** Aligns with `devops` constraints ensuring security and logical environment isolation.
 
-### 8. Demographic Analytics (Age, Industry, Gender)
-**Description:** Add demographic breakdowns to the metrics. Understand how different age ranges, industries, and genders interact with the product or experience different levels of productivity.
-**Context:** Ensure data pipelines aggregate this securely and anonymized. 
-**Done note (2026-07-21):** Implemented new UI components using Recharts for Age and Gender breakdowns. Data structure updated to support these dimensions, and the dashboard aesthetic upgraded to dark mode.
+### 8. Theme Options: Light, Dark, and Color-blind Modes
+**Description:** Add a theme switcher that allows users to toggle between Light Mode, Dark Mode (currently default), and a Color-blind friendly mode.
+**Context:** This improves accessibility (see `accessibility` skill) and gives users control over their dashboard viewing experience.
 
-### 9. [Agent Suggestion] Meeting vs. Maker Time Analysis
-**Description:** Analyze calendar data to show the ratio of uninterrupted "Maker Time" versus fragmented "Meeting Time."
-**Context:** A natural extension to the context-switching metrics that provides highly actionable insights for teams.
-
-### 10. [Agent Suggestion] DevOps: Isolate ETL Data Pipeline and Ensure Idempotency
+### 9. [Agent Suggestion] DevOps: Isolate ETL Data Pipeline and Ensure Idempotency
 **Description:** Extract the Python ETL script to its own `data-pipeline` GitHub Actions job and pass the JSON artifact to the `build` job.
 **Context:** Ensures absolute separation between the Python execution environment and Node.js build per `devops_sre` standards.
 
-### 11. [Agent Suggestion] Data Pipeline: Vectorize Pandas Operations
+### 10. [Agent Suggestion] Data Pipeline: Vectorize Pandas Operations
 **Description:** Refactor the `process_data` function in `etl.py` to use vectorized pandas operations instead of iterating with `.iloc[0]`.
 **Context:** Adheres to `data_analyst` principles for optimal DataFrame performance and readability.
 
-### 12. Interruption & Context Switch Impact Dashboard
-**Description:** Visualize how interruptions destroy context switching. We need to track the frequency of interruptions (e.g., Slack messages, ad-hoc calls) and correlate them with task completion times or velocity drops.
-**Context:** This requires tracking the "cost" of a context switch. As defined by the product strategy (MVP), we should start with a simple time-loss calculation before moving to complex models.
-
-### 13. Live Data Ingestion API / Backend
+### 11. Live Data Ingestion API / Backend
 **Description:** Build a backend or integration layer (e.g., WebSockets or a polling API) to ingest real and live data for the dashboard, replacing any static or mocked data.
 **Context:** Required to fulfill the "real and live data" mandate.
 
-### 14. [Agent Suggestion] Predictive Burnout Modeling
+### 12. Stereotype Pizza Parlor Aesthetic Overhaul
+**Description:** Redesign the dashboard to lean heavily into a stereotypical pizza parlor theme. Think red and white checkered tablecloth patterns, Italian flag color accents (green/red/white), and rustic UI elements.
+**Context:** A fun branding exercise that gives the dashboard a unique identity compared to generic SaaS dashboards.
+
+### 13. [Agent Suggestion] Meeting vs. Maker Time Analysis
+**Description:** Analyze calendar data to show the ratio of uninterrupted "Maker Time" versus fragmented "Meeting Time."
+**Context:** A natural extension to the context-switching metrics that provides highly actionable insights for teams.
+
+### 14. Interruption & Context Switch Impact Dashboard
+**Description:** Visualize how interruptions destroy context switching. We need to track the frequency of interruptions (e.g., Slack messages, ad-hoc calls) and correlate them with task completion times or velocity drops.
+**Context:** This requires tracking the "cost" of a context switch. As defined by the product strategy (MVP), we should start with a simple time-loss calculation before moving to complex models.
+
+### 15. [Agent Suggestion] Predictive Burnout Modeling
 **Description:** Use the `data_analyst` skill principles (scikit-learn pipelines, fixed random seeds) to build a machine learning model that predicts burnout risk based on interruption frequency and sustained high-workload periods.
 **Context:** Adds predictive value rather than just historical reporting.
+
+### 16. Demographic Analytics (Age, Industry, Gender)
+**Description:** Add demographic breakdowns to the metrics. Understand how different age ranges, industries, and genders interact with the product or experience different levels of productivity.
+**Context:** Ensure data pipelines aggregate this securely and anonymized. 
+**Done note (2026-07-21):** Implemented new UI components using Recharts for Age and Gender breakdowns. Data structure updated to support these dimensions, and the dashboard aesthetic upgraded to dark mode.
