@@ -25,7 +25,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | --- | --- | --- | --- | --- | --- | --- |
 | 46 | Direct User Feedback: Update Async Collab Labels | Done (2026-07-21) | 6.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (User req) * 1.0 / 1 = 6.00 |
 | 48 | Direct User Feedback: Disable Tooltips on Mobile | Done (2026-07-21) | 6.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (User req) * 1.0 / 1 = 6.00 |
-| 47 | Direct User Feedback: Improve Top Bar Mobile UI | Open | 3.50 | - | gemini-3.1-pro-high | 7 (User req) * 1.0 / 2 = 3.50 |
+| 47 | Direct User Feedback: Improve Top Bar Mobile UI | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (User req) * 1.0 / 2 = 3.50 |
 | 35 | [Agent Suggestion] UI/UX: Fix Export Race Condition & Accessibility Contrast | Open | 1.75 | - | gemini-3.1-pro-high | 7 (Compliance/Bugs) * 0.5 (decay) / 2 = 1.75 |
 | 44 | [Agent Suggestion] Frontend: Move Aggregations to ETL | Open | 1.16 | - | gemini-3.1-pro-high | 7 (Performance) * 0.5 (decay) / 3 = 1.16 |
 | 33 | [Agent Suggestion] DevOps: Enforce QA Guardrails & Trivy Security Checks | Open | 1.00 | - | gemini-3.1-pro-high | 8 (High risk) * 0.25 (decay) / 2 = 1.00 |
@@ -321,7 +321,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 47. UI/UX: Improve Mobile Responsiveness of Top Bar
 **Description:** Fix the top bar which currently gets "wonky" on mobile devices.
 **Context:** User requested improvement for mobile responsiveness.
-**Status:** Open
+**Done note (2026-07-21):** Refactored `Header.jsx` to stack flex elements vertically on small screens and reduced typography sizes for mobile viewports.
 
 ### 48. UI/UX: Disable Pizza Party Index Tooltips on Mobile
 **Description:** Disable tooltips on mobile for the Pizza Party index chart, as they currently appear behind the score and are unnecessary on mobile. Keep them on desktop.
