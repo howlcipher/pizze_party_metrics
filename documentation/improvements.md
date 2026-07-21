@@ -23,6 +23,14 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 
 | # | Improvement | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
+| 33 | [Agent Suggestion] DevOps: Enforce QA Guardrails & Trivy Security Checks | Open | 4.00 | - | gemini-3.1-pro-high | 8 (High risk) * 1.0 / 2 = 4.00 |
+| 34 | [Agent Suggestion] Data Pipeline: Remove Silent Exceptions in ETL | Open | 4.00 | - | gemini-3.1-pro-high | 8 (Fixes silent failures) * 1.0 / 2 = 4.00 |
+| 35 | [Agent Suggestion] UI/UX: Fix Export Race Condition & Accessibility Contrast | Open | 3.50 | - | gemini-3.1-pro-high | 7 (Compliance/Bugs) * 1.0 / 2 = 3.50 |
+| 36 | [Agent Suggestion] Data Pipeline: Asynchronous API Execution | Open | 2.67 | - | gemini-3.1-pro-high | 8 (Resiliency) * 1.0 / 3 = 2.67 |
+| 37 | [Agent Suggestion] Data Pipeline: Decouple ETL Monolith | Open | 2.00 | - | gemini-3.1-pro-high | 8 (Maintainability) * 1.0 / 4 = 2.00 |
+| 38 | [Agent Suggestion] Frontend: Lazy Load Chart Components | Open | 2.33 | - | gemini-3.1-pro-high | 7 (Performance) * 1.0 / 3 = 2.33 |
+| 39 | [Agent Suggestion] Frontend: Migrate Codebase to TypeScript | Open | 1.33 | - | gemini-3.1-pro-high | 8 (Strict typing) * 1.0 / 6 = 1.33 |
+| 40 | [Agent Suggestion] Accessibility: Use Native HTML5 Dialog | Open | 1.33 | - | gemini-3.1-pro-high | 4 (Native accessibility) * 1.0 / 3 = 1.33 |
 | 1 | [Agent Suggestion] Frontend: Rendering Efficiency (useMemo) | Done (2026-07-21) | 4.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Major performance fix) * 1.0 / 2 = 4.00 |
 | 2 | [Agent Suggestion] DevOps: Enforce Strict Dependency Versioning and Enable Caching | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Fixes flakey builds) * 1.0 / 2 = 3.50 |
 | 4 | [Agent Suggestion] Data Transparency: Raw Data Export & Reproducibility | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Ensures reproducibility) * 1.0 / 2 = 3.50 |
@@ -232,3 +240,43 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 **Context:** Further proves the async collaboration thesis.
 **Status:** ⚠️ below floor
 **Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
+
+### 33. [Agent Suggestion] DevOps: Enforce QA Guardrails & Trivy Security Checks
+**Description:** Update `deploy.yml` to execute Python tests, check for `flake8` linting, and enforce `trivy` failure thresholds (`exit-code: 1`). Add SAST tool (e.g. `bandit`) for Python code.
+**Context:** Based on the Multi-Agent Taskforce audit using `devops` and `quality_assurance` skills. Currently, tests are unexecuted and security gates are soft.
+**Status:** Open
+
+### 34. [Agent Suggestion] Data Pipeline: Remove Silent Exceptions in ETL
+**Description:** Audit and remove all bare `except Exception: pass` blocks in `etl.py`, replacing them with specific error handling and structured logging.
+**Context:** Based on the Multi-Agent Taskforce audit using `software_development` skills. Eradicates silent failures in the data ingestion layer.
+**Status:** Open
+
+### 35. [Agent Suggestion] UI/UX: Fix Export Race Condition & Accessibility Contrast
+**Description:** Delay `URL.revokeObjectURL` in `Header.jsx`, fix the screen-reader `role="img"` conflict in charts, and ensure green UI elements pass WCAG contrast checks.
+**Context:** Based on the Multi-Agent Taskforce audit using `ui_ux` skills to resolve critical interaction and compliance bugs.
+**Status:** Open
+
+### 36. [Agent Suggestion] Data Pipeline: Asynchronous API Execution
+**Description:** Rewrite `GitHubClient` using `asyncio` and `aiohttp` to ensure non-blocking network calls with robust pool limits.
+**Context:** Based on the Multi-Agent Taskforce audit using `architectural_guardrails`. The current implementation blocks execution synchronously.
+**Status:** Open
+
+### 37. [Agent Suggestion] Data Pipeline: Decouple ETL Monolith
+**Description:** Break the monolithic `etl.py` script into distinct modules (`extract`, `transform`, `load`). Implement strict schema validation (e.g., `Pandera`).
+**Context:** Based on the Multi-Agent Taskforce audit to improve codebase maintainability and cohesion.
+**Status:** Open
+
+### 38. [Agent Suggestion] Frontend: Lazy Load Chart Components
+**Description:** Use `React.lazy()` and `<Suspense>` to dynamically load heavy charting components (`Recharts`) to optimize Time-To-Interactive (TTI).
+**Context:** Based on the Multi-Agent Taskforce audit using `frontend_engineering` to enforce code-splitting.
+**Status:** Open
+
+### 39. [Agent Suggestion] Frontend: Migrate Codebase to TypeScript
+**Description:** Convert all `.jsx` files to `.tsx` and implement strict typings for props, state, and data fetching.
+**Context:** Enforces the strict `frontend_engineering` rule requiring all frontend codebases to be written in TypeScript.
+**Status:** Open
+
+### 40. [Agent Suggestion] Accessibility: Use Native HTML5 Dialog
+**Description:** Refactor `MethodologyModal.jsx` to use the native HTML5 `<dialog>` element for out-of-the-box keyboard navigation, focus trapping, and screen-reader support.
+**Context:** Based on the Multi-Agent Taskforce audit using `accessibility` skills to fix modal interaction friction.
+**Status:** Open
