@@ -647,9 +647,13 @@ def process_data(
     # Reset seed for deterministic demographic generation across pipeline runs
     np.random.seed(42)
 
-    # 2. Vectorized DataFrame generation
-    idx = pd.MultiIndex.from_product([sorted(industries), AGE_GROUPS, GENDERS], names=['industry_raw', 'age_group', 'gender'])
-    df_results = pd.DataFrame(index=idx).reset_index()
+    # 2. Vectorized DataFrame generation for realistic N-sizes (5000 respondents)
+    N = 5000
+    df_results = pd.DataFrame({
+        'industry_raw': np.random.choice(sorted(industries), size=N),
+        'age_group': np.random.choice(AGE_GROUPS, size=N, p=[0.10, 0.35, 0.30, 0.15, 0.10]),
+        'gender': np.random.choice(GENDERS, size=N, p=[0.52, 0.48])
+    })
     
     # Map industry data
     industry_data = {}
