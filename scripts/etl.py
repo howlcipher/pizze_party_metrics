@@ -691,17 +691,15 @@ def process_data(
         [0.55 + df_results['remote_pct'] * 0.20, 0.45 + df_results['hybrid_pct'] * 0.15],
         default=0.35 + df_results['onsite_pct'] * 0.10
     )
-    df_results['perks_factor'] = np.select(
-        [df_results['work_setup_category'] == 'Remote-First', df_results['work_setup_category'] == 'Hybrid'],
-        [0.20 + df_results['onsite_pct'] * 0.30, 0.50 + df_results['onsite_pct'] * 0.40],
-        default=0.80 + df_results['onsite_pct'] * 0.20
-    )
+    df_results['collaboration_score'] = (24.0 / np.maximum(df_results['review_turnaround_hours'], 1.0)).round(2)
     
     noise = np.random.uniform(-0.05, 0.05, size=len(df_results))
     df_results['focus_hours'] = (base_focus_h * (df_results['cat_factor'] + noise) * (1.0 + df_results['cat_vel'])).round(2)
     df_results['meeting_overhead'] = np.maximum(5.0, base_focus_h - df_results['focus_hours']).round(2)
     
-    df_results['pizza_party_index'] = ((df_results['perks_factor'] / np.maximum(df_results['focus_hours'], 1.0)) * 100.0).round(2)
+    # New Pizza Party Index: Collaboration + Productivity
+    # Higher score = Better (More focus hours + faster review turnarounds)
+    df_results['pizza_party_index'] = (df_results['focus_hours'] + df_results['collaboration_score'] * 2.0).round(2)
     
     df_results['interruption_frequency'] = ((df_results['meeting_overhead'] / base_focus_h) * 10.0 + np.random.poisson(2, size=len(df_results))).round(2)
     df_results['sustained_high_workload'] = (np.maximum(0.0, (df_results['focus_hours'] + df_results['meeting_overhead'] - base_focus_h) / 5.0) + np.random.exponential(1.0, size=len(df_results))).round(2)

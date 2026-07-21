@@ -19,8 +19,8 @@ const PizzaGauge = ({ data }) => {
     ? data.reduce((acc, curr) => acc + curr.pizza_party_index, 0) / data.length 
     : 0;
   
-  // Assume max index is 5 for the gauge
-  const maxIndex = 5;
+  // Assume max index is 40 for the gauge (based on typical 20-30 averages)
+  const maxIndex = 40;
   const normalizedValue = Math.min(avgIndex, maxIndex);
   const remainingValue = maxIndex - normalizedValue;
 
@@ -29,12 +29,12 @@ const PizzaGauge = ({ data }) => {
     { name: 'Remaining', value: remainingValue }
   ];
 
-  const COLORS = ['#e3342f', '#f0e6d2']; // red and dough color
+  const COLORS = ['#16a34a', '#f0e6d2']; // Green (good performance) and dough color
 
   const renderCustomNeedle = () => {
     return (
       <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none mt-16">
-        <span className="text-5xl font-extrabold text-red-700 drop-shadow-md">{avgIndex.toFixed(1)}</span>
+        <span className="text-5xl font-extrabold text-green-700 drop-shadow-md">{avgIndex.toFixed(1)}</span>
         <span className="text-sm font-extrabold text-gray-500 uppercase">Avg Index</span>
       </div>
     );
@@ -46,12 +46,12 @@ const PizzaGauge = ({ data }) => {
         The Pizza Party Index Gauge
       </h3>
       <p className="text-sm text-gray-600 mb-4 font-bold">
-        Correlation of in-office perks with fragmented focus time. Higher = More Performative.
+        Collaboration Speed + Actual Productivity (Focus Hours). Higher = Better Performance.
       </p>
       
-      <div className="flex-grow relative min-h-[200px]" role="img" aria-label={`Pizza Party Index Gauge. Current average index is ${avgIndex.toFixed(1)} out of 5.`}>
+      <div className="flex-grow relative min-h-[200px]" role="img" aria-label={`Pizza Party Index Gauge. Current average index is ${avgIndex.toFixed(1)} out of 40.`}>
         <div style={srOnlyStyle}>
-          This gauge displays the Pizza Party Index, reflecting the correlation of in-office perks with fragmented focus time. The current average index is {avgIndex.toFixed(1)} out of 5.
+          This gauge displays the Pizza Party Index, reflecting collaboration speed and actual productivity. The current average index is {avgIndex.toFixed(1)} out of 40.
         </div>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>

@@ -2,7 +2,7 @@
 
 *Mamma mia! Replacing performative corporate pizza parties with cold, hard, freshly-baked data.* 🤌
 
-Welcome to **Pizza Party Metrics**, a highly thematic, automated dashboard that calculates the **"Pizza Party Index"**—the ratio of superficial office perks to actual uninterrupted focus hours. We combine real-world Work-From-Home (WFH) survey data with live GitHub repository delivery cadence (PR merge times and review turnarounds) to serve up the spiciest insights on Remote, Hybrid, and Onsite work setups.
+Welcome to **Pizza Party Metrics**, a highly thematic, automated dashboard that calculates the **"Pizza Party Index"**—a holistic score measuring actual productivity (Focus Hours) combined with collaboration velocity (PR merge speeds and review turnarounds). We combine real-world Work-From-Home (WFH) survey data with live GitHub repository delivery cadence to serve up the spiciest insights on Remote, Hybrid, and Onsite work setups. A higher index means your team is a high-performing pizza pie!
 
 ## 📈 The Freshly Baked Metrics
 <!-- METRICS_START -->
