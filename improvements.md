@@ -28,7 +28,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 4 | [Agent Suggestion] Data Transparency: Raw Data Export & Reproducibility | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Ensures reproducibility) * 1.0 / 2 = 3.50 |
 | 23 | Demographic Analytics (Age, Industry, Gender) | Done (2026-07-21) | - | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | Shipped! |
 | 3 | [Agent Suggestion] UI/UX: Reset Filters CTA | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Saves users from dead ends) * 1.0 / 2 = 3.50 |
-| 5 | [Agent Suggestion] Data Pipeline: Add Module-Level Documentation & Decouple Configuration | Pending | 3.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Good code hygiene) * 1.0 / 2 = 3.00 |
+| 5 | [Agent Suggestion] Data Pipeline: Add Module-Level Documentation & Decouple Configuration | Done (2026-07-21) | 3.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Good code hygiene) * 1.0 / 2 = 3.00 |
 | 6 | [Agent Suggestion] Accessibility: Form Control Association & ARIA charts | Pending | 2.66 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Compliance issue) * 1.0 / 3 = 2.66 |
 | 12 | [Agent Suggestion] Data Pipeline: Real GitHub Collaboration Data Integration | Pending | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Mandate for real data) * 1.0 (new capability) / 5 = 1.60 |
 | 7 | [Agent Suggestion] Data Pipeline: Defensive Network Requests & Error Handling | Pending | 1.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Prevents crashes) * 0.5 (decay) / 3 = 1.33 |
@@ -72,6 +72,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 5. [Agent Suggestion] Data Pipeline: Add Module-Level Documentation & Decouple Configuration
 **Description:** Add a structured module-level docstring to `etl.py` and move hardcoded URLs to top-level constants.
 **Context:** Enforces `data_analyst` reporting standards and `software_development` low coupling principles.
+**Done note (2026-07-21):** Added module-level docstring to `etl.py` and extracted URLs to top-level constants `GITHUB_ISSUES_URL_TEMPLATE` and `WFH_DATA_URL`.
 
 ### 6. [Agent Suggestion] Accessibility: Form Control Association & ARIA charts
 **Description:** Map `<label>` elements to `<select>` tags using `htmlFor` and `id`. Add `.sr-only` descriptions or `aria-labels` to the Recharts graphics.

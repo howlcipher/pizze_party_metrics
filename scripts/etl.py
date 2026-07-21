@@ -1,3 +1,13 @@
+"""
+ETL Pipeline for Pizza Party Metrics.
+
+This script implements an ETL (Extract, Transform, Load) pipeline that:
+1. Fetches GitHub issue resolution times for a repository to calculate a developer velocity proxy.
+2. Downloads and parses the Work From Home (WFH) Research dataset.
+3. Computes the Pizza Party Index and other workspace arrangement metrics by industry.
+4. Saves the resulting metrics in JSON format for downstream application usage.
+"""
+
 import os
 import json
 import logging
@@ -12,13 +22,17 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 # Set fixed random seed as per data_analyst skill constraints
 np.random.seed(42)
 
+# Top-level constants
+GITHUB_ISSUES_URL_TEMPLATE = "https://api.github.com/repos/{repo}/issues?state=closed&per_page={limit}"
+WFH_DATA_URL = "https://wfhresearch.com/wp-content/uploads/2026/07/WFHtimeseries_monthly.xlsx"
+
 def fetch_github_velocity(repo="pandas-dev/pandas", limit=100):
     """
     Fetch recent closed issues from GitHub to calculate an average 'velocity' or 'focus hours' proxy.
     Returns average hours taken to close an issue.
     """
     logging.info(f"Fetching GitHub issue data for {repo}...")
-    url = f"https://api.github.com/repos/{repo}/issues?state=closed&per_page={limit}"
+    url = GITHUB_ISSUES_URL_TEMPLATE.format(repo=repo, limit=limit)
     
     headers = {'Accept': 'application/vnd.github.v3+json'}
     response = requests.get(url, headers=headers)
@@ -50,7 +64,7 @@ def download_wfh_data(filepath="wfh_data.xlsx"):
     """
     Download WFH Research dataset if it doesn't exist.
     """
-    url = "https://wfhresearch.com/wp-content/uploads/2026/07/WFHtimeseries_monthly.xlsx"
+    url = WFH_DATA_URL
     if not os.path.exists(filepath):
         logging.info("Downloading WFH dataset...")
         response = requests.get(url)
