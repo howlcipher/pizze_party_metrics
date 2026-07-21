@@ -1,0 +1,105 @@
+{
+    "Remote-First": {
+        "velocity_proxy": 0.013396,
+        "median_resolution_h": 74.65,
+        "total_samples": 193,
+        "pr_samples": 185,
+        "issue_samples": 8,
+        "repos": [
+            {
+                "repo": "gitlabhq/gitlabhq",
+                "pr_samples": 38,
+                "issue_samples": 0,
+                "median_pr_hours": 525.21,
+                "median_issue_hours": null
+            },
+            {
+                "repo": "pandas-dev/pandas",
+                "pr_samples": 50,
+                "issue_samples": 0,
+                "median_pr_hours": 410.7,
+                "median_issue_hours": null
+            },
+            {
+                "repo": "automattic/wp-calypso",
+                "pr_samples": 50,
+                "issue_samples": 1,
+                "median_pr_hours": 14.1,
+                "median_issue_hours": 1253.02
+            },
+            {
+                "repo": "hashicorp/terraform",
+                "pr_samples": 47,
+                "issue_samples": 7,
+                "median_pr_hours": 19.64,
+                "median_issue_hours": 118.29
+            }
+        ],
+        "fetched_at": "2026-07-21T16:12:29.393765+00:00",
+        "is_fallback": false
+    },
+    "Hybrid": {
+        "velocity_proxy": 0.038652,
+        "median_resolution_h": 25.87,
+        "total_samples": 206,
+        "pr_samples": 145,
+        "issue_samples": 61,
+        "repos": [
+            {
+                "repo": "microsoft/vscode",
+                "pr_samples": 49,
+                "issue_samples": 41,
+                "median_pr_hours": 6.16,
+                "median_issue_hours": 75.12
+            },
+            {
+                "repo": "facebook/react",
+                "pr_samples": 46,
+                "issue_samples": 6,
+                "median_pr_hours": 220.61,
+                "median_issue_hours": 2379.3
+            },
+            {
+                "repo": "flutter/flutter",
+                "pr_samples": 50,
+                "issue_samples": 14,
+                "median_pr_hours": 3.55,
+                "median_issue_hours": 75.87
+            }
+        ],
+        "fetched_at": "2026-07-21T16:12:29.393765+00:00",
+        "is_fallback": false
+    },
+    "Onsite-Heavy": {
+        "velocity_proxy": 0.010554,
+        "median_resolution_h": 94.76,
+        "total_samples": 154,
+        "pr_samples": 150,
+        "issue_samples": 4,
+        "repos": [
+            {
+                "repo": "apache/kafka",
+                "pr_samples": 50,
+                "issue_samples": 0,
+                "median_pr_hours": 177.91,
+                "median_issue_hours": null
+            },
+            {
+                "repo": "tensorflow/tensorflow",
+                "pr_samples": 50,
+                "issue_samples": 0,
+                "median_pr_hours": 105.04,
+                "median_issue_hours": null
+            },
+            {
+                "repo": "oracle/graal",
+                "pr_samples": 50,
+                "issue_samples": 4,
+                "median_pr_hours": 9.81,
+                "median_issue_hours": 527.68
+            }
+        ],
+        "fetched_at": "2026-07-21T16:12:29.393765+00:00",
+        "is_fallback": false
+    }
+}
