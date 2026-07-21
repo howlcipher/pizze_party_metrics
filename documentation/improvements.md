@@ -30,7 +30,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 44 | [Agent Suggestion] Frontend: Move Aggregations to ETL | Done (2026-07-21) | 1.16 | - | gemini-3.1-pro-high | 7 (Performance) * 0.5 (decay) / 3 = 1.16 |
 | 33 | [Agent Suggestion] DevOps: Enforce QA Guardrails & Trivy Security Checks | Done (2026-07-21) | 1.00 | - | gemini-3.1-pro-high | 8 (High risk) * 0.25 (decay) / 2 = 1.00 |
 | 40 | [Agent Suggestion] Accessibility: Use Native HTML5 Dialog | Done (2026-07-21) | 0.66 | - | gemini-3.1-pro-high | 4 (Native accessibility) * 0.5 (decay) / 3 = 0.66 |
-| 38 | [Agent Suggestion] Frontend: Lazy Load Chart Components | Open | 0.58 | - | gemini-3.1-pro-high | 7 (Performance) * 0.25 (decay) / 3 = 0.58 |
+| 38 | [Agent Suggestion] Frontend: Lazy Load Chart Components | Done (2026-07-21) | 0.58 | - | gemini-3.1-pro-high | 7 (Performance) * 0.25 (decay) / 3 = 0.58 |
 | 45 | [Agent Suggestion] Data Pipeline: Sync Local JSON Data | ⚠️ below floor | 0.25 | - | gemini-3.1-pro-high | 8 (Data corruption) * 0.0625 (decay) / 2 = 0.25 |
 | 34 | [Agent Suggestion] Data Pipeline: Remove Silent Exceptions in ETL | ⚠️ below floor | 0.25 | - | gemini-3.1-pro-high | 8 (Fixes silent failures) * 0.0625 (decay) / 2 = 0.25 |
 | 41 | [Agent Suggestion] Data Pipeline: Remove Hardcoded Bias | ⚠️ below floor | 0.16 | - | gemini-3.1-pro-high | 8 (Data integrity) * 0.0625 (decay) / 3 = 0.16 |
@@ -276,7 +276,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 38. [Agent Suggestion] Frontend: Lazy Load Chart Components
 **Description:** Use `React.lazy()` and `<Suspense>` to dynamically load heavy charting components (`Recharts`) to optimize Time-To-Interactive (TTI).
 **Context:** Based on the Multi-Agent Taskforce audit using `frontend_engineering` to enforce code-splitting.
-**Status:** Open
+**Done note (2026-07-21):** Refactored Dashboard.jsx to use `React.lazy()` for all chart components and wrapped them in `<Suspense>`, successfully splitting the bundle.
 
 ### 39. [Agent Suggestion] Frontend: Migrate Codebase to TypeScript
 **Description:** Convert all `.jsx` files to `.tsx` and implement strict typings for props, state, and data fetching.
