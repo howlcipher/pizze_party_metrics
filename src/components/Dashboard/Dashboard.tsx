@@ -5,6 +5,7 @@ import pizzaMetricsData from '../../data/pizza_metrics.json';
 
 const PizzaGauge = lazy(() => import('../Charts/PizzaGauge'));
 const WorkSlicesChart = lazy(() => import('../Charts/WorkSlicesChart'));
+const CommuterCostCard = lazy(() => import('../Charts/CommuterCostCard'));
 const CollaborationChart = lazy(() => import('../Charts/CollaborationChart'));
 const DemographicsChart = lazy(() => import('../Charts/DemographicsChart'));
 const IndustryBenchmarksChart = lazy(() => import('../Charts/IndustryBenchmarksChart'));
@@ -59,6 +60,11 @@ const Dashboard = () => {
               {/* Slices of Work takes 1 column (or 2 on XL) */}
               <div className="col-span-1 xl:col-span-2">
                 <WorkSlicesChart data={filteredData} />
+              </div>
+
+              {/* Commuter Cost & Vehicle Wear Analysis */}
+              <div className="col-span-1 lg:col-span-2 xl:col-span-3">
+                <CommuterCostCard data={filteredData} selectedWorkSetup={filters.work_setup} />
               </div>
 
               {/* Collaboration Chart takes 1 or 2 cols */}
