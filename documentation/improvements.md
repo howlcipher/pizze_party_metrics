@@ -27,7 +27,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 55 | Data Pipeline & UI: Generalized Async Collaboration Effectiveness | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 56 | UI/UX: Commuter Cost Analysis (Vehicle Wear & Tear) | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 57 | UI/UX: Commute Time Opportunity Cost | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
-| 58 | Data Analyst Insight: Commute CO2 / Environmental Impact | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
+| 58 | Data Analyst Insight: Commute CO2 / Environmental Impact | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 59 | Data Analyst Insight: Commute Fatigue vs. Deep Work Capacity | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 54 | Data Pipeline & UI: Calculate and Display Optimal Setup by Industry | 📅 Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 4 = 1.75 |
 | 19 | [Agent Suggestion] Meeting vs. Maker Time Analysis | 📅 Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 1 (decay) / 4 = 1.75 |
@@ -404,7 +404,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 58. 58. Data Analyst Insight: Commute CO2 / Environmental Impact
 **Description:** Introduce an environmental metric tracking the estimated CO2 emissions associated with the commute over a year, based on the selected days in the office. 
 **Context:** Connects remote work not just to personal productivity, but to corporate ESG (Environmental, Social, and Governance) goals.
-**Status:** 📅 Pending
+**Status:** Done (2026-07-22)
+**Done note (2026-07-22):** Implemented `CommuteCO2Card` using EPA standards (400g CO2/mile for average car) and 22kg/tree offset metrics. Integrated into the main dashboard grid next to the Commute Time card.
 
 ### 59. 59. Data Analyst Insight: Commute Fatigue vs. Deep Work Capacity
 **Description:** Correlate commute durations with cognitive drain. Visualize how a 1-hour daily commute impacts available "focus hours" or deep work capacity by introducing a "Fatigue Penalty" to the score.
