@@ -4,7 +4,7 @@
 
 <h1 align="center">🍕 Pizza Party Metrics (PPM)</h1>
 
-<p align="center"><em>Mamma mia! Replacing performative corporate pizza parties with cold, hard, freshly-baked data.</em> 🤌</p>
+<p align="center"><em>Mamma mia! Checking the "come back for the culture (and the pizza parties)" return-to-office pitch against cold, hard, freshly-baked data.</em> 🤌</p>
 
 <p align="center">
   <a href="https://github.com/howlcipher/pizza_party_metrics/actions/workflows/deploy.yml"><img src="https://github.com/howlcipher/pizza_party_metrics/actions/workflows/deploy.yml/badge.svg" alt="Deploy status" /></a>
@@ -19,7 +19,7 @@
   <a href="https://howlcipher.github.io/pizza_party_metrics/"><strong>🍕 Try the live dashboard →</strong></a>
 </p>
 
-Welcome to **Pizza Party Metrics**, a highly thematic, automated dashboard that calculates the **"Pizza Party Index"** — a composite score combining real Focus Hours with async collaboration velocity. We fuse real-world Work-From-Home survey data with live GitHub repository delivery cadence to serve up the spiciest insights on Remote, Hybrid, and Onsite work setups. Higher index, higher-performing pizza pie. 🍕📈
+Every return-to-office memo says the same thing: come back for the culture — the collaboration, the energy, the pizza parties. **Pizza Party Metrics** checks that pitch against real data. We fuse real-world Work-From-Home survey data (Remote/Hybrid/Onsite rates across 9 office-based industries) with live GitHub repository delivery telemetry into a **"Pizza Party Index"** — a composite score of Focus Hours and async collaboration velocity — plus dedicated breakdowns of commute cost, commute-time opportunity cost, and CO₂ impact. Across nearly every industry in the dataset, Remote-First comes out ahead. Higher index, higher-performing pizza pie. 🍕📈
 
 ## 📸 Live Preview
 

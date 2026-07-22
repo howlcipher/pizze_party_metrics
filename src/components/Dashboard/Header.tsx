@@ -44,7 +44,7 @@ const Header = ({ rawData = [] }) => {
             Luigi's Pizza Party Metrics
           </h1>
           <p className="text-[var(--chart-primary)] font-bold mt-1 text-xs md:text-sm uppercase tracking-wider">
-            Authentic Telemetry, Fresh Outta The Oven! 🤌
+            Real Data vs. The Return-to-Office "Culture" Pitch 🍕
           </p>
         </div>
       </div>

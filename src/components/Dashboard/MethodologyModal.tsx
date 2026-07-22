@@ -63,6 +63,17 @@ const MethodologyModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
       <div className="p-6 space-y-6 text-gray-800 text-sm leading-relaxed font-medium">
         <section>
           <h3 className="text-xl font-extrabold text-red-800 mb-2 flex items-center gap-2 pizza-card-title">
+            <span className="text-xl">❓</span> Why "Pizza Party"?
+          </h3>
+          <div className="bg-white p-4 rounded-lg border-2 border-green-600 shadow-sm">
+            <p className="text-gray-800">
+              Return-to-office mandates are almost always sold on <strong>culture</strong> — the collaboration, the energy, the free pizza parties. This dashboard is a check on that pitch: it takes the real Stanford WFH Research survey (Remote/Hybrid/Onsite rates by industry) and cross-references it with live GitHub delivery telemetry to see whether being in the building actually correlates with better focus, faster collaboration, or lower cost. Every metric below explains exactly how that comparison is made, and where its limits are.
+            </p>
+          </div>
+        </section>
+
+        <section>
+          <h3 className="text-xl font-extrabold text-red-800 mb-2 flex items-center gap-2 pizza-card-title">
             <span className="text-xl">🍕</span> Pizza Party Index (PPI)
           </h3>
           <div className="bg-white p-4 rounded-lg border-2 border-green-600 shadow-sm">

@@ -40,7 +40,14 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen text-[var(--app-text)] font-sans">
       <Header rawData={rawData} />
-      
+
+      <div className="max-w-7xl mx-auto px-6 pt-6">
+        <p className="text-center text-sm md:text-base text-[var(--card-text)] bg-amber-50 border-2 border-dashed border-[var(--dashboard-border)] rounded-lg py-3 px-4">
+          Every "return to office" memo promises culture, collaboration, and pizza parties.{' '}
+          <strong>This dashboard checks that pitch against real WFH survey data and live GitHub delivery telemetry</strong> — no vibes, just slices.
+        </p>
+      </div>
+
       <main className="max-w-7xl mx-auto p-6 space-y-6">
         {/* Filters Section */}
         <section>
