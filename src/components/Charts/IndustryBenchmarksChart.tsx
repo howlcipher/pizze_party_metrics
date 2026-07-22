@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine, Cell 
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine, Cell
 } from 'recharts';
 import { Trophy, Award, CheckCircle2, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import TooltipInfo from '../TooltipInfo';
@@ -289,13 +289,13 @@ const IndustryBenchmarksChart: React.FC<IndustryBenchmarksChartProps> = ({ selec
       {(viewMode === 'both' || viewMode === 'chart') && (
         <div className="flex flex-col min-h-[360px]" role="figure" aria-label="Bar chart comparing focus hours and meeting overhead across industries.">
           <div style={srOnlyStyle}>
-            This bar chart compares average focus hours and meeting overhead across 14 industries.
+            This bar chart compares average focus hours and meeting overhead across {rawProfiles.length} industries.
           </div>
-          <div className="w-full h-[360px]">
+          <div className="w-full h-[380px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart
                 data={sortedProfiles}
-                margin={{ top: 20, right: 20, left: -10, bottom: 65 }}
+                margin={{ top: 20, right: 20, left: -10, bottom: 75 }}
               >
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-line)" vertical={false} />
                 <XAxis 
@@ -353,17 +353,16 @@ const IndustryBenchmarksChart: React.FC<IndustryBenchmarksChartProps> = ({ selec
                     );
                   }}
                 />
-                <Legend wrapperStyle={{ paddingTop: '10px', fontSize: '12px', fontWeight: 'bold' }} />
-                
-                {/* Reference line for baseline focus average */}
-                <ReferenceLine 
-                  y={overallStats.avgFocus} 
-                  stroke="var(--chart-primary)" 
-                  strokeDasharray="4 4" 
-                  label={{ value: `Avg Focus: ${overallStats.avgFocus}h`, fill: 'var(--chart-primary)', position: 'insideTopLeft', fontSize: 10, fontWeight: 'bold' }} 
+                {/* Reference line for baseline focus average -- the exact value is
+                    already shown in the summary box above, so this stays a plain
+                    dashed guide with no in-chart label to avoid colliding with bars. */}
+                <ReferenceLine
+                  y={overallStats.avgFocus}
+                  stroke="var(--chart-primary)"
+                  strokeDasharray="4 4"
                 />
 
-                <Bar dataKey="avg_focus_hours" name="Focus Hours" radius={[4, 4, 0, 0]}>
+                <Bar dataKey="avg_focus_hours" name="Focus Hours" radius={[6, 6, 0, 0]}>
                   {sortedProfiles.map((entry) => {
                     const isSelected = selectedIndustry && entry.industry.toLowerCase() === selectedIndustry.toLowerCase();
                     return (
@@ -376,7 +375,7 @@ const IndustryBenchmarksChart: React.FC<IndustryBenchmarksChartProps> = ({ selec
                     );
                   })}
                 </Bar>
-                <Bar dataKey="avg_meeting_overhead" name="Meeting Overhead" radius={[4, 4, 0, 0]}>
+                <Bar dataKey="avg_meeting_overhead" name="Meeting Overhead" radius={[6, 6, 0, 0]}>
                   {sortedProfiles.map((entry) => {
                     const isSelected = selectedIndustry && entry.industry.toLowerCase() === selectedIndustry.toLowerCase();
                     return (

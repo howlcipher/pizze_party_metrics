@@ -1,8 +1,31 @@
-# 🍕 Pizza Party Metrics (PPM)
+<p align="center">
+  <img src="./public/og-image.jpg" alt="Pizza Party Metrics — track your slices, stats, and success" width="720" />
+</p>
 
-*Mamma mia! Replacing performative corporate pizza parties with cold, hard, freshly-baked data.* 🤌
+<h1 align="center">🍕 Pizza Party Metrics (PPM)</h1>
 
-Welcome to **Pizza Party Metrics**, a highly thematic, automated dashboard that calculates the **"Pizza Party Index"**—a holistic score measuring actual productivity (Focus Hours) combined with collaboration velocity (PR merge speeds and review turnarounds). We combine real-world Work-From-Home (WFH) survey data with live GitHub repository delivery cadence to serve up the spiciest insights on Remote, Hybrid, and Onsite work setups. A higher index means your team is a high-performing pizza pie!
+<p align="center"><em>Mamma mia! Replacing performative corporate pizza parties with cold, hard, freshly-baked data.</em> 🤌</p>
+
+<p align="center">
+  <a href="https://github.com/howlcipher/pizza_party_metrics/actions/workflows/deploy.yml"><img src="https://github.com/howlcipher/pizza_party_metrics/actions/workflows/deploy.yml/badge.svg" alt="Deploy status" /></a>
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white&labelColor=20232a" alt="React 19" />
+  <img src="https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white&labelColor=20232a" alt="Vite 8" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?logo=tailwindcss&logoColor=white&labelColor=20232a" alt="Tailwind CSS 4" />
+  <img src="https://img.shields.io/badge/Data%20Source-Stanford%20WFH%20Research-16a34a" alt="Real WFH survey data" />
+  <img src="https://img.shields.io/badge/Extra%20Cheese-100%25-ffcc00?labelColor=c62828" alt="Extra cheese: 100%" />
+</p>
+
+<p align="center">
+  <a href="https://howlcipher.github.io/pizza_party_metrics/"><strong>🍕 Try the live dashboard →</strong></a>
+</p>
+
+Welcome to **Pizza Party Metrics**, a highly thematic, automated dashboard that calculates the **"Pizza Party Index"** — a composite score combining real Focus Hours with async collaboration velocity. We fuse real-world Work-From-Home survey data with live GitHub repository delivery cadence to serve up the spiciest insights on Remote, Hybrid, and Onsite work setups. Higher index, higher-performing pizza pie. 🍕📈
+
+## 📸 Live Preview
+
+<p align="center">
+  <img src="./public/screenshot-dashboard.png" alt="Pizza Party Metrics dashboard — checkered trattoria theme, Pizza Party Index gauge, and industry benchmarks" width="900" />
+</p>
 
 ## 📈 The Freshly Baked Metrics
 <!-- METRICS_START -->
@@ -14,41 +37,48 @@ Welcome to **Pizza Party Metrics**, a highly thematic, automated dashboard that 
 *(These metrics are automatically updated by our automated ETL pipeline!)*
 
 ## 🍅 The Ingredients (Live Data Sources)
+
 We strictly use 100% organic, real-world data to calculate our metrics:
 
-1. **WFH Research Dataset (SWAA Data)**: Sourced directly from [WFH Research](https://wfhresearch.com/). We parse the latest monthly Excel timeseries to get empirical Remote/Hybrid/Onsite distributions across major industries.
-2. **GitHub REST API (Velocity Proxies)**: We dynamically fetch real Pull Request merge times and code review turnarounds from public repositories that champion specific work styles:
+1. **WFH Research Dataset (SWAA Data)** — sourced directly from [WFH Research](https://wfhresearch.com/). We parse the latest monthly Excel timeseries to get empirical Remote/Hybrid/Onsite distributions across 9 office-based industries (frontline/manual-labor sectors like retail, food service, and manufacturing are excluded — hybrid/remote framing doesn't apply to them).
+2. **GitHub REST API (Velocity Proxies)** — we dynamically fetch real Pull Request merge times and code review turnarounds from public repositories that champion specific work styles:
    - *Remote-First*: `gitlabhq/gitlabhq`, `pandas-dev/pandas`, `hashicorp/terraform`
    - *Hybrid*: `microsoft/vscode`, `facebook/react`
    - *Onsite-Heavy*: `apache/kafka`, `oracle/graal`
 
-**Note on Data Synthesis (Monte Carlo):** To protect privacy, the Stanford WFH dataset provides *macro-aggregated percentages* rather than individual respondent micro-data. To generate our interactive 5,000-respondent dashboard, our ETL pipeline acts as a statistical synthesizer. It uses a Monte Carlo approach to sample exactly 5,000 virtual respondents, perfectly weighted against the true empirical distributions of the underlying raw data (e.g., industry, age, and gender percentages). This ensures the dashboard's simulated dataset is statistically accurate to the real-world macro data!
+   This proxy is measured **once per work-setup category, not per industry** — every industry filter shows the same three collaboration numbers. See "The Recipe" (in-app Methodology modal) for the full caveat.
+
+**Note on Data Synthesis (Monte Carlo):** To protect privacy, the Stanford WFH dataset provides *macro-aggregated percentages* rather than individual respondent micro-data. To generate our interactive 5,000-respondent dashboard, our ETL pipeline acts as a statistical synthesizer. It uses a Monte Carlo approach to sample exactly 5,000 virtual respondents, perfectly weighted against the true empirical distributions of the underlying raw data (industry, age, and gender percentages). This ensures the dashboard's simulated dataset is statistically accurate to the real-world macro data.
+
+**Note on Industry Categories:** "Information" means telecom, broadcasting, publishing, and data hosting — not software/IT services. Computer systems design, software engineering consulting, and engineering firms are grouped under "Professional & Business Services" in this dataset. We don't show a separate "IT/Software/Engineering" category because the source survey doesn't break one out, and inventing a number would defeat the point of using real data.
 
 ## 👨‍🍳 The Kitchen Architecture
 
-- **Data Engineering (Python)**: Our vectorized ETL pipeline (`scripts/etl.py`) pulls data, applies dynamic ingestion assertions, normalizes it, and calculates demographic probabilities. It caches GitHub API responses locally and gracefully handles API rate limits using exponential backoff. 
-- **Advanced Multi-Agent Insights**: A secondary pipeline (`scripts/multi_agent_analysis.py`) calculates deep-dish analytics like **Burnout Risk Scores**, **True Productive Hours**, and **Work-Setup Correlations** using Scikit-Learn.
-- **Frontend (React + Vite)**: A beautifully styled, fully-responsive dashboard built with Tailwind CSS v4, Recharts, and a whole lot of *comical Italian pizza parlor* charm. 
-- **DevOps (GitHub Actions)**: A multi-stage CI/CD workflow (`.github/workflows/deploy.yml`) runs on push and on a daily schedule to refresh data, scan for vulnerabilities (`npm audit`, Trivy), update the README metrics, and deploy seamlessly to GitHub Pages.
+| Layer | Stack | What it does |
+| --- | --- | --- |
+| **Data Engineering** | Python | `scripts/etl/` pulls WFH + GitHub data, applies ingestion assertions, normalizes it, and calculates demographic probabilities. Caches GitHub API responses locally and gracefully handles rate limits with exponential backoff. |
+| **Advanced Insights** | Python + scikit-learn | `scripts/multi_agent_analysis.py` calculates deep-dish analytics: Burnout Risk Scores, True Productive Hours, and Work-Setup Correlations. |
+| **Frontend** | React 19 + Vite + Tailwind CSS v4 | A fully-responsive dashboard styled with a comically-Italian trattoria theme: checkered tablecloth borders, a hand-lettered brand wordmark, and a pizza-box card shell shared by every chart. |
+| **DevOps** | GitHub Actions | Multi-stage CI/CD (`.github/workflows/deploy.yml`) runs on push and on a daily schedule to refresh data, run tests + lint, scan for vulnerabilities (`npm audit`, Trivy), update this README's metrics, and deploy to GitHub Pages. |
 
 ## 🛵 Delivery & Local Development
 
-Want to spin some dough locally? 
+Want to spin some dough locally?
 
-1. **Install Dependencies:**
+1. **Install dependencies:**
    ```bash
    npm install
    pip install -r requirements.txt
    ```
 
-2. **Run the Data Pipeline (Optional):**
+2. **Run the data pipeline (optional):**
    ```bash
    python scripts/etl.py
    python scripts/multi_agent_analysis.py
    ```
    *(Ensure you have a `GITHUB_TOKEN` environment variable exported to avoid API rate limits!)*
 
-3. **Serve the Pizza (Start Frontend):**
+3. **Serve the pizza (start the frontend):**
    ```bash
    npm run dev
    ```

@@ -1,8 +1,8 @@
 import { PizzaData } from "../../types";
 import React, { useMemo } from 'react';
-import { 
-  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
-  PieChart, Pie, Cell, Legend
+import {
+  BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  PieChart, Pie, Cell, Legend, LabelList
 } from 'recharts';
 import { Users } from 'lucide-react';
 import TooltipInfo from '../TooltipInfo';
@@ -93,7 +93,9 @@ const DemographicsChart = ({ data }: { data: PizzaData[] }) => {
                 cursor={{ fill: '#fcd34d', opacity: 0.3 }}
                 contentStyle={{ backgroundColor: 'var(--tooltip-bg)', border: '2px solid #e3342f', borderRadius: '8px', color: '#333', fontWeight: 'bold' }}
               />
-              <Bar dataKey="count" fill="var(--chart-danger)" radius={[4, 4, 0, 0]} name="Respondents" />
+              <Bar dataKey="count" fill="var(--chart-danger)" radius={[6, 6, 0, 0]} name="Respondents">
+                <LabelList dataKey="count" position="top" style={{ fill: 'var(--card-text)', fontWeight: 700, fontSize: 12 }} />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -115,6 +117,18 @@ const DemographicsChart = ({ data }: { data: PizzaData[] }) => {
                 paddingAngle={5}
                 dataKey="value"
                 stroke="none"
+                label={({ cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
+                  const RADIAN = Math.PI / 180;
+                  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+                  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+                  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+                  return (
+                    <text x={x} y={y} textAnchor="middle" dominantBaseline="central" fill="#fff" fontWeight={700} fontSize={14}>
+                      {`${((percent ?? 0) * 100).toFixed(0)}%`}
+                    </text>
+                  );
+                }}
+                labelLine={false}
               >
                 {genderData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={PIE_COLORS[index % PIE_COLORS.length]} />
@@ -147,10 +161,17 @@ const DemographicsChart = ({ data }: { data: PizzaData[] }) => {
                 contentStyle={{ backgroundColor: 'var(--tooltip-bg)', border: '2px solid #3b82f6', borderRadius: '8px', color: '#333', fontWeight: 'bold' }}
               />
               <Legend wrapperStyle={{ fontSize: '12px', color: '#333', fontWeight: 'bold' }} />
-              <Bar dataKey="focus" stackId="a" fill="var(--chart-primary)" name="Focus Hours" radius={[0, 0, 0, 0]} />
-              <Bar dataKey="meeting" stackId="a" fill="var(--chart-warning)" name="Meeting Hours" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="focus" stackId="a" fill="var(--chart-primary)" name="Focus Hours" radius={[0, 0, 0, 0]}>
+                <LabelList dataKey="focus" position="inside" style={{ fill: '#fff', fontWeight: 700, fontSize: 12 }} formatter={(v: number) => `${v}h`} />
+              </Bar>
+              <Bar dataKey="meeting" stackId="a" fill="var(--chart-warning)" name="Meeting Hours" radius={[6, 6, 0, 0]}>
+                <LabelList dataKey="meeting" position="inside" style={{ fill: '#3e2723', fontWeight: 700, fontSize: 12 }} formatter={(v: number) => `${v}h`} />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
+          <p className="text-xs text-[var(--card-subtext)] text-center mt-2 italic">
+            Age has little independent effect on Focus vs. Meeting time here — Work Setup (Remote-First / Hybrid / Onsite-Heavy) is the real driver. See "Slices of Work" above for that breakdown.
+          </p>
         </div>
       </div>
     </div>
