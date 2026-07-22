@@ -256,7 +256,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 34. [Agent Suggestion] Data Pipeline: Remove Silent Exceptions in ETL
 **Description:** Audit and remove all bare `except Exception: pass` blocks in `etl.py`, replacing them with specific error handling and structured logging.
 **Context:** Based on the Multi-Agent Taskforce audit using `software_development` skills. Eradicates silent failures in the data ingestion layer.
-**Status:** Open
+**Status:** ⚠️ below floor
+**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
 
 ### 35. [Agent Suggestion] UI/UX: Fix Export Race Condition & Accessibility Contrast
 **Description:** Delay `URL.revokeObjectURL` in `Header.jsx`, fix the screen-reader `role="img"` conflict in charts, and ensure green UI elements pass WCAG contrast checks.
@@ -266,12 +267,14 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 36. [Agent Suggestion] Data Pipeline: Asynchronous API Execution
 **Description:** Rewrite `GitHubClient` using `asyncio` and `aiohttp` to ensure non-blocking network calls with robust pool limits.
 **Context:** Based on the Multi-Agent Taskforce audit using `architectural_guardrails`. The current implementation blocks execution synchronously.
-**Status:** Open
+**Status:** ⚠️ below floor
+**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
 
 ### 37. [Agent Suggestion] Data Pipeline: Decouple ETL Monolith
 **Description:** Break the monolithic `etl.py` script into distinct modules (`extract`, `transform`, `load`). Implement strict schema validation (e.g., `Pandera`).
 **Context:** Based on the Multi-Agent Taskforce audit to improve codebase maintainability and cohesion.
-**Status:** Open
+**Status:** ⚠️ below floor
+**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
 
 ### 38. [Agent Suggestion] Frontend: Lazy Load Chart Components
 **Description:** Use `React.lazy()` and `<Suspense>` to dynamically load heavy charting components (`Recharts`) to optimize Time-To-Interactive (TTI).
@@ -281,7 +284,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 39. [Agent Suggestion] Frontend: Migrate Codebase to TypeScript
 **Description:** Convert all `.jsx` files to `.tsx` and implement strict typings for props, state, and data fetching.
 **Context:** Enforces the strict `frontend_engineering` rule requiring all frontend codebases to be written in TypeScript.
-**Status:** Open
+**Status:** ⚠️ below floor
+**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
 
 ### 40. [Agent Suggestion] Accessibility: Use Native HTML5 Dialog
 **Description:** Refactor `MethodologyModal.jsx` to use the native HTML5 `<dialog>` element for out-of-the-box keyboard navigation, focus trapping, and screen-reader support.
@@ -291,17 +295,20 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 41. [Agent Suggestion] Data Pipeline: Remove Hardcoded Bias
 **Description:** Remove the hardcoded `turnaround_base` values in `etl.py` that intentionally handicap the "Onsite-Heavy" category. Use actual telemetry data from the `VelocityAnalyzer`.
 **Context:** Based on the Data Analyst subagent audit. Enforces strict data integrity and prevents observational bias.
-**Status:** Open
+**Status:** ⚠️ below floor
+**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
 
 ### 42. [Agent Suggestion] Data Pipeline: Fix ML Data Leakage
 **Description:** Refactor the `LogisticRegression` pipeline in `etl.py` to use proper train/test splits (`cross_val_score` or `train_test_split`) instead of predicting directly on the training dataset.
 **Context:** Based on the Data Analyst subagent audit. Prevents overfitting and ensures the burnout prediction model is statistically valid.
-**Status:** Open
+**Status:** ⚠️ below floor
+**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
 
 ### 43. [Agent Suggestion] Data Pipeline: Use Pandas .assign()
 **Description:** Refactor column assignments in `etl.py` to use `.assign()` or strict `.loc` indexing to avoid `SettingWithCopyWarning` and enforce immutability.
 **Context:** Adheres to the strict `data_analyst` skill guidelines for idiomatic pandas usage.
-**Status:** Open
+**Status:** ⚠️ below floor
+**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
 
 ### 44. [Agent Suggestion] Frontend: Move Aggregations to ETL
 **Description:** Refactor `WorkSlicesChart.jsx` and `CollaborationChart.jsx` to consume pre-aggregated data metrics rather than running expensive `.reduce()` operations on the raw dataset locally.
@@ -311,7 +318,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 45. [Agent Suggestion] Data Pipeline: Sync Local JSON Data
 **Description:** Re-run the local `etl.py` script to update `pizza_metrics.json` so that the local data matches the new mathematical formulas (specifically fixing the mathematically impossible Pizza Party Index scores in the local environment).
 **Context:** Resolves a discrepancy where the local JSON has outdated metrics causing the gauge charts to invert.
-**Status:** Open
+**Status:** ⚠️ below floor
+**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
 
 ### 46. UI/UX: Update Async Collaboration Velocity Chart Labels
 **Description:** Change "Online Collaboration Score" to "Collaboration Score" in the Async Collaboration Velocity chart. Update subtitle "Online collaboration efficiency vs. time blocked waiting." to remove the word "Online".
