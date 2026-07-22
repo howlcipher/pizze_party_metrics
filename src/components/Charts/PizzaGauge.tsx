@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import TooltipInfo from '../TooltipInfo';
 
-const srOnlyStyle = {
+const srOnlyStyle: React.CSSProperties = {
   position: 'absolute',
   width: '1px',
   height: '1px',
@@ -21,7 +21,7 @@ const PizzaGauge = ({ data }: { data: PizzaData[] }) => {
     let topSetup = "No Data";
 
     if (data && data.length > 0) {
-      const setupScores = {};
+      const setupScores: Record<string, { total: number, count: number }> = {};
       for (let i = 0; i < data.length; i++) {
         const cat = data[i].work_setup_category;
         if (!setupScores[cat]) {

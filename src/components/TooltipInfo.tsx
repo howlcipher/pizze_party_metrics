@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const TooltipInfo = ({ content }) => {
+const TooltipInfo = ({ content }: { content: React.ReactNode }) => {
   const [show, setShow] = useState(false);
 
   return (

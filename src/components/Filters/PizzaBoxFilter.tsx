@@ -2,14 +2,14 @@ import { PizzaData } from "../../types";
 import React, { useMemo } from 'react';
 import { Filter } from 'lucide-react';
 
-const PizzaBoxFilter = ({ filters, setFilters, data }: { filters: Record<string, string>, setFilters: (f: Record<string, string>) => void, data: PizzaData[] }) => {
+const PizzaBoxFilter = ({ filters, setFilters, data }: { filters: Record<string, string>, setFilters: React.Dispatch<React.SetStateAction<Record<string, string>>>, data: PizzaData[] }) => {
   const { industries, ageGroups, workSetups } = useMemo(() => ({
     industries: [...new Set(data.map(d => d.industry))].sort(),
     ageGroups: [...new Set(data.map(d => d.age_group))].sort(),
     workSetups: [...new Set(data.map(d => d.work_setup_category))].sort(),
   }), [data]);
 
-  const handleFilterChange = (key, value) => {
+  const handleFilterChange = (key: string, value: string) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 

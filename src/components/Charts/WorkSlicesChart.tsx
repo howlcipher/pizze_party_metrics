@@ -5,7 +5,7 @@ import {
 } from 'recharts';
 import TooltipInfo from '../TooltipInfo';
 
-const srOnlyStyle = {
+const srOnlyStyle: React.CSSProperties = {
   position: 'absolute',
   width: '1px',
   height: '1px',
@@ -22,7 +22,7 @@ const WorkSlicesChart = ({ data }: { data: PizzaData[] }) => {
   const chartData = useMemo(() => {
     if (!data || data.length === 0) return [];
 
-    const setupMap = {};
+    const setupMap: Record<string, { focus_hours: number, meeting_overhead: number, count: number }> = {};
     for (let i = 0; i < data.length; i++) {
       const curr = data[i];
       const cat = curr.work_setup_category;

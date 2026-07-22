@@ -1,0 +1,11 @@
+Please implement the following refactor in the `pizza_party_metrics` repository:
+
+**Goal:** Address issue #49: "Direct User Feedback: Display Pizza Party Index Math"
+**Description:** Add a tooltip, subtitle, or Methodology Modal note to explain exactly how the Pizza Party Index is calculated: `(focus_hours + collaboration_score * 2.0)`, up to a max of 40.
+
+**Instructions:**
+1. Open `/run/media/system/tallgeese/dev/pizza_party_metrics/src/components/Charts/PizzaGauge.jsx`.
+2. Find the description paragraph that says: "Displays the highest-scoring Work Setup for your filters. Higher scores = Better performance."
+3. Add a line or subtitle under it (or in a tooltip next to the title) stating: `Formula: Focus Hours + (Collaboration Score × 2.0), up to a max of 40.`
+4. Also open `/run/media/system/tallgeese/dev/pizza_party_metrics/src/components/Dashboard/MethodologyModal.jsx` and add this exact formula math `(Focus Hours + (Collaboration Score × 2.0), up to a max of 40)` to the explanation for the Pizza Party Index section so it is completely transparent.
+5. Save the files cleanly. You do not need to run a build or commit.
