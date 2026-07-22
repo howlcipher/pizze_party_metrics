@@ -24,7 +24,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | # | Improvement | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
 | 51 | UI/UX: Display Optimal Setup by Age Group | Done (2026-07-22) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
-| 52 | UI/UX: Display Industry Benchmarks | 📅 Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
+| 52 | UI/UX: Display Industry Benchmarks | Done (2026-07-22) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
 | 53 | UI/UX: Add Statistical Insights / Correlations Card | 📅 Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
 | 55 | Data Pipeline & UI: Generalized Async Collaboration Effectiveness | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 56 | UI/UX: Commuter Cost Analysis (Vehicle Wear & Tear) | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
@@ -369,7 +369,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 52. 52. UI/UX: Display Industry Benchmarks
 **Description:** Add a leaderboard or benchmark comparison component using `industry_profile` data.
 **Context:** Sourced from `advanced_collaboration_insights.json`, allowing users to compare their selected filters against baseline industry averages for Focus Hours and Meeting Overhead.
-**Status:** 📅 Pending
+**Status:** Done (2026-07-22)
+**Done note (2026-07-22):** Added the Industry Benchmarks & Leaderboard component to compare selected industry filters against baseline metrics for Focus Hours and Meeting Overhead. Lazy-loaded into the Dashboard.
 
 ### 53. 53. UI/UX: Add Statistical Insights / Correlations Card
 **Description:** Add a "Key Takeaways" component highlighting the strong statistical correlations (e.g., 96.8% inverse correlation between meetings and Pizza Party Index).

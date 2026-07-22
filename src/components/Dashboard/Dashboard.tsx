@@ -7,6 +7,7 @@ const PizzaGauge = lazy(() => import('../Charts/PizzaGauge'));
 const WorkSlicesChart = lazy(() => import('../Charts/WorkSlicesChart'));
 const CollaborationChart = lazy(() => import('../Charts/CollaborationChart'));
 const DemographicsChart = lazy(() => import('../Charts/DemographicsChart'));
+const IndustryBenchmarksChart = lazy(() => import('../Charts/IndustryBenchmarksChart'));
 
 
 const Dashboard = () => {
@@ -67,6 +68,11 @@ const Dashboard = () => {
               {/* Demographics Chart takes full width or remaining cols */}
               <div className="col-span-1 lg:col-span-2 xl:col-span-1">
                 <DemographicsChart data={filteredData} />
+              </div>
+
+              {/* Industry Benchmarks & Leaderboard Chart */}
+              <div className="col-span-1 lg:col-span-2 xl:col-span-3">
+                <IndustryBenchmarksChart selectedIndustry={filters.industry} />
               </div>
             </div>
           </Suspense>
