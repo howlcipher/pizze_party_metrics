@@ -67,7 +67,7 @@ jobs:
           scan-ref: '.'
           exit-code: '1'
 
-  build:
+  data-pipeline:
     needs: validate
     runs-on: ubuntu-latest
     steps:
@@ -100,6 +100,25 @@ jobs:
 
       - name: Update README
         run: python scripts/update_readme.py
+
+      - name: Upload Data Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: etl-data
+          path: src/data/
+
+  build:
+    needs: data-pipeline
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download Data Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: etl-data
+          path: src/data/
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
