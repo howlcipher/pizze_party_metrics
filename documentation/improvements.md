@@ -23,8 +23,6 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 
 | # | Improvement | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
-| 51 | UI/UX: Display Optimal Setup by Age Group | Done (2026-07-22) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
-| 52 | UI/UX: Display Industry Benchmarks | Done (2026-07-22) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
 | 53 | UI/UX: Add Statistical Insights / Correlations Card | 📅 Pending | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
 | 55 | Data Pipeline & UI: Generalized Async Collaboration Effectiveness | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 56 | UI/UX: Commuter Cost Analysis (Vehicle Wear & Tear) | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
@@ -39,17 +37,19 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 21 | Stereotype Pizza Parlor Aesthetic Overhaul | 📅 Pending | 1.20 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Fun branding) * 1 (decay) / 5 = 1.20 |
 | 15 | [Agent Suggestion] Cross-Time-Zone Collaboration Index | 📅 Pending | 1.17 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Remote advantage) * 1 (decay) / 6 = 1.17 |
 | 32 | Deep Collaboration Metric: Cross-Team Issue Resolution | 📅 Pending | 0.80 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core thesis) * 0.5 (decay) / 5 = 0.80 |
-| 45 | [Agent Suggestion] Data Pipeline: Sync Local JSON Data | ⚠️ below floor | 0.25 | - | gemini-3.1-pro-high | 8 (Data corruption) * 0.0625 (decay) / 2 = 0.25 |
-| 34 | [Agent Suggestion] Data Pipeline: Remove Silent Exceptions in ETL | ⚠️ below floor | 0.25 | - | gemini-3.1-pro-high | 8 (Fixes silent failures) * 0.0625 (decay) / 2 = 0.25 |
-| 41 | [Agent Suggestion] Data Pipeline: Remove Hardcoded Bias | ⚠️ below floor | 0.17 | - | gemini-3.1-pro-high | 8 (Data integrity) * 0.0625 (decay) / 3 = 0.17 |
-| 36 | [Agent Suggestion] Data Pipeline: Asynchronous API Execution | ⚠️ below floor | 0.17 | - | gemini-3.1-pro-high | 8 (Resiliency) * 0.0625 (decay) / 3 = 0.17 |
-| 7 | [Agent Suggestion] Data Pipeline: Defensive Network Requests & Error Handling | ⚠️ below floor | 0.17 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Prevents crashes) * 0.0625 (decay) / 3 = 0.17 |
-| 37 | [Agent Suggestion] Data Pipeline: Decouple ETL Monolith | ⚠️ below floor | 0.12 | - | gemini-3.1-pro-high | 8 (Maintainability) * 0.0625 (decay) / 4 = 0.12 |
-| 42 | [Agent Suggestion] Data Pipeline: Fix ML Data Leakage | ⚠️ below floor | 0.12 | - | gemini-3.1-pro-high | 6 (Statistical validity) * 0.0625 (decay) / 3 = 0.12 |
-| 28 | Data Pipeline: Ingest Additional Relevant Datasets for Higher Accuracy | ⚠️ below floor | 0.12 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Improves core metric accuracy) * 0.0625 (decay) / 4 = 0.12 |
-| 9 | [Agent Suggestion] Data Pipeline: Ingestion Layer Quality Checks | ⚠️ below floor | 0.12 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Stops bad pipelines) * 0.0625 (decay) / 4 = 0.12 |
-| 10 | [Agent Suggestion] Data Pipeline: Vectorize Pandas Operations | ⚠️ below floor | 0.11 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Idiomatic & fast) * 0.0625 (decay) / 4 = 0.11 |
-| 43 | [Agent Suggestion] Data Pipeline: Use Pandas .assign() | ⚠️ below floor | 0.09 | - | gemini-3.1-pro-high | 3 (Code hygiene) * 0.0625 (decay) / 2 = 0.09 |
+| 45 | [Agent Suggestion] Data Pipeline: Sync Local JSON Data | ⚠️ below floor | 0.12 | - | gemini-3.1-pro-high | 8 (Data corruption) * 0.03125 (decay) / 2 = 0.12 |
+| 34 | [Agent Suggestion] Data Pipeline: Remove Silent Exceptions in ETL | ⚠️ below floor | 0.12 | - | gemini-3.1-pro-high | 8 (Fixes silent failures) * 0.03125 (decay) / 2 = 0.12 |
+| 41 | [Agent Suggestion] Data Pipeline: Remove Hardcoded Bias | ⚠️ below floor | 0.08 | - | gemini-3.1-pro-high | 8 (Data integrity) * 0.03125 (decay) / 3 = 0.08 |
+| 36 | [Agent Suggestion] Data Pipeline: Asynchronous API Execution | ⚠️ below floor | 0.08 | - | gemini-3.1-pro-high | 8 (Resiliency) * 0.03125 (decay) / 3 = 0.08 |
+| 7 | [Agent Suggestion] Data Pipeline: Defensive Network Requests & Error Handling | ⚠️ below floor | 0.08 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Prevents crashes) * 0.03125 (decay) / 3 = 0.08 |
+| 37 | [Agent Suggestion] Data Pipeline: Decouple ETL Monolith | ⚠️ below floor | 0.06 | - | gemini-3.1-pro-high | 8 (Maintainability) * 0.03125 (decay) / 4 = 0.06 |
+| 42 | [Agent Suggestion] Data Pipeline: Fix ML Data Leakage | ⚠️ below floor | 0.06 | - | gemini-3.1-pro-high | 6 (Statistical validity) * 0.03125 (decay) / 3 = 0.06 |
+| 28 | Data Pipeline: Ingest Additional Relevant Datasets for Higher Accuracy | ⚠️ below floor | 0.06 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Improves core metric accuracy) * 0.03125 (decay) / 4 = 0.06 |
+| 9 | [Agent Suggestion] Data Pipeline: Ingestion Layer Quality Checks | ⚠️ below floor | 0.06 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Stops bad pipelines) * 0.03125 (decay) / 4 = 0.06 |
+| 10 | [Agent Suggestion] Data Pipeline: Vectorize Pandas Operations | ⚠️ below floor | 0.05 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Idiomatic & fast) * 0.03125 (decay) / 4 = 0.05 |
+| 43 | [Agent Suggestion] Data Pipeline: Use Pandas .assign() | ⚠️ below floor | 0.05 | - | gemini-3.1-pro-high | 3 (Code hygiene) * 0.03125 (decay) / 2 = 0.05 |
+| 51 | UI/UX: Display Optimal Setup by Age Group | Done (2026-07-22) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
+| 52 | UI/UX: Display Industry Benchmarks | Done (2026-07-22) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
 | 50 | Data Pipeline & UI: Wire True Collaboration Velocity | Done (2026-07-22) | 4.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1.0 (new capability) / 2 = 4.00 |
 | 49 | Direct User Feedback: Display Pizza Party Index Math | Done (2026-07-21) | 6.00 | - | gemini-3.1-pro-high | 6 (User req) * 1.0 / 1 = 6.00 |
 | 46 | Direct User Feedback: Update Async Collab Labels | Done (2026-07-21) | 6.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (User req) * 1.0 / 1 = 6.00 |
