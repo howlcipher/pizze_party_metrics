@@ -24,6 +24,7 @@ class MetricsProcessor:
             'work_setup': object,
             'focus_hours': float,
             'meeting_overhead': float,
+            'fatigue_penalty': float,
             'pizza_party_index': float,
             'review_turnaround_hours': float,
             'collaboration_score': float,
@@ -127,10 +128,18 @@ class MetricsProcessor:
             )
         )
 
+        df_results = df_results.assign(
+            fatigue_penalty=lambda x: np.select(
+                [x['work_setup_category'] == 'Onsite-Heavy', x['work_setup_category'] == 'Hybrid'],
+                [5.0, 2.5],
+                default=0.0
+            ).round(2)
+        )
+
         base_h = config.ETL_SETTINGS['base_focus_hours']
         df_results = df_results.assign(
             collaboration_score=lambda x: (24.0 / np.maximum(x['review_turnaround_hours'], 1.0) * 10).round(2),
-            focus_hours=lambda x: (base_h * (x['cat_factor'] + np.random.uniform(-0.05, 0.05, size=N)) * (1.0 + x['cat_vel'])).round(2)
+            focus_hours=lambda x: (base_h * (x['cat_factor'] + np.random.uniform(-0.05, 0.05, size=N)) * (1.0 + x['cat_vel']) - x['fatigue_penalty']).round(2)
         )
         df_results = df_results.assign(
             meeting_overhead=lambda x: np.maximum(
@@ -179,6 +188,7 @@ class MetricsProcessor:
             'work_setup',
             'focus_hours',
             'meeting_overhead',
+            'fatigue_penalty',
             'pizza_party_index',
             'review_turnaround_hours',
             'collaboration_score',

@@ -22,46 +22,49 @@ const WorkSlicesChart = ({ data }: { data: PizzaData[] }) => {
   const chartData = useMemo(() => {
     if (!data || data.length === 0) return [];
 
-    const setupMap: Record<string, { focus_hours: number, meeting_overhead: number, count: number }> = {};
+    const setupMap: Record<string, { focus_hours: number, meeting_overhead: number, fatigue_penalty: number, count: number }> = {};
     for (let i = 0; i < data.length; i++) {
       const curr = data[i];
-      const cat = curr.work_setup_category;
+      const cat = curr.work_setup_category || 'Other';
       if (!setupMap[cat]) {
-        setupMap[cat] = { focus_hours: 0, meeting_overhead: 0, count: 0 };
+        setupMap[cat] = { focus_hours: 0, meeting_overhead: 0, fatigue_penalty: 0, count: 0 };
       }
-      setupMap[cat].focus_hours += curr.focus_hours;
-      setupMap[cat].meeting_overhead += curr.meeting_overhead;
+      setupMap[cat].focus_hours += (curr.focus_hours || 0);
+      setupMap[cat].meeting_overhead += (curr.meeting_overhead || 0);
+      setupMap[cat].fatigue_penalty += (curr.fatigue_penalty || 0);
       setupMap[cat].count += 1;
     }
 
     return Object.entries(setupMap).map(([cat, item]) => ({
       name: cat,
       "Focus Hours": Number((item.focus_hours / item.count).toFixed(1)),
-      "Meeting Overhead": Number((item.meeting_overhead / item.count).toFixed(1))
+      "Meeting Overhead": Number((item.meeting_overhead / item.count).toFixed(1)),
+      "Fatigue Penalty": Number((item.fatigue_penalty / item.count).toFixed(1))
     }));
   }, [data]);
 
   return (
     <div className="bg-[var(--card-bg)] border-[var(--card-border)] rounded p-5 shadow-sm h-full flex flex-col">
       <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2 flex items-center">
-        Slices of Work: Focus vs Meetings
+        Slices of Work: Focus vs Meetings vs Fatigue
         <TooltipInfo content={
           <div>
             <p className="font-bold mb-1">Metrics Explained:</p>
             <ul className="list-disc pl-4 space-y-1">
               <li><strong>Focus Hours:</strong> Uninterrupted time dedicated to deep work (higher is better).</li>
               <li><strong>Meeting Overhead:</strong> Time spent in sync meetings that fragment the day.</li>
+              <li><strong>Fatigue Penalty:</strong> Capacity lost due to commute strain and physical work setup demands.</li>
             </ul>
           </div>
         } />
       </h3>
       <p className="text-sm text-[var(--card-subtext)] font-bold mb-4">
-        Weekly Focus Hours vs. Meeting Overhead across different mandates.
+        Weekly Focus Hours, Meeting Overhead, and Fatigue Penalty across different mandates.
       </p>
       
-      <div className="flex-grow min-h-[300px]" role="figure" aria-label="Bar chart comparing Focus Hours versus Meeting Overhead by work setup category.">
+      <div className="flex-grow min-h-[300px]" role="figure" aria-label="Bar chart comparing Focus Hours, Meeting Overhead, and Fatigue Penalty by work setup category.">
         <div style={srOnlyStyle}>
-          This bar chart displays the breakdown of weekly focus hours versus meeting overhead in hours across different work setup categories, such as In-Office, Hybrid, and Remote.
+          This bar chart displays the breakdown of weekly focus hours, meeting overhead, and commute fatigue penalty in hours across different work setup categories, such as Onsite-Heavy, Hybrid, and Remote-First.
         </div>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -94,6 +97,7 @@ const WorkSlicesChart = ({ data }: { data: PizzaData[] }) => {
             <Legend wrapperStyle={{ paddingTop: '10px', fontWeight: 'bold', color: '#333' }} />
             <Bar dataKey="Focus Hours" fill="var(--chart-primary)" radius={[4, 4, 0, 0]} maxBarSize={60} />
             <Bar dataKey="Meeting Overhead" fill="var(--chart-danger)" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar dataKey="Fatigue Penalty" fill="var(--chart-warning)" radius={[4, 4, 0, 0]} maxBarSize={60} />
           </BarChart>
         </ResponsiveContainer>
       </div>

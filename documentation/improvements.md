@@ -28,7 +28,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 56 | UI/UX: Commuter Cost Analysis (Vehicle Wear & Tear) | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 57 | UI/UX: Commute Time Opportunity Cost | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 58 | Data Analyst Insight: Commute CO2 / Environmental Impact | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
-| 59 | Data Analyst Insight: Commute Fatigue vs. Deep Work Capacity | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
+| 59 | Data Analyst Insight: Commute Fatigue vs. Deep Work Capacity | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 54 | Data Pipeline & UI: Calculate and Display Optimal Setup by Industry | 📅 Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 4 = 1.75 |
 | 19 | [Agent Suggestion] Meeting vs. Maker Time Analysis | 📅 Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 1 (decay) / 4 = 1.75 |
 | 11 | [Agent Suggestion] Async Collaboration Velocity Metric | 📅 Pending | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Proves thesis) * 1 (decay) / 5 = 1.60 |
@@ -410,4 +410,5 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 59. 59. Data Analyst Insight: Commute Fatigue vs. Deep Work Capacity
 **Description:** Correlate commute durations with cognitive drain. Visualize how a 1-hour daily commute impacts available "focus hours" or deep work capacity by introducing a "Fatigue Penalty" to the score.
 **Context:** Directly ties the physical commute back into the productivity metrics, proving that commuting actively harms the primary output.
-**Status:** 📅 Pending
+**Status:** Done (2026-07-22)
+**Done note (2026-07-22):** Implemented `fatigue_penalty` in the ETL pipeline based on work setup (Onsite-Heavy=5.0, Hybrid=2.5, Remote=0.0). Subtracted this penalty from Focus Hours and visualized it in `WorkSlicesChart.tsx` alongside Meeting Overhead. Documented calculation in Methodology Modal.

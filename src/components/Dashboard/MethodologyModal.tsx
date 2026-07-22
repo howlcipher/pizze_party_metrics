@@ -97,6 +97,24 @@ const MethodologyModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
         </section>
 
         <section>
+          <h3 className="text-xl font-extrabold text-red-800 mb-2 flex items-center gap-2 font-serif italic">
+            <span className="text-xl">🚗</span> Fatigue Penalty & Deep Work Capacity
+          </h3>
+          <div className="bg-white p-4 rounded-lg border-2 border-green-600 shadow-sm">
+            <p className="mb-2 text-gray-800">
+              The <strong>Fatigue Penalty</strong> measures the reduction in deep work focus capacity caused by commute drain and physical workplace mandates.
+            </p>
+            <h4 className="font-extrabold text-green-800 mt-3 mb-1 uppercase tracking-wide text-xs">Calculation & Focus Hours Impact:</h4>
+            <ul className="list-disc list-inside space-y-1 ml-2 text-gray-700 font-medium">
+              <li><strong>Onsite-Heavy:</strong> High penalty (5.0 hours/week) due to full 5-day commute fatigue and transit overhead.</li>
+              <li><strong>Hybrid:</strong> Medium penalty (2.5 hours/week) reflecting partial-week commuting drain.</li>
+              <li><strong>Remote-First:</strong> Zero penalty (0.0 hours/week) preserving maximum cognitive energy for deep work.</li>
+              <li><strong>Focus Hours Formula:</strong> <code>Focus Hours = (Base Focus Hours × Category Factor × Velocity) - Fatigue Penalty</code></li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
           <h3 className="text-xl font-extrabold text-red-800 mb-2 font-serif italic">Data Ingredients</h3>
           <p className="mb-2 text-gray-800">
             Our models fuse subjective survey data with objective digital telemetry to provide a balanced view of modern work environments.

@@ -9,6 +9,7 @@ export interface PizzaData {
   };
   focus_hours?: number;
   meeting_overhead?: number;
+  fatigue_penalty?: number;
   pizza_party_index?: number;
   age_group?: string;
   gender?: string;
