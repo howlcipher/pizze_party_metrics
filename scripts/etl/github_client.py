@@ -42,7 +42,13 @@ class GitHubClient:
             self.headers['Authorization'] = f"token {
                 os.getenv('GITHUB_TOKEN')}"
         os.makedirs(config.CACHE_DIR, exist_ok=True)
-        self.semaphore = asyncio.Semaphore(10)
+        self._semaphore = None
+
+    @property
+    def semaphore(self):
+        if self._semaphore is None:
+            self._semaphore = asyncio.Semaphore(10)
+        return self._semaphore
 
     def _cache_key(self, repo: str, endpoint: str) -> str:
         safe = hashlib.md5(
