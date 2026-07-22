@@ -91,10 +91,10 @@ class VelocityAnalyzer:
                 velocities[category] = velocity
                 turnarounds[category] = avg_turn
                 metadata[category] = {
-                    'velocity_proxy': round(
+                    'task_completion_rate': round(
                         velocity,
                         6),
-                    'median_resolution_h': round(
+                    'communication_turnaround_h': round(
                         median_h,
                         2) if median_h else None,
                     'total_samples': len(all_hours),

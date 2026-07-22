@@ -36,8 +36,8 @@ const CollaborationChart = ({ data }: { data: PizzaData[] }) => {
         const meta = (velocityMetadata as any)[setup];
         return {
           name: setup,
-          "Velocity Proxy": meta ? Number(meta.velocity_proxy.toFixed(4)) : 0,
-          "Median Resolution (Hrs)": meta ? meta.median_resolution_h : 0
+          "Task Completion Rate": meta ? Number(meta.task_completion_rate.toFixed(4)) : 0,
+          "Communication Turnaround (Hrs)": meta ? meta.communication_turnaround_h : 0
         };
       });
   }, [data]);
@@ -50,19 +50,19 @@ const CollaborationChart = ({ data }: { data: PizzaData[] }) => {
           <div>
             <p className="font-bold mb-1">Metrics Explained:</p>
             <ul className="list-disc pl-4 space-y-1">
-              <li><strong>Velocity Proxy:</strong> A measure of PRs/Issues resolved relative to open volume (higher is better).</li>
-              <li><strong>Median Resolution (Hrs):</strong> Average time taken to resolve PRs and issues.</li>
+              <li><strong>Task Completion Rate:</strong> A measure of tasks completed relative to open volume (higher is better).</li>
+              <li><strong>Communication Turnaround (Hrs):</strong> Average time taken to resolve discussions and complete tasks.</li>
             </ul>
           </div>
         } />
       </h3>
       <p className="text-sm text-[var(--card-subtext)] font-bold mb-4">
-        GitHub telemetry: Velocity Proxy vs. Median Resolution Time.
+        GitHub telemetry: Task Completion Rate vs. Communication Turnaround Time.
       </p>
       
-      <div className="flex-grow min-h-[300px]" role="figure" aria-label="Bar chart comparing Velocity Proxy across work setups.">
+      <div className="flex-grow min-h-[300px]" role="figure" aria-label="Bar chart comparing Task Completion Rate across work setups.">
         <div style={srOnlyStyle}>
-          This bar chart displays the breakdown of Velocity Proxy versus Median Resolution Hours across different work setup categories.
+          This bar chart displays the breakdown of Task Completion Rate versus Communication Turnaround Hours across different work setup categories.
         </div>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
@@ -81,7 +81,7 @@ const CollaborationChart = ({ data }: { data: PizzaData[] }) => {
               tick={{ fill: 'var(--chart-primary)', fontWeight: 600 }}
               axisLine={{ stroke: 'var(--axis-line)' }}
               tickLine={false}
-              label={{ value: 'Velocity Proxy', angle: -90, position: 'insideLeft', fill: 'var(--chart-primary)', fontWeight: 'bold' }}
+              label={{ value: 'Task Completion Rate', angle: -90, position: 'insideLeft', fill: 'var(--chart-primary)', fontWeight: 'bold' }}
             />
             <YAxis 
               yAxisId="right"
@@ -89,7 +89,7 @@ const CollaborationChart = ({ data }: { data: PizzaData[] }) => {
               tick={{ fill: 'var(--chart-danger)', fontWeight: 600 }}
               axisLine={{ stroke: 'var(--axis-line)' }}
               tickLine={false}
-              label={{ value: 'Median Res (Hrs)', angle: 90, position: 'insideRight', fill: 'var(--chart-danger)', fontWeight: 'bold' }}
+              label={{ value: 'Comm Turnaround (Hrs)', angle: 90, position: 'insideRight', fill: 'var(--chart-danger)', fontWeight: 'bold' }}
             />
             <Tooltip 
               cursor={{ fill: '#e5e7eb', opacity: 0.3 }}
@@ -102,8 +102,8 @@ const CollaborationChart = ({ data }: { data: PizzaData[] }) => {
               }}
             />
             <Legend wrapperStyle={{ paddingTop: '10px', fontWeight: 'bold', color: '#333' }} />
-            <Bar yAxisId="left" dataKey="Velocity Proxy" fill="var(--chart-primary)" radius={[4, 4, 0, 0]} maxBarSize={60} />
-            <Bar yAxisId="right" dataKey="Median Resolution (Hrs)" fill="var(--chart-danger)" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar yAxisId="left" dataKey="Task Completion Rate" fill="var(--chart-primary)" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar yAxisId="right" dataKey="Communication Turnaround (Hrs)" fill="var(--chart-danger)" radius={[4, 4, 0, 0]} maxBarSize={60} />
           </BarChart>
         </ResponsiveContainer>
       </div>

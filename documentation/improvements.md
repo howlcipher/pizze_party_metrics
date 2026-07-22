@@ -24,7 +24,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | # | Improvement | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
 | 53 | UI/UX: Add Statistical Insights / Correlations Card | Done (2026-07-22) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
-| 55 | Data Pipeline & UI: Generalized Async Collaboration Effectiveness | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
+| 55 | Data Pipeline & UI: Generalized Async Collaboration Effectiveness | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 56 | UI/UX: Commuter Cost Analysis (Vehicle Wear & Tear) | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 57 | UI/UX: Commute Time Opportunity Cost | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 58 | Data Analyst Insight: Commute CO2 / Environmental Impact | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
@@ -386,7 +386,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 55. 55. Data Pipeline & UI: Generalized Async Collaboration Effectiveness
 **Description:** Replace the developer-specific "Velocity Proxy" and "Median Resolution Time" (PRs/Issues) with generalized async collaboration metrics. Potential metrics: "Cross-Functional Task Completion Rate", "Document Collaboration Frequency", or "Communication Turnaround Times" to show how collaboration works in office vs remote globally.
 **Context:** Expands the dashboard's relevance beyond software engineering teams, proving the remote thesis for all white-collar workers.
-**Status:** 📅 Pending
+**Status:** Done (2026-07-22)
+**Done note (2026-07-22):** Replaced developer-specific velocity terms with "Task Completion Rate" and "Communication Turnaround (Hrs)" in the ETL pipeline, React components, and methodology documentation.
 
 ### 56. 56. UI/UX: Commuter Cost Analysis (Vehicle Wear & Tear)
 **Description:** Add a metric calculating the average vehicle wear cost per day (assuming an average distance covered per 30 minutes of driving) and project that financial cost over a year based on the selected "days in office" filter.

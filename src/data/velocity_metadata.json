@@ -1,7 +1,7 @@
 {
     "Remote-First": {
-        "velocity_proxy": 0.013396,
-        "median_resolution_h": 74.65,
+        "task_completion_rate": 0.013396,
+        "communication_turnaround_h": 74.65,
         "total_samples": 193,
         "pr_samples": 185,
         "issue_samples": 8,
@@ -39,8 +39,8 @@
         "is_fallback": false
     },
     "Hybrid": {
-        "velocity_proxy": 0.038652,
-        "median_resolution_h": 25.87,
+        "task_completion_rate": 0.038652,
+        "communication_turnaround_h": 25.87,
         "total_samples": 206,
         "pr_samples": 145,
         "issue_samples": 61,
@@ -71,8 +71,8 @@
         "is_fallback": false
     },
     "Onsite-Heavy": {
-        "velocity_proxy": 0.010554,
-        "median_resolution_h": 94.76,
+        "task_completion_rate": 0.010554,
+        "communication_turnaround_h": 94.76,
         "total_samples": 154,
         "pr_samples": 150,
         "issue_samples": 4,

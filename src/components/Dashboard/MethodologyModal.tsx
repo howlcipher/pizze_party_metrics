@@ -80,11 +80,11 @@ const MethodologyModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
 
         <section>
           <h3 className="text-xl font-extrabold text-red-800 mb-2 flex items-center gap-2 font-serif italic">
-            <span className="text-xl">⚡</span> Velocity Proxy
+            <span className="text-xl">⚡</span> Task Completion Rate
           </h3>
           <div className="bg-white p-4 rounded-lg border-2 border-green-600 shadow-sm">
             <p className="mb-2 text-gray-800">
-              The <strong>Velocity Proxy</strong> is our primary measure of real-world delivery speed and efficiency across different work setups (remote, hybrid, in-office).
+              The <strong>Task Completion Rate</strong> is our primary measure of real-world delivery speed and efficiency across different work setups (remote, hybrid, in-office).
             </p>
             <h4 className="font-extrabold text-green-800 mt-3 mb-1 uppercase tracking-wide text-xs">Calculation:</h4>
             <ul className="list-disc list-inside space-y-1 ml-2 text-gray-700 font-medium">
