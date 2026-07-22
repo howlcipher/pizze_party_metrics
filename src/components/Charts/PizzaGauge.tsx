@@ -1,6 +1,7 @@
 import { PizzaData } from "../../types";
 import React, { useMemo } from 'react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
+import TooltipInfo from '../TooltipInfo';
 
 const srOnlyStyle = {
   position: 'absolute',
@@ -77,8 +78,15 @@ const PizzaGauge = ({ data }: { data: PizzaData[] }) => {
 
   return (
     <div className="bg-[var(--card-bg)] border-[var(--card-border)] rounded p-5 shadow-sm h-full flex flex-col relative">
-      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2">
+      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2 flex items-center">
         The Pizza Party Index Gauge
+        <TooltipInfo content={
+          <div>
+            <p className="font-bold mb-1">Pizza Party Index (PPI):</p>
+            <p className="mb-1">A composite score of overall team performance and satisfaction.</p>
+            <p className="text-xs text-gray-300"><strong>Formula:</strong> Focus Hours + (Collaboration Score × 2.0). Max: 40.</p>
+          </div>
+        } />
       </h3>
       <p className="text-sm text-[var(--card-subtext)] mb-4 font-bold">
         Displays the highest-scoring Work Setup for your filters. Higher scores = Better performance.

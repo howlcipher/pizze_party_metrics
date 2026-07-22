@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
 } from 'recharts';
+import TooltipInfo from '../TooltipInfo';
 
 const srOnlyStyle = {
   position: 'absolute',
@@ -42,8 +43,17 @@ const CollaborationChart = ({ data }: { data: PizzaData[] }) => {
 
   return (
     <div className="bg-[var(--card-bg)] border-[var(--card-border)] rounded p-5 shadow-sm h-full flex flex-col">
-      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2">
+      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2 flex items-center">
         Async Collaboration Velocity
+        <TooltipInfo content={
+          <div>
+            <p className="font-bold mb-1">Metrics Explained:</p>
+            <ul className="list-disc pl-4 space-y-1">
+              <li><strong>Collab Score:</strong> Measure of PR interactions, comments, and knowledge sharing (higher is better).</li>
+              <li><strong>Wait Hours (Turnaround):</strong> Average time code is blocked waiting for peer review.</li>
+            </ul>
+          </div>
+        } />
       </h3>
       <p className="text-sm text-[var(--card-subtext)] font-bold mb-4">
         Collaboration efficiency vs. time blocked waiting.

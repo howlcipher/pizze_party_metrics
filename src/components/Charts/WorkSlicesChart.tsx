@@ -42,8 +42,17 @@ const WorkSlicesChart = ({ data }: { data: PizzaData[] }) => {
 
   return (
     <div className="bg-[var(--card-bg)] border-[var(--card-border)] rounded p-5 shadow-sm h-full flex flex-col">
-      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2">
+      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2 flex items-center">
         Slices of Work: Focus vs Meetings
+        <TooltipInfo content={
+          <div>
+            <p className="font-bold mb-1">Metrics Explained:</p>
+            <ul className="list-disc pl-4 space-y-1">
+              <li><strong>Focus Hours:</strong> Uninterrupted time dedicated to deep work (higher is better).</li>
+              <li><strong>Meeting Overhead:</strong> Time spent in sync meetings that fragment the day.</li>
+            </ul>
+          </div>
+        } />
       </h3>
       <p className="text-sm text-[var(--card-subtext)] font-bold mb-4">
         Weekly Focus Hours vs. Meeting Overhead across different mandates.

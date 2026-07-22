@@ -4,6 +4,7 @@ import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, 
   PieChart, Pie, Cell, Legend
 } from 'recharts';
+import TooltipInfo from '../TooltipInfo';
 
 const srOnlyStyle = {
   position: 'absolute',
@@ -48,8 +49,14 @@ const DemographicsChart = ({ data }: { data: PizzaData[] }) => {
 
   return (
     <div className="bg-[var(--card-bg)] border-[var(--card-border)] rounded p-5 shadow-sm h-full flex flex-col gap-6">
-      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2">
+      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2 flex items-center">
         Demographic Distribution (Who's Eating The Pizza?)
+        <TooltipInfo content={
+          <div>
+            <p className="font-bold mb-1">Chart Explanation:</p>
+            <p>Displays the age and gender distribution of respondents included in the current filters.</p>
+          </div>
+        } />
       </h3>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 flex-grow">
