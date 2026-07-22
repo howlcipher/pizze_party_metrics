@@ -3,6 +3,7 @@ import React, { useMemo } from 'react';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer 
 } from 'recharts';
+import TooltipInfo from '../TooltipInfo';
 
 const srOnlyStyle = {
   position: 'absolute',
