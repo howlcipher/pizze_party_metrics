@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-:root, [data-theme="light"] {
+:root {
   --app-bg: #fdf5e6;
   --app-text: #111827;
   
@@ -25,62 +25,9 @@
   --tooltip-text: #333333;
 }
 
-[data-theme="dark"] {
-  --app-bg: #1a202c;
-  --app-text: #f7fafc;
-  
-  --dashboard-bg: #2d3748;
-  --dashboard-border: #4a5568;
-  
-  --card-bg: rgba(26, 32, 44, 0.95);
-  --card-border: #4a5568;
-  --card-text: #e2e8f0;
-  --card-subtext: #cbd5e0;
-  
-  --chart-primary: #4ade80;
-  --chart-secondary: #4a5568;
-  --chart-danger: #f87171;
-  --chart-warning: #fde047;
-  --chart-info: #60a5fa;
-  
-  --grid-line: #4a5568;
-  --axis-line: #718096;
-  --axis-text: #cbd5e0;
-  --tooltip-bg: #2d3748;
-  --tooltip-text: #f7fafc;
-}
-
-[data-theme="colorblind"] {
-  --app-bg: #ffffff;
-  --app-text: #000000;
-  
-  --dashboard-bg: #e5e5e5;
-  --dashboard-border: #a3a3a3;
-  
-  --card-bg: #ffffff;
-  --card-border: #000000;
-  --card-text: #000000;
-  --card-subtext: #000000;
-  
-  --chart-primary: #0072b2;
-  --chart-secondary: #e69f00;
-  --chart-danger: #d55e00;
-  --chart-warning: #f0e442;
-  --chart-info: #56b4e9;
-  
-  --grid-line: #a3a3a3;
-  --axis-line: #000000;
-  --axis-text: #000000;
-  --tooltip-bg: #ffffff;
-  --tooltip-text: #000000;
-}
-
 body {
   background-color: var(--app-bg);
   color: var(--app-text);
-}
-
-[data-theme="light"] body {
   background-image: 
     linear-gradient(45deg, rgba(204, 41, 43, 0.15) 25%, transparent 25%, transparent 75%, rgba(204, 41, 43, 0.15) 75%, rgba(204, 41, 43, 0.15)), 
     linear-gradient(45deg, rgba(204, 41, 43, 0.15) 25%, transparent 25%, transparent 75%, rgba(204, 41, 43, 0.15) 75%, rgba(204, 41, 43, 0.15));

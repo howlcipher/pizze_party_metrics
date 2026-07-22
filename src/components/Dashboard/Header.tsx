@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { Pizza, Download, Info, Palette } from 'lucide-react';
-import { useTheme } from '../../ThemeContext';
+import { Pizza, Download, Info } from 'lucide-react';
 import MethodologyModal from './MethodologyModal';
 
 const Header = ({ rawData = [] }) => {
-  const { theme, setTheme } = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const exportData = () => {
@@ -64,18 +62,6 @@ const Header = ({ rawData = [] }) => {
           <span>Box Up Data</span>
         </button>
         
-        <div className="relative group">
-          <button className="flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-800 px-4 py-2 rounded-full border-2 border-gray-200 shadow-sm text-sm font-bold">
-            <Palette size={18} />
-            <span className="capitalize">{theme} Theme</span>
-          </button>
-          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block z-50">
-            <button onClick={() => setTheme('light')} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold">Light</button>
-            <button onClick={() => setTheme('dark')} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold">Dark</button>
-            <button onClick={() => setTheme('colorblind')} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold">Colorblind</button>
-          </div>
-        </div>
-
         <div className="hidden md:flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full border-2 border-green-600 shadow-sm">
           <span className="flex h-3 w-3 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-600 opacity-75"></span>
