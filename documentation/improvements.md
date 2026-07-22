@@ -36,7 +36,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 34 | [Agent Suggestion] Data Pipeline: Remove Silent Exceptions in ETL | ⚠️ below floor | 0.25 | - | gemini-3.1-pro-high | 8 (Fixes silent failures) * 0.0625 (decay) / 2 = 0.25 |
 | 41 | [Agent Suggestion] Data Pipeline: Remove Hardcoded Bias | ⚠️ below floor | 0.16 | - | gemini-3.1-pro-high | 8 (Data integrity) * 0.0625 (decay) / 3 = 0.16 |
 | 36 | [Agent Suggestion] Data Pipeline: Asynchronous API Execution | ⚠️ below floor | 0.16 | - | gemini-3.1-pro-high | 8 (Resiliency) * 0.0625 (decay) / 3 = 0.16 |
-| 39 | [Agent Suggestion] Frontend: Migrate Codebase to TypeScript | ⚠️ below floor | 0.16 | - | gemini-3.1-pro-high | 8 (Strict typing) * 0.125 (decay) / 6 = 0.16 |
+| 39 | [Agent Suggestion] Frontend: Migrate Codebase to TypeScript | Done (2026-07-21) | 0.16 | - | gemini-3.1-pro-high | 8 (Strict typing) * 0.125 (decay) / 6 = 0.16 |
 | 37 | [Agent Suggestion] Data Pipeline: Decouple ETL Monolith | ⚠️ below floor | 0.12 | - | gemini-3.1-pro-high | 8 (Maintainability) * 0.0625 (decay) / 4 = 0.12 |
 | 42 | [Agent Suggestion] Data Pipeline: Fix ML Data Leakage | ⚠️ below floor | 0.12 | - | gemini-3.1-pro-high | 6 (Statistical validity) * 0.0625 (decay) / 3 = 0.12 |
 | 43 | [Agent Suggestion] Data Pipeline: Use Pandas .assign() | ⚠️ below floor | 0.09 | - | gemini-3.1-pro-high | 3 (Code hygiene) * 0.0625 (decay) / 2 = 0.09 |
@@ -70,7 +70,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 10 | [Agent Suggestion] Data Pipeline: Vectorize Pandas Operations | Done (2026-07-21) | 0.22 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Idiomatic & fast) * 0.125 (decay) / 4 = 0.22 |
 | 26 | UI/UX: Metric Tooltips & Explanations | ⚠️ below floor | 0.07 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Clearer metrics) * 0.03125 (decay) / 3 = 0.07 |
 | 27 | UI/UX: Mobile Responsiveness | ⚠️ below floor | 0.06 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Usability) * 0.03125 (decay) / 4 = 0.06 |
-| 17 | Theme Options: Light, Dark, and Color-blind Modes | ⚠️ below floor | 0.05 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (high UX value) * 0.03125 (decay) / 4 = 0.05 |
+| 17 | Theme Options: Light, Dark, and Color-blind Modes | Done (2026-07-21) | 0.05 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (high UX value) * 0.03125 (decay) / 4 = 0.05 |
 | 21 | Stereotype Pizza Parlor Aesthetic Overhaul | Done (2026-07-21) | 0.04 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Fun branding) * 0.03125 (decay) / 5 = 0.04 |
 ## Details
 
@@ -163,8 +163,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 17. Theme Options: Light, Dark, and Color-blind Modes
 **Description:** Add a theme switcher that allows users to toggle between Light Mode, Dark Mode (currently default), and a Color-blind friendly mode.
 **Context:** This improves accessibility (see `accessibility` skill) and gives users control over their dashboard viewing experience.
-**Status:** ⚠️ below floor
-**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
+**Done note (2026-07-21):** Implemented global theme provider, updated index.css with CSS variables mapped to Tailwind, and added a sleek dropdown in the Header.
 
 ### 18. [Agent Suggestion] DevOps: Isolate ETL Data Pipeline and Ensure Idempotency
 **Description:** Extract the Python ETL script to its own `data-pipeline` GitHub Actions job and pass the JSON artifact to the `build` job.
@@ -285,8 +284,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 39. [Agent Suggestion] Frontend: Migrate Codebase to TypeScript
 **Description:** Convert all `.jsx` files to `.tsx` and implement strict typings for props, state, and data fetching.
 **Context:** Enforces the strict `frontend_engineering` rule requiring all frontend codebases to be written in TypeScript.
-**Status:** ⚠️ below floor
-**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
+**Done note (2026-07-21):** Converted all `.jsx` files to `.tsx` and implemented rigorous strict typings for all props, states, and data interfaces.
 
 ### 40. [Agent Suggestion] Accessibility: Use Native HTML5 Dialog
 **Description:** Refactor `MethodologyModal.jsx` to use the native HTML5 `<dialog>` element for out-of-the-box keyboard navigation, focus trapping, and screen-reader support.
