@@ -62,7 +62,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 15 | [Agent Suggestion] Cross-Time-Zone Collaboration Index | ⚠️ below floor | 0.15 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Remote advantage) * 0.125 (decay) / 6 = 0.15 |
 | 22 | [Agent Suggestion] Predictive Burnout Modeling | Done (2026-07-21) | 1.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Advanced ML) * 1.0 (new capability) / 6 = 1.00 |
 | 32 | Deep Collaboration Metric: Cross-Team Issue Resolution | ⚠️ below floor | 0.20 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Core thesis) * 0.125 (decay) / 5 = 0.20 |
-| 18 | [Agent Suggestion] DevOps: Isolate ETL Data Pipeline and Ensure Idempotency | ⚠️ below floor | 0.44 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Decouples failure) * 0.25 (decay) / 4 = 0.44 |
+| 18 | [Agent Suggestion] DevOps: Isolate ETL Data Pipeline and Ensure Idempotency | Done (2026-07-21) | 0.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (crucial for pipeline reliability) * 0.25 (decay) / 4 = 0.5 |
 | 24 | Data Pipeline: Add IT, Software, and Other Relevant Industries | Done (2026-07-21) | 0.38 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (Better representation) * 0.125 (decay) / 2 = 0.38 |
 | 7 | [Agent Suggestion] Data Pipeline: Defensive Network Requests & Error Handling | ⚠️ below floor | 0.33 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Prevents crashes) * 0.125 (decay) / 3 = 0.33 |
 | 28 | Data Pipeline: Ingest Additional Relevant Datasets for Higher Accuracy | ⚠️ below floor | 0.25 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Improves core metric accuracy) * 0.125 (decay) / 4 = 0.25 |
@@ -169,7 +169,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 **Description:** Extract the Python ETL script to its own `data-pipeline` GitHub Actions job and pass the JSON artifact to the `build` job.
 **Context:** Ensures absolute separation between the Python execution environment and Node.js build per `devops_sre` standards.
 **Status:** ⚠️ below floor
-**Scoring Note (2026-07-21):** Re-scored below 0.5 ROI floor due to theme decay.
+**Done note (2026-07-21):** Extracted the Python ETL script to its own `data-pipeline` GitHub Actions job and passed the JSON artifact to the `build` job.
 
 ### 19. [Agent Suggestion] Meeting vs. Maker Time Analysis
 **Description:** Analyze calendar data to show the ratio of uninterrupted "Maker Time" versus fragmented "Meeting Time."
