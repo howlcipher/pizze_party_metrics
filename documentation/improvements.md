@@ -26,7 +26,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 53 | UI/UX: Add Statistical Insights / Correlations Card | Done (2026-07-22) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 2 = 3.50 |
 | 55 | Data Pipeline & UI: Generalized Async Collaboration Effectiveness | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 56 | UI/UX: Commuter Cost Analysis (Vehicle Wear & Tear) | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
-| 57 | UI/UX: Commute Time Opportunity Cost | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
+| 57 | UI/UX: Commute Time Opportunity Cost | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 58 | Data Analyst Insight: Commute CO2 / Environmental Impact | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 59 | Data Analyst Insight: Commute Fatigue vs. Deep Work Capacity | 📅 Pending | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 54 | Data Pipeline & UI: Calculate and Display Optimal Setup by Industry | 📅 Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 4 = 1.75 |
@@ -398,7 +398,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 57. 57. UI/UX: Commute Time Opportunity Cost
 **Description:** Calculate and display the total amount of time spent in a vehicle per year based on the selected number of office days. Contrast this visually against what else that time could be used for (e.g., exercise, family, hobbies).
 **Context:** Highlights the massive personal time sacrifice demanded by hybrid and onsite setups.
-**Status:** 📅 Pending
+**Status:** Done (2026-07-22)
+**Done note (2026-07-22):** Implemented CommuteTimeCard comparing commute hours to alternative activities, providing a visual progress bar and activity grid, and integrated it into the Dashboard.
 
 ### 58. 58. Data Analyst Insight: Commute CO2 / Environmental Impact
 **Description:** Introduce an environmental metric tracking the estimated CO2 emissions associated with the commute over a year, based on the selected days in the office. 
