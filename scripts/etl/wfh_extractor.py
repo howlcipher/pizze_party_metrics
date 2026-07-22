@@ -7,6 +7,7 @@ try:
 except ImportError:
     import config
 
+
 class WFHDataExtractor:
     @staticmethod
     def download(filepath="raw_data/wfh_data.xlsx") -> str:

@@ -26,30 +26,33 @@ def test_analyze_metrics():
             "gender": "Male"
         }
     ]
-    
+
     with tempfile.TemporaryDirectory() as tmpdir:
         input_path = os.path.join(tmpdir, "test_input.json")
         output_path = os.path.join(tmpdir, "test_output.json")
-        
+
         with open(input_path, 'w') as f:
             json.dump(sample_data, f)
-            
+
         analyze_metrics(input_path, output_path)
-        
+
         if not os.path.exists(output_path):
             raise AssertionError("Output file does not exist")
-        
+
         with open(output_path, 'r') as f:
             insights = json.load(f)
-            
+
         if "industry_profile" not in insights:
             raise AssertionError("industry_profile missing")
         if "correlations" not in insights:
             raise AssertionError("correlations missing")
         if "best_setup_by_age" not in insights:
             raise AssertionError("best_setup_by_age missing")
-        
+
         # Verify industry profile
-        tech_profile = next(item for item in insights["industry_profile"] if item["industry"] == "Tech")
+        tech_profile = next(
+            item for item in insights["industry_profile"] if item["industry"] == "Tech")
         if tech_profile["avg_focus_hours"] != 30.0:
-            raise AssertionError(f"Expected 30.0, got {tech_profile['avg_focus_hours']}")
+            raise AssertionError(
+                f"Expected 30.0, got {
+                    tech_profile['avg_focus_hours']}")

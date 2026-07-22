@@ -14,9 +14,12 @@ def update_readme():
         data = json.load(f)
 
     num_records = len(data)
-    avg_ppi = sum(d.get("pizza_party_index", 0) for d in data) / num_records if num_records > 0 else 0
-    avg_focus = sum(d.get("focus_hours", 0) for d in data) / num_records if num_records > 0 else 0
-    avg_meeting = sum(d.get("meeting_overhead", 0) for d in data) / num_records if num_records > 0 else 0
+    avg_ppi = sum(d.get("pizza_party_index", 0)
+                  for d in data) / num_records if num_records > 0 else 0
+    avg_focus = sum(d.get("focus_hours", 0)
+                    for d in data) / num_records if num_records > 0 else 0
+    avg_meeting = sum(d.get("meeting_overhead", 0)
+                      for d in data) / num_records if num_records > 0 else 0
 
     summary_text = (
         f"**Total Records Analyzed**: {num_records}<br>\n"
@@ -35,7 +38,8 @@ def update_readme():
         start_idx = content.find(start_marker) + len(start_marker)
         end_idx = content.find(end_marker)
 
-        new_content = content[:start_idx] + "\n" + summary_text + content[end_idx:]
+        new_content = content[:start_idx] + \
+            "\n" + summary_text + content[end_idx:]
 
         with open(readme_path, "w") as f:
             f.write(new_content)

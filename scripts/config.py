@@ -13,12 +13,12 @@ WFH_DATA_URLS = [
 
 # GitHub API request settings
 GITHUB_ISSUES_PER_REPO = 50
-GITHUB_PULLS_PER_REPO  = 50
-MAX_RETRIES            = 4
-BASE_BACKOFF_SECONDS   = 2
+GITHUB_PULLS_PER_REPO = 50
+MAX_RETRIES = 4
+BASE_BACKOFF_SECONDS = 2
 
 # Disk cache settings
-CACHE_DIR       = os.path.join(os.path.dirname(__file__), '.cache')
+CACHE_DIR = os.path.join(os.path.dirname(__file__), '.cache')
 CACHE_TTL_HOURS = 12
 
 # Valid resolution/merge window (in hours)
@@ -48,7 +48,7 @@ SETUP_REPOS = {
 # Conservative fallback velocities (issues/hour)
 FALLBACK_VELOCITIES = {
     'Remote-First': 0.070,
-    'Hybrid':       0.050,
+    'Hybrid': 0.050,
     'Onsite-Heavy': 0.035,
 }
 
@@ -68,7 +68,8 @@ DEMOGRAPHICS = {
     'gender_distribution': [0.52, 0.48]
 }
 
-# Injected Industries (to ensure broad coverage if original WFH dataset lacks them)
+# Injected Industries (to ensure broad coverage if original WFH dataset
+# lacks them)
 ADDITIONAL_INDUSTRIES = [
     'it_infrastructure',
     'software_engineering',
