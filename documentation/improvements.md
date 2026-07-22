@@ -337,3 +337,28 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 **Description:** Add a tooltip, subtitle, or Methodology Modal note to explain exactly how the Pizza Party Index is calculated: `(focus_hours + collaboration_score * 2.0)`, up to a max of 40.
 **Context:** User explicitly requested to show the simple math of it for clarity.
 **Done note (2026-07-21):** Added formula to PizzaGauge description paragraph and explicitly stated the math in MethodologyModal.
+
+### 50. Data Pipeline & UI: Wire True Collaboration Velocity
+**Description:** Update `CollaborationChart.tsx` to source its data directly from `velocity_metadata.json`. Display Median Resolution Time and Velocity Proxy per setup instead of flatlining on missing fields.
+**Context:** The current chart reads non-existent fields and displays zeroes. Wiring real GitHub telemetry satisfies the core product thesis by measuring async delivery speed.
+**Status:** 📅 Pending
+
+### 51. UI/UX: Display Optimal Setup by Age Group
+**Description:** Add a visualization (bar chart or insights card) showing the best work setup and Focus/Meeting ratio broken down by age group.
+**Context:** Sourced from `advanced_collaboration_insights.json` (`best_setup_by_age`), this highlights that while Remote-First wins overall, the margin varies by age demographics.
+**Status:** 📅 Pending
+
+### 52. UI/UX: Display Industry Benchmarks
+**Description:** Add a leaderboard or benchmark comparison component using `industry_profile` data.
+**Context:** Sourced from `advanced_collaboration_insights.json`, allowing users to compare their selected filters against baseline industry averages for Focus Hours and Meeting Overhead.
+**Status:** 📅 Pending
+
+### 53. UI/UX: Add Statistical Insights / Correlations Card
+**Description:** Add a "Key Takeaways" component highlighting the strong statistical correlations (e.g., 96.8% inverse correlation between meetings and Pizza Party Index).
+**Context:** Sourced from `advanced_collaboration_insights.json` (`correlations`), providing hard analytical context to the dashboard.
+**Status:** 📅 Pending
+
+### 54. Data Pipeline & UI: Calculate and Display Optimal Setup by Industry
+**Description:** Expand the backend ETL (or aggregate locally) to calculate the "Best Setup by Industry" (similar to Best Setup by Age) and display it on the dashboard.
+**Context:** User explicitly requested to see which setup is most optimal on an industry-by-industry basis.
+**Status:** 📅 Pending
