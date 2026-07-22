@@ -65,6 +65,17 @@ def analyze_metrics(input_path: str, output_path: str) -> None:
         .round(2)
     )
 
+    # Best setup by industry
+    best_setup_industry = (
+        df_clean.groupby(['industry', 'work_setup_category'])['focus_meeting_ratio']
+        .mean()
+        .reset_index()
+        .sort_values('focus_meeting_ratio', ascending=False)
+        .groupby('industry')
+        .head(1)
+        .round(2)
+    )
+
     # 4. Aggregate Burnout Risk Score
     if 'burnout_risk_score' in df_clean.columns:
         burnout_profile = (df_clean.groupby(['work_setup_category', 'industry'])[
@@ -92,6 +103,8 @@ def analyze_metrics(input_path: str, output_path: str) -> None:
             orient="records"),
         "correlations": correlations,
         "best_setup_by_age": best_setup.to_dict(
+            orient="records"),
+        "best_setup_by_industry": best_setup_industry.to_dict(
             orient="records"),
         "burnout_risk_profile": burnout_profile.to_dict(
             orient="records"),

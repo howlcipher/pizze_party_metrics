@@ -29,7 +29,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 | 57 | UI/UX: Commute Time Opportunity Cost | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 58 | Data Analyst Insight: Commute CO2 / Environmental Impact | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
 | 59 | Data Analyst Insight: Commute Fatigue vs. Deep Work Capacity | Done (2026-07-22) | 2.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High Value) * 1 (new capability) / 4 = 2.00 |
-| 54 | Data Pipeline & UI: Calculate and Display Optimal Setup by Industry | 📅 Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 4 = 1.75 |
+| 54 | Data Pipeline & UI: Calculate and Display Optimal Setup by Industry | Done (2026-07-22) | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (High Value) * 1 (new capability) / 4 = 1.75 |
 | 19 | [Agent Suggestion] Meeting vs. Maker Time Analysis | 📅 Pending | 1.75 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (Actionable insight) * 1 (decay) / 4 = 1.75 |
 | 11 | [Agent Suggestion] Async Collaboration Velocity Metric | 📅 Pending | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (Proves thesis) * 1 (decay) / 5 = 1.60 |
 | 20 | Interruption & Context Switch Impact Dashboard | 📅 Pending | 1.60 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 8 (High value) * 1 (decay) / 5 = 1.60 |
@@ -381,7 +381,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 ### 54. 54. Data Pipeline & UI: Calculate and Display Optimal Setup by Industry
 **Description:** Expand the backend ETL (or aggregate locally) to calculate the "Best Setup by Industry" (similar to Best Setup by Age) and display it on the dashboard.
 **Context:** User explicitly requested to see which setup is most optimal on an industry-by-industry basis.
-**Status:** 📅 Pending
+**Status:** Done (2026-07-22)
+**Done note (2026-07-22):** Updated `multi_agent_analysis.py` to calculate `best_setup_by_industry` based on focus/meeting ratio and added it to the insights JSON. Refactored `IndustryBenchmarksChart.tsx` to read this mapping, display it as an "Optimal Setup" column in the leaderboard table, and add it to the bar chart Tooltip.
 
 ### 55. 55. Data Pipeline & UI: Generalized Async Collaboration Effectiveness
 **Description:** Replace the developer-specific "Velocity Proxy" and "Median Resolution Time" (PRs/Issues) with generalized async collaboration metrics. Potential metrics: "Cross-Functional Task Completion Rate", "Document Collaboration Frequency", or "Communication Turnaround Times" to show how collaboration works in office vs remote globally.

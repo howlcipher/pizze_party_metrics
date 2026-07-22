@@ -129,6 +129,78 @@
             "focus_meeting_ratio": 1.32
         }
     ],
+    "best_setup_by_industry": [
+        {
+            "industry": "Education",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.65
+        },
+        {
+            "industry": "Prof Bus Services",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.64
+        },
+        {
+            "industry": "Realestate",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.64
+        },
+        {
+            "industry": "Utilities",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.62
+        },
+        {
+            "industry": "Arts Entertain",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.59
+        },
+        {
+            "industry": "Government",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.53
+        },
+        {
+            "industry": "Finance Insurance",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.52
+        },
+        {
+            "industry": "Information",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.47
+        },
+        {
+            "industry": "Healthcare",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.39
+        },
+        {
+            "industry": "Hospitaility Food",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.37
+        },
+        {
+            "industry": "Transp Warehousing",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.3
+        },
+        {
+            "industry": "Retail",
+            "work_setup_category": "Remote-First",
+            "focus_meeting_ratio": 1.16
+        },
+        {
+            "industry": "Wholesale",
+            "work_setup_category": "Hybrid",
+            "focus_meeting_ratio": 1.02
+        },
+        {
+            "industry": "Manufacturing",
+            "work_setup_category": "Hybrid",
+            "focus_meeting_ratio": 1.01
+        }
+    ],
     "burnout_risk_profile": [],
     "true_productivity_profile": []
 }

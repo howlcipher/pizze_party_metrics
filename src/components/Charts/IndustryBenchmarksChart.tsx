@@ -13,6 +13,12 @@ interface IndustryProfile {
   avg_pizza_party_index: number;
 }
 
+interface BestSetupByIndustry {
+  industry: string;
+  work_setup_category: string;
+  focus_meeting_ratio: number;
+}
+
 interface IndustryBenchmarksChartProps {
   selectedIndustry?: string;
 }
@@ -35,6 +41,17 @@ const IndustryBenchmarksChart: React.FC<IndustryBenchmarksChartProps> = ({ selec
 
   const rawProfiles: IndustryProfile[] = useMemo(() => {
     return (advancedInsights.industry_profile || []) as IndustryProfile[];
+  }, []);
+
+  const bestSetupMap = useMemo(() => {
+    const map: Record<string, string> = {};
+    const items = ((advancedInsights as any).best_setup_by_industry || []) as BestSetupByIndustry[];
+    items.forEach(item => {
+      if (item.industry && item.work_setup_category) {
+        map[item.industry] = item.work_setup_category;
+      }
+    });
+    return map;
   }, []);
 
   // Compute baseline industry averages across all industries
@@ -318,6 +335,7 @@ const IndustryBenchmarksChart: React.FC<IndustryBenchmarksChartProps> = ({ selec
                     if (!active || !payload || !payload.length) return null;
                     const item = payload[0].payload as IndustryProfile & { ratio: number };
                     const isSelected = selectedIndustry && item.industry.toLowerCase() === selectedIndustry.toLowerCase();
+                    const optimalSetup = bestSetupMap[item.industry] || 'N/A';
                     return (
                       <div className="bg-white p-3 border-2 border-amber-500 rounded-lg shadow-xl text-xs font-sans text-gray-900">
                         <div className="font-extrabold text-sm border-b border-gray-200 pb-1 mb-2 text-amber-900 flex items-center justify-between gap-2">
@@ -328,6 +346,7 @@ const IndustryBenchmarksChart: React.FC<IndustryBenchmarksChartProps> = ({ selec
                           <p className="text-green-700 font-bold">Focus Hours: {item.avg_focus_hours} hrs/wk</p>
                           <p className="text-red-600 font-bold">Meeting Overhead: {item.avg_meeting_overhead} hrs/wk</p>
                           <p className="text-gray-700 font-medium">Focus/Meeting Ratio: {item.ratio}x</p>
+                          <p className="text-indigo-700 font-bold">Optimal Setup: {optimalSetup}</p>
                           <p className="text-amber-700 font-medium">Pizza Party Index: {item.avg_pizza_party_index} / 10</p>
                         </div>
                       </div>
@@ -395,6 +414,7 @@ const IndustryBenchmarksChart: React.FC<IndustryBenchmarksChartProps> = ({ selec
                   <th className="py-3 px-4">Focus Hours / Wk</th>
                   <th className="py-3 px-4">Meeting Overhead</th>
                   <th className="py-3 px-4 text-center">Focus/Meeting Ratio</th>
+                  <th className="py-3 px-4 text-center">Optimal Setup</th>
                   <th className="py-3 px-4 text-center">Pizza Party Index</th>
                 </tr>
               </thead>
@@ -467,6 +487,13 @@ const IndustryBenchmarksChart: React.FC<IndustryBenchmarksChartProps> = ({ selec
                       <td className="py-3 px-4 text-center font-extrabold">
                         <span className={`px-2 py-1 rounded ${item.ratio >= 1.0 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
                           {item.ratio}x
+                        </span>
+                      </td>
+
+                      {/* Optimal Setup */}
+                      <td className="py-3 px-4 text-center font-bold">
+                        <span className="inline-block px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">
+                          {bestSetupMap[item.industry] || 'N/A'}
                         </span>
                       </td>
 
