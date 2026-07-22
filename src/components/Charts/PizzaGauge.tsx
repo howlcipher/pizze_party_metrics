@@ -52,7 +52,7 @@ const PizzaGauge = ({ data }: { data: PizzaData[] }) => {
     { name: 'Remaining', value: remainingValue }
   ];
 
-  const COLORS = ['#16a34a', '#f0e6d2']; // Green (good performance) and dough color
+  const COLORS = ['var(--chart-primary)', 'var(--chart-secondary)']; // Green (good performance) and dough color
 
   // Determine environment optimization based on score
   let optimizationLabel = `Best: ${bestSetup}`;
@@ -76,11 +76,11 @@ const PizzaGauge = ({ data }: { data: PizzaData[] }) => {
   };
 
   return (
-    <div className="bg-white/95 border border-gray-200 rounded p-5 shadow-sm h-full flex flex-col relative">
-      <h3 className="text-xl font-bold text-[#3E2723] mb-2 border-b border-gray-200 pb-2">
+    <div className="bg-[var(--card-bg)] border-[var(--card-border)] rounded p-5 shadow-sm h-full flex flex-col relative">
+      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2">
         The Pizza Party Index Gauge
       </h3>
-      <p className="text-sm text-gray-600 mb-4 font-bold">
+      <p className="text-sm text-[var(--card-subtext)] mb-4 font-bold">
         Displays the highest-scoring Work Setup for your filters. Higher scores = Better performance.
         <span className="block font-normal text-xs text-gray-500 mt-1">
           Formula: Focus Hours + (Collaboration Score × 2.0), up to a max of 40.

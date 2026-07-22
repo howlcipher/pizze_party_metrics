@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Pizza, Download, Info } from 'lucide-react';
+import { Pizza, Download, Info, Palette } from 'lucide-react';
+import { useTheme } from '../../ThemeContext';
 import MethodologyModal from './MethodologyModal';
 
 const Header = ({ rawData = [] }) => {
+  const { theme, setTheme } = useTheme();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const exportData = () => {
@@ -29,7 +31,7 @@ const Header = ({ rawData = [] }) => {
   };
 
   return (
-    <header className="bg-white border-b-8 border-red-600 p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] relative overflow-hidden">
+    <header className="bg-[var(--card-bg)] border-b-8 border-[var(--chart-danger)] text-[var(--card-text)] p-4 md:p-6 flex flex-col md:flex-row items-center justify-between gap-4 shadow-[0_4px_20px_rgba(0,0,0,0.15)] relative overflow-hidden">
       {/* Decorative green top border */}
       <div className="absolute top-0 left-0 w-full h-2 bg-green-600"></div>
       
@@ -38,10 +40,10 @@ const Header = ({ rawData = [] }) => {
           <Pizza size={36} fill="#ffcc00" />
         </div>
         <div className="text-center md:text-left">
-          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-red-700 tracking-tight font-serif drop-shadow-sm">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-[var(--chart-danger)] tracking-tight font-serif drop-shadow-sm">
             Luigi's Pizza Party Metrics
           </h1>
-          <p className="text-green-800 font-bold mt-1 text-xs md:text-sm uppercase tracking-wider">
+          <p className="text-[var(--chart-primary)] font-bold mt-1 text-xs md:text-sm uppercase tracking-wider">
             Authentic Telemetry, Fresh Outta The Oven! 🤌
           </p>
         </div>
@@ -49,7 +51,7 @@ const Header = ({ rawData = [] }) => {
       <div className="flex flex-wrap justify-center md:justify-end items-center gap-3 relative z-10">
         <button
           onClick={() => setIsModalOpen(true)}
-          className="flex items-center gap-2 bg-white hover:bg-gray-100 text-red-700 hover:text-red-800 px-4 py-2 rounded-full border-2 border-red-200 transition-colors text-sm font-bold shadow-sm"
+          className="flex items-center gap-2 bg-white hover:bg-gray-100 text-[var(--chart-danger)] hover:text-red-800 px-4 py-2 rounded-full border-2 border-red-200 transition-colors text-sm font-bold shadow-sm"
         >
           <Info size={18} />
           <span>The Recipe (Methodology)</span>
@@ -61,12 +63,25 @@ const Header = ({ rawData = [] }) => {
           <Download size={18} />
           <span>Box Up Data</span>
         </button>
+        
+        <div className="relative group">
+          <button className="flex items-center gap-2 bg-white hover:bg-gray-100 text-gray-800 px-4 py-2 rounded-full border-2 border-gray-200 shadow-sm text-sm font-bold">
+            <Palette size={18} />
+            <span className="capitalize">{theme} Theme</span>
+          </button>
+          <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 rounded-md shadow-lg hidden group-hover:block z-50">
+            <button onClick={() => setTheme('light')} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold">Light</button>
+            <button onClick={() => setTheme('dark')} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold">Dark</button>
+            <button onClick={() => setTheme('colorblind')} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 font-bold">Colorblind</button>
+          </div>
+        </div>
+
         <div className="hidden md:flex items-center gap-2 bg-green-100 px-4 py-2 rounded-full border-2 border-green-600 shadow-sm">
           <span className="flex h-3 w-3 relative">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-600 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-3 w-3 bg-green-600"></span>
           </span>
-          <span className="text-sm font-extrabold text-green-800 uppercase">Oven is Hot</span>
+          <span className="text-sm font-extrabold text-[var(--chart-primary)] uppercase">Oven is Hot</span>
         </div>
       </div>
       <MethodologyModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />

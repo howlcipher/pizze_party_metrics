@@ -41,11 +41,11 @@ const WorkSlicesChart = ({ data }: { data: PizzaData[] }) => {
   }, [data]);
 
   return (
-    <div className="bg-white/95 border border-gray-200 rounded p-5 shadow-sm h-full flex flex-col">
-      <h3 className="text-xl font-bold text-[#3E2723] mb-2 border-b border-gray-200 pb-2">
+    <div className="bg-[var(--card-bg)] border-[var(--card-border)] rounded p-5 shadow-sm h-full flex flex-col">
+      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2">
         Slices of Work: Focus vs Meetings
       </h3>
-      <p className="text-sm text-gray-600 font-bold mb-4">
+      <p className="text-sm text-[var(--card-subtext)] font-bold mb-4">
         Weekly Focus Hours vs. Meeting Overhead across different mandates.
       </p>
       
@@ -58,23 +58,23 @@ const WorkSlicesChart = ({ data }: { data: PizzaData[] }) => {
             data={chartData}
             margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-line)" vertical={false} />
             <XAxis 
               dataKey="name" 
-              tick={{ fill: '#4b5563', fontWeight: 700 }} 
-              axisLine={{ stroke: '#d1d5db' }}
+              tick={{ fill: 'var(--axis-text)', fontWeight: 700 }} 
+              axisLine={{ stroke: 'var(--axis-line)' }}
               tickLine={false}
             />
             <YAxis 
-              tick={{ fill: '#4b5563', fontWeight: 600 }}
-              axisLine={{ stroke: '#d1d5db' }}
+              tick={{ fill: 'var(--axis-text)', fontWeight: 600 }}
+              axisLine={{ stroke: 'var(--axis-line)' }}
               tickLine={false}
-              label={{ value: 'Hours', angle: -90, position: 'insideLeft', fill: '#4b5563', fontWeight: 'bold' }}
+              label={{ value: 'Hours', angle: -90, position: 'insideLeft', fill: 'var(--axis-text)', fontWeight: 'bold' }}
             />
             <Tooltip 
               cursor={{ fill: '#fcd34d', opacity: 0.3 }}
               contentStyle={{ 
-                backgroundColor: '#fff', 
+                backgroundColor: 'var(--tooltip-bg)', 
                 border: '2px solid #16a34a',
                 borderRadius: '8px',
                 color: '#333',
@@ -82,8 +82,8 @@ const WorkSlicesChart = ({ data }: { data: PizzaData[] }) => {
               }}
             />
             <Legend wrapperStyle={{ paddingTop: '10px', fontWeight: 'bold', color: '#333' }} />
-            <Bar dataKey="Focus Hours" fill="#16a34a" radius={[4, 4, 0, 0]} maxBarSize={60} />
-            <Bar dataKey="Meeting Overhead" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar dataKey="Focus Hours" fill="var(--chart-primary)" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar dataKey="Meeting Overhead" fill="var(--chart-danger)" radius={[4, 4, 0, 0]} maxBarSize={60} />
           </BarChart>
         </ResponsiveContainer>
       </div>

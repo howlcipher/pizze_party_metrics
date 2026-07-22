@@ -33,7 +33,7 @@ const Dashboard = () => {
   }, []);
 
   return (
-    <div className="min-h-screen text-gray-900 font-sans">
+    <div className="min-h-screen text-[var(--app-text)] font-sans">
       <Header rawData={rawData} />
       
       <main className="max-w-7xl mx-auto p-6 space-y-6">
@@ -43,7 +43,7 @@ const Dashboard = () => {
         </section>
 
         {/* Charts Section - The Pizza Box */}
-        <section className="bg-[#f2dfbe] border-4 border-[#d4ab71] rounded-sm p-6 lg:p-8 shadow-2xl relative">
+        <section className="bg-[var(--dashboard-bg)] border-4 border-[var(--dashboard-border)] rounded-sm p-6 lg:p-8 shadow-2xl relative">
           <div className="absolute top-0 left-0 w-32 h-32 bg-white/20 rounded-full blur-2xl pointer-events-none"></div>
           <div className="absolute bottom-0 right-0 w-48 h-48 bg-orange-600/5 rounded-full blur-3xl pointer-events-none"></div>
           
@@ -85,7 +85,7 @@ const Dashboard = () => {
         )}
       </main>
       
-      <footer className="text-center py-8 text-gray-800 text-sm font-bold mt-auto space-y-2 bg-white/80 border-t-4 border-green-600 backdrop-blur-sm">
+      <footer className="text-center py-8 text-gray-800 text-sm font-bold mt-auto space-y-2 bg-[var(--card-bg)] border-t-4 border-green-600 backdrop-blur-sm">
         <p className="text-lg">Telemetry generated with 🧀 & 🍅</p>
         <p className="text-xs font-normal">
           <strong>Live Data Sources:</strong> <a href="https://wfhresearch.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-700">WFH Research (SWAA)</a> &amp; <a href="https://docs.github.com/en/rest" target="_blank" rel="noopener noreferrer" className="underline hover:text-red-700">GitHub REST API</a>

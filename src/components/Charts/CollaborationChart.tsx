@@ -41,11 +41,11 @@ const CollaborationChart = ({ data }: { data: PizzaData[] }) => {
   }, [data]);
 
   return (
-    <div className="bg-white/95 border border-gray-200 rounded p-5 shadow-sm h-full flex flex-col">
-      <h3 className="text-xl font-bold text-[#3E2723] mb-2 border-b border-gray-200 pb-2">
+    <div className="bg-[var(--card-bg)] border-[var(--card-border)] rounded p-5 shadow-sm h-full flex flex-col">
+      <h3 className="text-xl font-bold text-[var(--card-text)] mb-2 border-b border-gray-200 pb-2">
         Async Collaboration Velocity
       </h3>
-      <p className="text-sm text-gray-600 font-bold mb-4">
+      <p className="text-sm text-[var(--card-subtext)] font-bold mb-4">
         Collaboration efficiency vs. time blocked waiting.
       </p>
       
@@ -58,32 +58,32 @@ const CollaborationChart = ({ data }: { data: PizzaData[] }) => {
             data={chartData}
             margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
           >
-            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-line)" vertical={false} />
             <XAxis 
               dataKey="name" 
-              tick={{ fill: '#4b5563', fontWeight: 700 }} 
-              axisLine={{ stroke: '#d1d5db' }}
+              tick={{ fill: 'var(--axis-text)', fontWeight: 700 }} 
+              axisLine={{ stroke: 'var(--axis-line)' }}
               tickLine={false}
             />
             <YAxis 
               yAxisId="left"
-              tick={{ fill: '#16a34a', fontWeight: 600 }}
-              axisLine={{ stroke: '#d1d5db' }}
+              tick={{ fill: 'var(--chart-primary)', fontWeight: 600 }}
+              axisLine={{ stroke: 'var(--axis-line)' }}
               tickLine={false}
-              label={{ value: 'Collab Score', angle: -90, position: 'insideLeft', fill: '#16a34a', fontWeight: 'bold' }}
+              label={{ value: 'Collab Score', angle: -90, position: 'insideLeft', fill: 'var(--chart-primary)', fontWeight: 'bold' }}
             />
             <YAxis 
               yAxisId="right"
               orientation="right"
-              tick={{ fill: '#ef4444', fontWeight: 600 }}
-              axisLine={{ stroke: '#d1d5db' }}
+              tick={{ fill: 'var(--chart-danger)', fontWeight: 600 }}
+              axisLine={{ stroke: 'var(--axis-line)' }}
               tickLine={false}
-              label={{ value: 'Wait Hours', angle: 90, position: 'insideRight', fill: '#ef4444', fontWeight: 'bold' }}
+              label={{ value: 'Wait Hours', angle: 90, position: 'insideRight', fill: 'var(--chart-danger)', fontWeight: 'bold' }}
             />
             <Tooltip 
               cursor={{ fill: '#e5e7eb', opacity: 0.3 }}
               contentStyle={{ 
-                backgroundColor: '#fff', 
+                backgroundColor: 'var(--tooltip-bg)', 
                 border: '2px solid #16a34a',
                 borderRadius: '8px',
                 color: '#333',
@@ -91,8 +91,8 @@ const CollaborationChart = ({ data }: { data: PizzaData[] }) => {
               }}
             />
             <Legend wrapperStyle={{ paddingTop: '10px', fontWeight: 'bold', color: '#333' }} />
-            <Bar yAxisId="left" dataKey="Collaboration Score" fill="#16a34a" radius={[4, 4, 0, 0]} maxBarSize={60} />
-            <Bar yAxisId="right" dataKey="Review Turnaround (Hrs)" fill="#ef4444" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar yAxisId="left" dataKey="Collaboration Score" fill="var(--chart-primary)" radius={[4, 4, 0, 0]} maxBarSize={60} />
+            <Bar yAxisId="right" dataKey="Review Turnaround (Hrs)" fill="var(--chart-danger)" radius={[4, 4, 0, 0]} maxBarSize={60} />
           </BarChart>
         </ResponsiveContainer>
       </div>
