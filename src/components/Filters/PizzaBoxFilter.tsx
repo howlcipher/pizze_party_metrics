@@ -2,6 +2,15 @@ import { PizzaData } from "../../types";
 import React, { useMemo } from 'react';
 import { Filter } from 'lucide-react';
 
+// Clarifying hovers for industry labels that are easy to misread as something
+// narrower or broader than their actual NAICS-based definition in the source
+// survey (Stanford WFH Research). Shown as native title tooltips on the
+// dropdown options.
+const INDUSTRY_HINTS: Record<string, string> = {
+  'Information': 'Telecom, broadcasting, publishing (incl. software publishers), and data hosting -- not software/IT services.',
+  'Professional & Business Services': 'Includes computer systems design, software engineering consulting, IT services, and engineering firms, alongside legal, accounting, and management consulting.',
+};
+
 const PizzaBoxFilter = ({ filters, setFilters, data }: { filters: Record<string, string>, setFilters: React.Dispatch<React.SetStateAction<Record<string, string>>>, data: PizzaData[] }) => {
   const { industries, ageGroups, workSetups } = useMemo(() => ({
     industries: [...new Set(data.map(d => d.industry))].sort(),
@@ -37,7 +46,7 @@ const PizzaBoxFilter = ({ filters, setFilters, data }: { filters: Record<string,
           >
             <option value="">All Industries (The Works)</option>
             {industries.map(ind => (
-              <option key={ind} value={ind}>{ind}</option>
+              <option key={ind} value={ind} title={INDUSTRY_HINTS[ind]}>{ind}</option>
             ))}
           </select>
         </div>

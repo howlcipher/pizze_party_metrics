@@ -116,6 +116,22 @@ const MethodologyModal = ({ isOpen, onClose }: { isOpen: boolean; onClose: () =>
         </section>
 
         <section>
+          <h3 className="text-xl font-extrabold text-red-800 mb-2 flex items-center gap-2 pizza-card-title">
+            <span className="text-xl">🏢</span> Industry Categories
+          </h3>
+          <div className="bg-white p-4 rounded-lg border-2 border-green-600 shadow-sm">
+            <p className="mb-2 text-gray-800">
+              Industries follow the standard NAICS sectors used by the underlying survey, which can read differently than you'd expect:
+            </p>
+            <ul className="list-disc list-inside space-y-1 ml-2 text-gray-700 font-medium">
+              <li><strong>Information</strong> means telecom, broadcasting, publishing (including software publishers like Microsoft or Adobe), and data hosting — it is <em>not</em> software/IT services.</li>
+              <li><strong>Professional &amp; Business Services</strong> is where computer systems design, software engineering consulting, IT services, and engineering firms actually live in this dataset, grouped alongside legal, accounting, and management consulting.</li>
+              <li>The source survey doesn't break "IT/Software/Engineering" out as its own category, so we don't show one — doing so would mean inventing a number rather than reporting one.</li>
+            </ul>
+          </div>
+        </section>
+
+        <section>
           <h3 className="text-xl font-extrabold text-red-800 mb-2 pizza-card-title">Data Ingredients</h3>
           <p className="mb-2 text-gray-800">
             Our models fuse subjective survey data with objective digital telemetry to provide a balanced view of modern work environments.
