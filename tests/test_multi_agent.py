@@ -53,6 +53,4 @@ def test_analyze_metrics():
         tech_profile = next(
             item for item in insights["industry_profile"] if item["industry"] == "Tech")
         if tech_profile["avg_focus_hours"] != 30.0:
-            raise AssertionError(
-                f"Expected 30.0, got {
-                    tech_profile['avg_focus_hours']}")
+            raise AssertionError(f"Expected 30.0, got {tech_profile['avg_focus_hours']}")
