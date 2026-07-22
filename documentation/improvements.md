@@ -23,6 +23,7 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 
 | # | Improvement | Status | Score (V×D÷E) | Claude model | Gemini model | ROI rationale |
 | --- | --- | --- | --- | --- | --- | --- |
+| 49 | Direct User Feedback: Display Pizza Party Index Math | Open | 6.00 | - | gemini-3.1-pro-high | 6 (User req) * 1.0 / 1 = 6.00 |
 | 46 | Direct User Feedback: Update Async Collab Labels | Done (2026-07-21) | 6.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (User req) * 1.0 / 1 = 6.00 |
 | 48 | Direct User Feedback: Disable Tooltips on Mobile | Done (2026-07-21) | 6.00 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 6 (User req) * 1.0 / 1 = 6.00 |
 | 47 | Direct User Feedback: Improve Top Bar Mobile UI | Done (2026-07-21) | 3.50 | claude-3-7-sonnet-20250219 | gemini-3.1-pro-high | 7 (User req) * 1.0 / 2 = 3.50 |
@@ -335,3 +336,8 @@ Pending rows are ranked by a diminishing-returns score, recomputed at every groo
 **Description:** Disable tooltips on mobile for the Pizza Party index chart, as they currently appear behind the score and are unnecessary on mobile. Keep them on desktop.
 **Context:** User requested UI fix for mobile view.
 **Done note (2026-07-21):** Applied `wrapperClassName="hidden md:block"` to the Recharts Tooltip to hide it on small screens.
+
+### 49. Direct User Feedback: Display Pizza Party Index Math
+**Description:** Add a tooltip, subtitle, or Methodology Modal note to explain exactly how the Pizza Party Index is calculated: `(focus_hours + collaboration_score * 2.0)`, up to a max of 40.
+**Context:** User explicitly requested to show the simple math of it for clarity.
+**Status:** Open
