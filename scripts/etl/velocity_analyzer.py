@@ -54,13 +54,10 @@ class VelocityAnalyzer:
                         if h is not None:
                             repo_pr_times.append(h)
                         if pr.get('number'):
-                            rev_url = f"https://api.github.com/repos/{repo}/pulls/{
-                                pr['number']}/reviews?per_page=100"
+                            rev_url = f"https://api.github.com/repos/{repo}/pulls/{pr['number']}/reviews?per_page=100"
                             review_tasks.append(
                                 (pr, self.client.fetch_endpoint(
-                                    session, rev_url, (repo, f"pulls_{
-                                        pr['number']}_reviews"), f"{repo} PR #{
-                                        pr['number']} reviews")))
+                                    session, rev_url, (repo, f"pulls_{pr['number']}_reviews"), f"{repo} PR #{pr['number']} reviews")))
 
                     if review_tasks:
                         results = await asyncio.gather(*(t[1] for t in review_tasks))
