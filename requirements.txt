@@ -8,3 +8,4 @@ scikit-learn
 pytest
 flake8
 bandit
+aiohttp
