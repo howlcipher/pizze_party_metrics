@@ -8,6 +8,7 @@ const WorkSlicesChart = lazy(() => import('../Charts/WorkSlicesChart'));
 const CollaborationChart = lazy(() => import('../Charts/CollaborationChart'));
 const DemographicsChart = lazy(() => import('../Charts/DemographicsChart'));
 const IndustryBenchmarksChart = lazy(() => import('../Charts/IndustryBenchmarksChart'));
+const StatisticalInsightsCard = lazy(() => import('../Charts/StatisticalInsightsCard'));
 
 
 const Dashboard = () => {
@@ -73,6 +74,11 @@ const Dashboard = () => {
               {/* Industry Benchmarks & Leaderboard Chart */}
               <div className="col-span-1 lg:col-span-2 xl:col-span-3">
                 <IndustryBenchmarksChart selectedIndustry={filters.industry} />
+              </div>
+
+              {/* Statistical Insights & Key Takeaways Card */}
+              <div className="col-span-1 lg:col-span-2 xl:col-span-3">
+                <StatisticalInsightsCard />
               </div>
             </div>
           </Suspense>
