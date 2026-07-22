@@ -7,6 +7,7 @@ const PizzaGauge = lazy(() => import('../Charts/PizzaGauge'));
 const WorkSlicesChart = lazy(() => import('../Charts/WorkSlicesChart'));
 const CommuterCostCard = lazy(() => import('../Charts/CommuterCostCard'));
 const CommuteTimeCard = lazy(() => import('../Charts/CommuteTimeCard'));
+const CommuteCO2Card = lazy(() => import('../Charts/CommuteCO2Card'));
 const CollaborationChart = lazy(() => import('../Charts/CollaborationChart'));
 const DemographicsChart = lazy(() => import('../Charts/DemographicsChart'));
 const IndustryBenchmarksChart = lazy(() => import('../Charts/IndustryBenchmarksChart'));
@@ -70,6 +71,11 @@ const Dashboard = () => {
               {/* Commute Time Opportunity Cost Card */}
               <div className="col-span-1 lg:col-span-2 xl:col-span-3">
                 <CommuteTimeCard data={filteredData} selectedWorkSetup={filters.work_setup} />
+              </div>
+
+              {/* Commute CO2 & Environmental Impact Card */}
+              <div className="col-span-1 lg:col-span-2 xl:col-span-3">
+                <CommuteCO2Card data={filteredData} selectedWorkSetup={filters.work_setup} />
               </div>
 
               {/* Collaboration Chart takes 1 or 2 cols */}
